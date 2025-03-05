@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'media',
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  darkMode: "media",
+  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
       colors: {
@@ -30,6 +30,10 @@ export default {
 
         "accent-1": "var(--color-accent-1)",
         "accent-1-light": "var(--color-accent-1-light)",
+
+        danger: "var(--color-danger)",
+        "danger-light": "var(--color-danger-light)",
+        "white-1": "var(--color-white-1)",
 
         "callout-info": "var(--color-callout-info)",
         "callout-info-icon": "var(--color-callout-info-icon)",
@@ -78,4 +82,4 @@ export default {
     },
   },
   plugins: [],
-}
+};

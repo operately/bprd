@@ -28,6 +28,10 @@
   --color-accent-1: rgba(37, 155, 105, 1);
   --color-accent-1-light: rgba(37, 155, 105, 0.8);
 
+  --color-danger: var(--color-red-500);
+  --color-danger-light: var(--color-red-400);
+  --color-white-1: rgba(255, 255, 255, 1);
+
   --color-callout-info: var(--color-blue-50);
   --color-callout-info-icon: var(--color-blue-400);
   --color-callout-info-message: var(--color-blue-700);
@@ -109,6 +113,10 @@
 
   --color-accent-1: rgba(37, 155, 105, 1);
   --color-accent-1-light: rgba(37, 155, 105, 0.8);
+
+  --color-danger: var(--color-red-500);
+  --color-danger-light: var(--color-red-400);
+  --color-white-1: rgba(255, 255, 255, 1);
 
   --color-callout-info: var(--color-blue-900);
   --color-callout-info-icon: var(--color-blue-300);
