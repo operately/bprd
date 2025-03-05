@@ -12,7 +12,7 @@ export function CalloutPageExamples() {
           Operately provides four types of callouts for different scenarios:
           info, warning, error, and success.
         </p>
-        <div className="p-6 border border-surface-outline rounded-lg bg-surface-dimmed">
+        <div className="p-6 border border-surface-outline rounded-lg bg-surface-base">
           <div className="space-y-4">
             <Callout.InfoCallout message="This is an info callout" />
 
@@ -61,7 +61,7 @@ export function CalloutPageExamples() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-6 border border-surface-outline rounded-lg bg-surface-dimmed">
+        <div className="p-6 border border-surface-outline rounded-lg bg-surface-base">
           <h3 className="font-bold text-lg text-content-accent">
             When to use callouts
           </h3>
@@ -85,7 +85,7 @@ export function CalloutPageExamples() {
           </ul>
         </div>
 
-        <div className="p-6 border border-surface-outline rounded-lg bg-surface-dimmed">
+        <div className="p-6 border border-surface-outline rounded-lg bg-surface-base">
           <h3 className="font-bold text-lg text-content-accent">
             Best practices
           </h3>
@@ -110,7 +110,7 @@ export function CalloutPageExamples() {
         </div>
       </div>
 
-      <div className="p-6 border border-surface-outline rounded-lg bg-surface-dimmed">
+      <div className="p-6 border border-surface-outline rounded-lg bg-surface-base">
         <h3 className="font-bold text-lg text-content-accent">
           Implementation
         </h3>
