@@ -11,7 +11,8 @@ import {
 export function TableRow({ item, level, isLast }) {
   const [expanded, setExpanded] = React.useState(true);
   const hasChildren = item.children && item.children.length > 0;
-  const indentPadding = level * 24;
+  // Smaller indentation to save horizontal space
+  const indentPadding = level * 20;
   const isGoal = item.type === "goal";
   const isProject = item.type === "project";
 
@@ -24,7 +25,7 @@ export function TableRow({ item, level, isLast }) {
   return (
     <>
       <tr className="group hover:bg-surface-highlight border-b border-surface-outline transition-all duration-150 ease-in-out">
-        <td className="py-3 px-4">
+        <td className="py-2 md:py-3 px-2 md:px-4">
           <div className="flex items-center">
             <div
               style={{ width: `${indentPadding}px` }}
@@ -58,7 +59,7 @@ export function TableRow({ item, level, isLast }) {
             <a
               href="#"
               className={`
-                font-medium hover:underline transition-colors
+                font-medium text-xs md:text-sm xl:text-base hover:underline transition-colors
                 ${isCompleted || isFailed ? "line-through" : ""}
                 ${isDropped ? "line-through opacity-70" : ""}
                 ${isPending ? "text-content-dimmed" : ""}
@@ -73,17 +74,17 @@ export function TableRow({ item, level, isLast }) {
             </a>
           </div>
         </td>
-        <td className="py-3 px-4">
+        <td className="py-2 md:py-3 px-2 md:px-4">
           <div className="transform group-hover:scale-105 transition-transform duration-150">
             <StatusBadge status={item.status} />
           </div>
         </td>
-        <td className="py-3 px-4">
+        <td className="py-2 md:py-3 px-2 md:px-4">
           <div className="transform group-hover:scale-[1.02] transition-transform duration-150">
             <ProgressBar progress={item.progress} status={item.status} />
           </div>
         </td>
-        <td className="py-3 px-4 max-h-[42px]">
+        <td className="py-2 md:py-3 px-2 md:px-4 max-h-[42px] hidden lg:table-cell">
           <div className="w-full max-w-[100px] overflow-hidden">
             <a
               href="#"
@@ -103,7 +104,7 @@ export function TableRow({ item, level, isLast }) {
             </a>
           </div>
         </td>
-        <td className="py-3 px-4 max-h-[42px]">
+        <td className="py-2 md:py-3 px-2 md:px-4 max-h-[42px] hidden lg:table-cell">
           <div className="flex items-center max-w-[120px] overflow-hidden">
             {item.owner.avatar ? (
               <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5 flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
@@ -137,7 +138,7 @@ export function TableRow({ item, level, isLast }) {
             </a>
           </div>
         </td>
-        <td className="py-3 px-4">
+        <td className="py-2 md:py-3 px-2 md:px-4 hidden lg:table-cell">
           <span
             className={`
               text-sm whitespace-nowrap
@@ -162,7 +163,7 @@ export function TableRow({ item, level, isLast }) {
             {item.deadline.display}
           </span>
         </td>
-        <td className="py-3 px-4 max-h-[42px]">
+        <td className="py-2 md:py-3 px-2 md:px-4 max-h-[42px] hidden xl:table-cell">
           <div className="w-full max-w-[300px] overflow-hidden">
             <span
               title={item.nextStep}
