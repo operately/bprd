@@ -48,18 +48,18 @@ export function TableRow({ item, level, isLast }) {
           <ProgressBar progress={item.progress} status={item.status} />
         </td>
         <td className="py-3 px-4">
-          <span className="text-content-base">{item.space}</span>
+          <span className="text-content-base text-sm">{item.space}</span>
         </td>
         <td className="py-3 px-4">
           <div className="flex items-center">
-            <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-2 text-xs">
+            <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-1.5 text-xs">
               {item.owner.initials}
             </div>
-            <span className="text-content-base">{item.owner.name}</span>
+            <span className="text-content-base text-sm truncate">{item.owner.name}</span>
           </div>
         </td>
         <td className="py-3 px-4">
-          <span className={item.deadline.isPast ? "text-red-600" : "text-content-base"}>
+          <span className={`${item.deadline.isPast ? "text-red-600" : "text-content-base"} text-sm whitespace-nowrap`}>
             {item.deadline.display}
           </span>
         </td>

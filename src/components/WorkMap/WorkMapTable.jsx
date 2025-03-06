@@ -9,19 +9,27 @@ export default function WorkMapTable() {
         <thead>
           <tr className="border-b border-surface-outline text-content-dimmed text-sm">
             <th className="text-left py-3 px-4 font-medium">Name</th>
-            <th className="text-left py-3 px-4 font-medium w-[120px]">Status</th>
-            <th className="text-left py-3 px-4 font-medium w-[120px]">Progress</th>
-            <th className="text-left py-3 px-4 font-medium w-[130px]">Space</th>
-            <th className="text-left py-3 px-4 font-medium w-[130px]">Owner</th>
-            <th className="text-left py-3 px-4 font-medium w-[130px]">Deadline</th>
-            <th className="text-left py-3 px-4 font-medium w-[230px]">Next step</th>
+            <th className="text-left py-3 px-4 font-medium w-[130px]">
+              Status
+            </th>
+            <th className="text-left py-3 px-4 font-medium w-[130px]">
+              Progress
+            </th>
+            <th className="text-left py-3 px-4 font-medium w-[100px]">Space</th>
+            <th className="text-left py-3 px-4 font-medium w-[120px]">Owner</th>
+            <th className="text-left py-3 px-4 font-medium w-[100px]">
+              Deadline
+            </th>
+            <th className="text-left py-3 px-4 font-medium w-[300px]">
+              Next step
+            </th>
           </tr>
         </thead>
         <tbody>
           {mockData.map((item, index) => (
-            <TableRow 
-              key={item.id} 
-              item={item} 
+            <TableRow
+              key={item.id}
+              item={item}
               level={0}
               isLast={index === mockData.length - 1}
             />
