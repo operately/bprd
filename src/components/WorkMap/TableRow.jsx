@@ -17,11 +17,7 @@ export function TableRow({ item, level, isLast }) {
 
   return (
     <>
-      <tr
-        className={`hover:bg-surface-highlight ${
-          !isLast ? "border-b border-surface-outline" : ""
-        }`}
-      >
+      <tr className="hover:bg-surface-highlight border-b border-surface-outline">
         <td className="py-3 px-4">
           <div className="flex items-center">
             <div
