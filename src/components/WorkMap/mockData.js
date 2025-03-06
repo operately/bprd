@@ -1,3 +1,13 @@
+// Avatar URLs from the Operately design system
+const avatarImages = [
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+];
+
 export const mockData = [
   {
     id: "goal-1",
@@ -8,7 +18,8 @@ export const mockData = [
     space: "General",
     owner: {
       name: "Igor Š.",
-      initials: "IŠ"
+      initials: "IŠ",
+      avatar: avatarImages[0]
     },
     deadline: {
       display: "Dec 31 2024",
@@ -25,7 +36,8 @@ export const mockData = [
         space: "Product",
         owner: {
           name: "Marko A.",
-          initials: "MA"
+          initials: "MA",
+          avatar: avatarImages[1]
         },
         deadline: {
           display: "Mar 31",
@@ -43,7 +55,8 @@ export const mockData = [
         space: "Product",
         owner: {
           name: "Igor Š.",
-          initials: "IŠ"
+          initials: "IŠ",
+          avatar: avatarImages[0]
         },
         deadline: {
           display: "Feb 7",
@@ -79,7 +92,8 @@ export const mockData = [
         space: "Product",
         owner: {
           name: "Igor Š.",
-          initials: "IŠ"
+          initials: "IŠ",
+          avatar: avatarImages[0]
         },
         deadline: {
           display: "Dec 31 2024",
@@ -99,7 +113,8 @@ export const mockData = [
     space: "Customer Success",
     owner: {
       name: "Jennifer L.",
-      initials: "JL"
+      initials: "JL",
+      avatar: avatarImages[2]
     },
     deadline: {
       display: "Dec 31",
@@ -117,7 +132,8 @@ export const mockData = [
     space: "Marketing",
     owner: {
       name: "Sam A.",
-      initials: "SA"
+      initials: "SA",
+      avatar: avatarImages[3]
     },
     deadline: {
       display: "Dec 12 2024",
@@ -151,7 +167,8 @@ export const mockData = [
             space: "Marketing",
             owner: {
               name: "Donald M.",
-              initials: "DM"
+              initials: "DM",
+              avatar: avatarImages[4]
             },
             deadline: {
               display: "Mar 31",
@@ -168,7 +185,8 @@ export const mockData = [
                 space: "Marketing",
                 owner: {
                   name: "Yuval H.",
-                  initials: "YH"
+                  initials: "YH",
+                  avatar: avatarImages[5]
                 },
                 deadline: {
                   display: "Mar 8",
