@@ -63,18 +63,21 @@ export function TableRow({ item, level, isLast }) {
         <td className="py-3 px-4">
           <ProgressBar progress={item.progress} status={item.status} />
         </td>
-        <td className="py-3 px-4">
-          <a
-            href="#"
-            className="text-content-base text-sm hover:underline hover:text-link-hover transition-colors"
-          >
-            {item.space}
-          </a>
+        <td className="py-3 px-4 max-h-[42px]">
+          <div className="w-full max-w-[100px] overflow-hidden">
+            <a
+              href="#"
+              title={item.space}
+              className="text-content-base text-sm hover:underline hover:text-link-hover transition-colors whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full"
+            >
+              {item.space}
+            </a>
+          </div>
         </td>
-        <td className="py-3 px-4">
-          <div className="flex items-center">
+        <td className="py-3 px-4 max-h-[42px]">
+          <div className="flex items-center max-w-[120px] overflow-hidden">
             {item.owner.avatar ? (
-              <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5">
+              <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5 flex-shrink-0">
                 <img
                   src={item.owner.avatar}
                   alt={item.owner.name}
@@ -83,13 +86,14 @@ export function TableRow({ item, level, isLast }) {
                 />
               </div>
             ) : (
-              <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-1.5 text-xs">
+              <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-1.5 text-xs flex-shrink-0">
                 {item.owner.initials}
               </div>
             )}
             <a
               href="#"
-              className="text-content-base text-sm truncate hover:underline hover:text-link-hover transition-colors"
+              title={item.owner.name}
+              className="text-content-base text-sm truncate hover:underline hover:text-link-hover transition-colors whitespace-nowrap overflow-hidden text-ellipsis inline-block"
             >
               {item.owner.name}
             </a>
@@ -104,8 +108,15 @@ export function TableRow({ item, level, isLast }) {
             {item.deadline.display}
           </span>
         </td>
-        <td className="py-3 px-4">
-          <span className="text-content-base text-sm">{item.nextStep}</span>
+        <td className="py-3 px-4 max-h-[42px]">
+          <div className="w-full max-w-[300px] overflow-hidden">
+            <span 
+              title={item.nextStep}
+              className="text-content-base text-sm whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full"
+            >
+              {item.nextStep}
+            </span>
+          </div>
         </td>
       </tr>
 

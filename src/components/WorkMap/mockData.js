@@ -19,11 +19,11 @@ export const mockData = [
     owner: {
       name: "Igor Š.",
       initials: "IŠ",
-      avatar: avatarImages[0]
+      avatar: avatarImages[0],
     },
     deadline: {
       display: "Dec 31 2024",
-      isPast: false
+      isPast: false,
     },
     nextStep: "People are signing up for SaaS",
     children: [
@@ -37,14 +37,14 @@ export const mockData = [
         owner: {
           name: "Marko A.",
           initials: "MA",
-          avatar: avatarImages[1]
+          avatar: avatarImages[1],
         },
         deadline: {
           display: "Mar 31",
-          isPast: false
+          isPast: false,
         },
         nextStep: "Account management section launched",
-        children: []
+        children: [],
       },
       {
         id: "project-2",
@@ -56,14 +56,14 @@ export const mockData = [
         owner: {
           name: "Igor Š.",
           initials: "IŠ",
-          avatar: avatarImages[0]
+          avatar: avatarImages[0],
         },
         deadline: {
           display: "Feb 7",
-          isPast: true
+          isPast: true,
         },
         nextStep: "All weekly updates are collected",
-        children: []
+        children: [],
       },
       {
         id: "project-3",
@@ -74,14 +74,14 @@ export const mockData = [
         space: "R&D",
         owner: {
           name: "Adriano L.",
-          initials: "AL"
+          initials: "AL",
         },
         deadline: {
           display: "Undefined",
-          isPast: false
+          isPast: false,
         },
         nextStep: "No active milestones",
-        children: []
+        children: [],
       },
       {
         id: "project-4",
@@ -93,16 +93,16 @@ export const mockData = [
         owner: {
           name: "Igor Š.",
           initials: "IŠ",
-          avatar: avatarImages[0]
+          avatar: avatarImages[0],
         },
         deadline: {
           display: "Dec 31 2024",
-          isPast: false
+          isPast: false,
         },
         nextStep: "$Competitor is in read-only mode",
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: "goal-2",
@@ -114,14 +114,14 @@ export const mockData = [
     owner: {
       name: "Jennifer L.",
       initials: "JL",
-      avatar: avatarImages[2]
+      avatar: avatarImages[2],
     },
     deadline: {
       display: "Dec 31",
-      isPast: false
+      isPast: false,
     },
     nextStep: "Increase total active users",
-    children: []
+    children: [],
   },
   {
     id: "goal-3",
@@ -133,11 +133,11 @@ export const mockData = [
     owner: {
       name: "Sam A.",
       initials: "SA",
-      avatar: avatarImages[3]
+      avatar: avatarImages[3],
     },
     deadline: {
       display: "Dec 12 2024",
-      isPast: false
+      isPast: false,
     },
     nextStep: "People are signing up for SaaS",
     children: [
@@ -149,12 +149,12 @@ export const mockData = [
         progress: 45,
         space: "Marketing",
         owner: {
-          name: "Satya L.",
-          initials: "SL"
+          name: "Vangipurappu L.",
+          initials: "VL",
         },
         deadline: {
           display: "Jun 30",
-          isPast: false
+          isPast: false,
         },
         nextStep: "2x more signups",
         children: [
@@ -164,15 +164,15 @@ export const mockData = [
             name: "Increase organic search traffic",
             status: "caution",
             progress: 15,
-            space: "Marketing",
+            space: "Search Engines and LLMs",
             owner: {
               name: "Donald M.",
               initials: "DM",
-              avatar: avatarImages[4]
+              avatar: avatarImages[4],
             },
             deadline: {
               display: "Mar 31",
-              isPast: false
+              isPast: false,
             },
             nextStep: "20% organic search increase",
             children: [
@@ -186,14 +186,14 @@ export const mockData = [
                 owner: {
                   name: "Yuval H.",
                   initials: "YH",
-                  avatar: avatarImages[5]
+                  avatar: avatarImages[5],
                 },
                 deadline: {
                   display: "Mar 8",
-                  isPast: false
+                  isPast: false,
                 },
                 nextStep: "viral article draft",
-                children: []
+                children: [],
               },
               {
                 id: "project-6",
@@ -204,19 +204,19 @@ export const mockData = [
                 space: "People Ops",
                 owner: {
                   name: "Andrew H.",
-                  initials: "AH"
+                  initials: "AH",
                 },
                 deadline: {
                   display: "Undefined",
-                  isPast: false
+                  isPast: false,
                 },
                 nextStep: "No active milestones",
-                children: []
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
