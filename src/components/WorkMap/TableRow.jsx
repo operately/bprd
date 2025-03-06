@@ -163,7 +163,7 @@ export function TableRow({ item, level, isLast }) {
             {item.deadline.display}
           </span>
         </td>
-        <td className="py-2 md:py-3 px-2 md:px-4 max-h-[42px] hidden xl:table-cell">
+        <td className="py-2 md:py-3 px-2 md:px-4 max-h-[42px] hidden 2xl:table-cell">
           <div className="w-full max-w-[300px] overflow-hidden">
             <span
               title={item.nextStep}
