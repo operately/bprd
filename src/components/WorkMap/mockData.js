@@ -219,4 +219,42 @@ export const mockData = [
       },
     ],
   },
+  {
+    id: "project-standalone",
+    type: "project",
+    name: "Legacy system migration to AWS",
+    status: "dropped",
+    progress: 18,
+    space: "Engineering",
+    owner: {
+      name: "Alexandra K.",
+      initials: "AK",
+      avatar: avatarImages[4]
+    },
+    deadline: {
+      display: "Oct 15 2024",
+      isPast: false
+    },
+    nextStep: "Project deprioritized in favor of new architecture",
+    children: []
+  },
+  {
+    id: "goal-4",
+    type: "goal",
+    name: "Expand to European market by Q3",
+    status: "failed",
+    progress: 25,
+    space: "International",
+    owner: {
+      name: "Michael B.",
+      initials: "MB",
+      avatar: avatarImages[5]
+    },
+    deadline: {
+      display: "Sep 30 2024",
+      isPast: false
+    },
+    nextStep: "Regulatory compliance issues blocked expansion",
+    children: []
+  },
 ];

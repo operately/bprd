@@ -15,6 +15,12 @@ export function TableRow({ item, level, isLast }) {
   const isGoal = item.type === "goal";
   const isProject = item.type === "project";
 
+  // Determine if item should have strikethrough or other special styling
+  const isCompleted = item.status === "completed";
+  const isFailed = item.status === "failed";
+  const isDropped = item.status === "dropped";
+  const isPending = item.status === "pending";
+
   return (
     <>
       <tr className="group hover:bg-surface-highlight border-b border-surface-outline transition-all duration-150 ease-in-out">
@@ -51,7 +57,17 @@ export function TableRow({ item, level, isLast }) {
 
             <a
               href="#"
-              className="text-content-base font-medium hover:underline hover:text-link-hover transition-colors"
+              className={`
+                font-medium hover:underline transition-colors
+                ${isCompleted || isFailed ? "line-through" : ""}
+                ${isDropped ? "line-through opacity-70" : ""}
+                ${isPending ? "text-content-dimmed" : ""}
+                ${
+                  isCompleted || isFailed || isDropped
+                    ? "text-content-dimmed"
+                    : "text-content-base hover:text-link-hover"
+                }
+              `}
             >
               {item.name}
             </a>
@@ -72,7 +88,16 @@ export function TableRow({ item, level, isLast }) {
             <a
               href="#"
               title={item.space}
-              className="text-content-base text-sm hover:underline hover:text-link-hover transition-colors whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full"
+              className={`
+                text-sm hover:underline transition-colors whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full
+                ${
+                  isCompleted || isFailed
+                    ? "text-content-dimmed"
+                    : "text-content-base hover:text-link-hover"
+                }
+                ${isDropped ? "opacity-70 text-content-dimmed" : ""}
+                ${isPending ? "text-content-dimmed" : ""}
+              `}
             >
               {item.space}
             </a>
@@ -97,7 +122,16 @@ export function TableRow({ item, level, isLast }) {
             <a
               href="#"
               title={item.owner.name}
-              className="text-content-base text-sm truncate hover:underline hover:text-link-hover transition-colors whitespace-nowrap overflow-hidden text-ellipsis inline-block"
+              className={`
+                text-sm truncate hover:underline transition-colors whitespace-nowrap overflow-hidden text-ellipsis inline-block
+                ${
+                  isCompleted || isFailed
+                    ? "text-content-dimmed"
+                    : "text-content-base hover:text-link-hover"
+                }
+                ${isDropped ? "opacity-70 text-content-dimmed" : ""}
+                ${isPending ? "text-content-dimmed" : ""}
+              `}
             >
               {item.owner.name}
             </a>
@@ -105,9 +139,25 @@ export function TableRow({ item, level, isLast }) {
         </td>
         <td className="py-3 px-4">
           <span
-            className={`${
-              item.deadline.isPast ? "text-red-600" : "text-content-base"
-            } text-sm whitespace-nowrap`}
+            className={`
+              text-sm whitespace-nowrap
+              ${
+                item.deadline.isPast &&
+                !isCompleted &&
+                !isFailed &&
+                !isDropped &&
+                !isPending
+                  ? "text-red-600"
+                  : "text-content-base"
+              }
+              ${
+                isCompleted || isFailed
+                  ? "line-through text-content-dimmed"
+                  : ""
+              }
+              ${isDropped ? "line-through opacity-70 text-content-dimmed" : ""}
+              ${isPending ? "text-content-dimmed" : ""}
+            `}
           >
             {item.deadline.display}
           </span>
@@ -116,7 +166,18 @@ export function TableRow({ item, level, isLast }) {
           <div className="w-full max-w-[300px] overflow-hidden">
             <span
               title={item.nextStep}
-              className="text-content-base text-sm whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full group-hover:text-content-intense transition-colors duration-150"
+              className={`
+                text-sm whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full transition-colors duration-150
+                ${
+                  isCompleted || isFailed
+                    ? "line-through text-content-dimmed"
+                    : "text-content-base group-hover:text-content-intense"
+                }
+                ${
+                  isDropped ? "line-through opacity-70 text-content-dimmed" : ""
+                }
+                ${isPending ? "text-content-dimmed" : ""}
+              `}
             >
               {item.nextStep}
             </span>
