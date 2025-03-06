@@ -31,8 +31,8 @@ export const mockData = [
         id: "project-1",
         type: "project",
         name: "Document features in Help Center",
-        status: "on_track",
-        progress: 60,
+        status: "completed",
+        progress: 100,
         space: "Product",
         owner: {
           name: "Marko A.",

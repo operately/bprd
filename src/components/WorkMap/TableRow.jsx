@@ -17,7 +17,7 @@ export function TableRow({ item, level, isLast }) {
 
   return (
     <>
-      <tr className="hover:bg-surface-highlight border-b border-surface-outline">
+      <tr className="group hover:bg-surface-highlight border-b border-surface-outline transition-all duration-150 ease-in-out">
         <td className="py-3 px-4">
           <div className="flex items-center">
             <div
@@ -51,17 +51,21 @@ export function TableRow({ item, level, isLast }) {
 
             <a
               href="#"
-              className="text-content-base hover:underline hover:text-link-hover transition-colors"
+              className="text-content-base font-medium hover:underline hover:text-link-hover transition-colors"
             >
               {item.name}
             </a>
           </div>
         </td>
         <td className="py-3 px-4">
-          <StatusBadge status={item.status} />
+          <div className="transform group-hover:scale-105 transition-transform duration-150">
+            <StatusBadge status={item.status} />
+          </div>
         </td>
         <td className="py-3 px-4">
-          <ProgressBar progress={item.progress} status={item.status} />
+          <div className="transform group-hover:scale-[1.02] transition-transform duration-150">
+            <ProgressBar progress={item.progress} status={item.status} />
+          </div>
         </td>
         <td className="py-3 px-4 max-h-[42px]">
           <div className="w-full max-w-[100px] overflow-hidden">
@@ -77,7 +81,7 @@ export function TableRow({ item, level, isLast }) {
         <td className="py-3 px-4 max-h-[42px]">
           <div className="flex items-center max-w-[120px] overflow-hidden">
             {item.owner.avatar ? (
-              <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5 flex-shrink-0">
+              <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5 flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
                 <img
                   src={item.owner.avatar}
                   alt={item.owner.name}
@@ -86,7 +90,7 @@ export function TableRow({ item, level, isLast }) {
                 />
               </div>
             ) : (
-              <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-1.5 text-xs flex-shrink-0">
+              <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-1.5 text-xs flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
                 {item.owner.initials}
               </div>
             )}
@@ -110,9 +114,9 @@ export function TableRow({ item, level, isLast }) {
         </td>
         <td className="py-3 px-4 max-h-[42px]">
           <div className="w-full max-w-[300px] overflow-hidden">
-            <span 
+            <span
               title={item.nextStep}
-              className="text-content-base text-sm whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full"
+              className="text-content-base text-sm whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full group-hover:text-content-intense transition-colors duration-150"
             >
               {item.nextStep}
             </span>
