@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import WorkMapTable from "../components/WorkMap/WorkMapTable";
+import { WorkMapTabs } from "../components/WorkMap/WorkMapTabs";
 ---
 
 <Layout title="Work Map | Operately">
@@ -25,6 +26,7 @@ import WorkMapTable from "../components/WorkMap/WorkMapTable";
       </header>
 
       <div class="flex-1 overflow-auto">
+        <WorkMapTabs client:load activeTab="all" />
         <WorkMapTable client:load />
       </div>
     </div>
