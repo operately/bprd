@@ -119,12 +119,12 @@ export function TableRow({ item, level, isLast }) {
 
         {/* Space */}
         <td className="py-2 px-2 md:px-4 hidden lg:table-cell">
-          <div className="w-full max-w-[100px] overflow-hidden">
+          <div className="w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
             <a
               href="#"
               title={item.space}
               className={`
-                text-sm hover:underline transition-colors whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full
+                text-sm hover:underline
                 ${
                   isCompleted || isFailed
                     ? "text-content-dimmed"
@@ -177,11 +177,11 @@ export function TableRow({ item, level, isLast }) {
 
         {/* Next step */}
         <td className="py-2  px-2 md:px-4 hidden xl:table-cell">
-          <div className="w-full xl:max-w-[200px] 2xl:max-w-[300px] overflow-hidden">
+          <div className="w-full xl:max-w-[200px] 2xl:max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap">
             <span
               title={item.nextStep}
               className={`
-                text-sm whitespace-nowrap overflow-hidden text-ellipsis inline-block w-full transition-colors duration-150
+                text-sm transition-colors duration-150
                 ${
                   isCompleted || isFailed
                     ? "line-through text-content-dimmed"
