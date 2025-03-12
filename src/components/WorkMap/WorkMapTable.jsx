@@ -26,7 +26,7 @@ export default function WorkMapTable() {
             <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[100px] hidden lg:table-cell">
               Deadline
             </th>
-            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[300px] hidden 2xl:table-cell">
+            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold xl:w-[200px] 2xl:w-[300px] hidden xl:table-cell">
               Next step
             </th>
           </tr>

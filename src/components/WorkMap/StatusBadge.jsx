@@ -117,7 +117,7 @@ export function StatusBadge({ status }) {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs sm:text-sm font-medium ${bgColor} ${textColor} border ${borderColor} shadow-sm backdrop-blur-[2px]`}
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${bgColor} ${textColor} border ${borderColor} shadow-sm backdrop-blur-[2px]`}
     >
       {getStatusIcon()}
       {label}
