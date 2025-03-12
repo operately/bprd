@@ -91,7 +91,7 @@ export function TableRow({ item, level, isLast }) {
         </td>
 
         {/* Space */}
-        <td className="py-2 px-2 md:px-4 max-h-[42px] hidden lg:table-cell">
+        <td className="py-2 px-2 md:px-4 hidden lg:table-cell">
           <div className="w-full max-w-[100px] overflow-hidden">
             <a
               href="#"
@@ -113,7 +113,7 @@ export function TableRow({ item, level, isLast }) {
         </td>
 
         {/* Champion */}
-        <td className="py-2  px-2 md:px-4 max-h-[42px] hidden lg:table-cell">
+        <td className="py-2  px-2 md:px-4 hidden lg:table-cell">
           <div className="flex items-center max-w-[120px] overflow-hidden">
             {item.owner.avatar ? (
               <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5 flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
@@ -176,7 +176,7 @@ export function TableRow({ item, level, isLast }) {
         </td>
 
         {/* Next step */}
-        <td className="py-2  px-2 md:px-4 max-h-[42px] hidden xl:table-cell">
+        <td className="py-2  px-2 md:px-4 hidden xl:table-cell">
           <div className="w-full xl:max-w-[200px] 2xl:max-w-[300px] overflow-hidden">
             <span
               title={item.nextStep}
