@@ -3,7 +3,7 @@ import React from "react";
 export function ProgressBar({ progress, status }) {
   // Convert progress from 0-100 to width percentage
   const progressWidth = `${progress}%`;
-  
+
   // Determine color based on status
   let progressColor;
   switch (status) {
@@ -28,10 +28,10 @@ export function ProgressBar({ progress, status }) {
     default:
       progressColor = "bg-gray-400";
   }
-  
+
   return (
-    <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-      <div 
+    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div
         className={`h-full rounded-full ${progressColor} relative overflow-hidden`}
         style={{ width: progressWidth }}
       >
