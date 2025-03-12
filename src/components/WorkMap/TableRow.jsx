@@ -90,6 +90,33 @@ export function TableRow({ item, level, isLast }) {
           </div>
         </td>
 
+        {/* Deadline */}
+        <td className="py-2  px-2 md:px-4 hidden md:table-cell">
+          <span
+            className={`
+              text-sm whitespace-nowrap
+              ${
+                item.deadline.isPast &&
+                !isCompleted &&
+                !isFailed &&
+                !isDropped &&
+                !isPending
+                  ? "text-red-600"
+                  : "text-content-base"
+              }
+              ${
+                isCompleted || isFailed
+                  ? "line-through text-content-dimmed"
+                  : ""
+              }
+              ${isDropped ? "line-through opacity-70 text-content-dimmed" : ""}
+              ${isPending ? "text-content-dimmed" : ""}
+            `}
+          >
+            {item.deadline.display}
+          </span>
+        </td>
+
         {/* Space */}
         <td className="py-2 px-2 md:px-4 hidden lg:table-cell">
           <div className="w-full max-w-[100px] overflow-hidden">
@@ -146,33 +173,6 @@ export function TableRow({ item, level, isLast }) {
               {item.owner.name}
             </a>
           </div>
-        </td>
-
-        {/* Deadline */}
-        <td className="py-2  px-2 md:px-4 hidden lg:table-cell">
-          <span
-            className={`
-              text-sm whitespace-nowrap
-              ${
-                item.deadline.isPast &&
-                !isCompleted &&
-                !isFailed &&
-                !isDropped &&
-                !isPending
-                  ? "text-red-600"
-                  : "text-content-base"
-              }
-              ${
-                isCompleted || isFailed
-                  ? "line-through text-content-dimmed"
-                  : ""
-              }
-              ${isDropped ? "line-through opacity-70 text-content-dimmed" : ""}
-              ${isPending ? "text-content-dimmed" : ""}
-            `}
-          >
-            {item.deadline.display}
-          </span>
         </td>
 
         {/* Next step */}

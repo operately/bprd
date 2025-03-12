@@ -17,14 +17,14 @@ export default function WorkMapTable() {
             <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[80px] md:w-[130px]">
               Progress
             </th>
+            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[100px] hidden md:table-cell">
+              Deadline
+            </th>
             <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[100px] hidden lg:table-cell">
               Space
             </th>
             <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[120px] hidden lg:table-cell">
               Owner
-            </th>
-            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[100px] hidden lg:table-cell">
-              Deadline
             </th>
             <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold xl:w-[200px] 2xl:w-[300px] hidden xl:table-cell">
               Next step
