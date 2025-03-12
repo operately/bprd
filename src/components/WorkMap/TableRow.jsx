@@ -9,6 +9,8 @@ import {
 } from "./Icons";
 
 export function TableRow({ item, level, isLast, filter }) {
+  // Determine if we're on the completed page for compact styling
+  const isCompletedPage = filter === "completed";
   const [expanded, setExpanded] = React.useState(true);
   const hasChildren = item.children && item.children.length > 0;
   // Decide whether to show indentation and controls

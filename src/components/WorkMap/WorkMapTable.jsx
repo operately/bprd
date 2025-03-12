@@ -93,33 +93,41 @@ const filterChildren = (item, filter) => {
 };
 
 export default function WorkMapTable({ filter }) {
+  // Determine if we're on the completed page
+  const isCompletedPage = filter === "completed";
+  
   return (
     <div className="w-full overflow-x-auto">
       <table className="w-full md:min-w-[1000px] table-auto">
         <thead>
           <tr className="border-b-2 border-surface-outline bg-surface-dimmed text-content-base text-sm sticky top-0">
-            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold">
+            {/* Name column - max width to prevent excessive spacing */}
+            <th className={`text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold ${isCompletedPage ? "max-w-[35%] w-[35%]" : ""}`}>
               Name
             </th>
+            {/* Status column */}
             <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[100px] md:w-[130px]">
               Status
             </th>
+            {/* Progress column */}
             <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[75px] md:w-[90px]">
               Progress
             </th>
+            {/* Deadline/Completed On column */}
             <th
-              className={`text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold hidden md:table-cell ${
-                filter === "completed" ? "w-[140px]" : "w-[120px]"
-              }`}
+              className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold hidden md:table-cell w-[120px]"
             >
-              {filter === "completed" ? "Completed On" : "Deadline"}
+              {isCompletedPage ? "Completed On" : "Deadline"}
             </th>
-            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[100px] hidden lg:table-cell">
+            {/* Space column */}
+            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold hidden lg:table-cell w-[100px]">
               Space
             </th>
-            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[120px] hidden xl:table-cell">
+            {/* Champion column */}
+            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold hidden xl:table-cell w-[120px]">
               Champion
             </th>
+            {/* Next step column - only shown on non-completed pages */}
             {filter !== "completed" && (
               <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold xl:w-[200px] 2xl:w-[300px] hidden xl:table-cell">
                 Next step
