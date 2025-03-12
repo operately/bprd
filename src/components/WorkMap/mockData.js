@@ -43,6 +43,9 @@ export const mockData = [
           display: "Mar 31",
           isPast: false,
         },
+        completedOn: {
+          display: "Mar 10 2025",
+        },
         nextStep: "Account management section launched",
         children: [],
       },

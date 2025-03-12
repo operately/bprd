@@ -8,7 +8,7 @@ import {
   IconChevronRight,
 } from "./Icons";
 
-export function TableRow({ item, level, isLast }) {
+export function TableRow({ item, level, isLast, filter }) {
   const [expanded, setExpanded] = React.useState(true);
   const hasChildren = item.children && item.children.length > 0;
   // Smaller indentation to save horizontal space
@@ -65,7 +65,10 @@ export function TableRow({ item, level, isLast }) {
                 ${isDropped ? "line-through opacity-70" : ""}
                 ${isPending ? "text-content-dimmed" : ""}
                 ${
-                  isCompleted || isFailed || isDropped
+                  filter === "completed" &&
+                  (isCompleted || isFailed || isDropped)
+                    ? "text-content-dimmed"
+                    : isCompleted || isFailed || isDropped
                     ? "text-content-dimmed"
                     : "text-content-base hover:text-link-hover"
                 }
@@ -90,31 +93,39 @@ export function TableRow({ item, level, isLast }) {
           </div>
         </td>
 
-        {/* Deadline */}
-        <td className="py-2  px-2 md:px-4 hidden md:table-cell">
-          <span
-            className={`
-              text-sm whitespace-nowrap
-              ${
-                item.deadline.isPast &&
-                !isCompleted &&
-                !isFailed &&
-                !isDropped &&
-                !isPending
-                  ? "text-red-600"
-                  : "text-content-base"
-              }
-              ${
-                isCompleted || isFailed
-                  ? "line-through text-content-dimmed"
-                  : ""
-              }
-              ${isDropped ? "line-through opacity-70 text-content-dimmed" : ""}
-              ${isPending ? "text-content-dimmed" : ""}
-            `}
-          >
-            {item.deadline.display}
-          </span>
+        {/* Deadline or Completed On */}
+        <td className="py-2 px-2 md:px-4 hidden md:table-cell">
+          {filter === "completed" && item.completedOn ? (
+            <span className="text-sm whitespace-nowrap text-content-base">
+              {item.completedOn.display}
+            </span>
+          ) : (
+            <span
+              className={`
+                text-sm whitespace-nowrap
+                ${
+                  item.deadline.isPast &&
+                  !isCompleted &&
+                  !isFailed &&
+                  !isDropped &&
+                  !isPending
+                    ? "text-red-600"
+                    : "text-content-base"
+                }
+                ${
+                  isCompleted || isFailed
+                    ? "line-through text-content-dimmed"
+                    : ""
+                }
+                ${
+                  isDropped ? "line-through opacity-70 text-content-dimmed" : ""
+                }
+                ${isPending ? "text-content-dimmed" : ""}
+              `}
+            >
+              {item.deadline.display}
+            </span>
+          )}
         </td>
 
         {/* Space */}
@@ -175,28 +186,32 @@ export function TableRow({ item, level, isLast }) {
           </div>
         </td>
 
-        {/* Next step */}
-        <td className="py-2  px-2 md:px-4 hidden xl:table-cell">
-          <div className="w-full xl:max-w-[200px] 2xl:max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap">
-            <span
-              title={item.nextStep}
-              className={`
-                text-sm transition-colors duration-150
-                ${
-                  isCompleted || isFailed
-                    ? "line-through text-content-dimmed"
-                    : "text-content-base group-hover:text-content-intense"
-                }
-                ${
-                  isDropped ? "line-through opacity-70 text-content-dimmed" : ""
-                }
-                ${isPending ? "text-content-dimmed" : ""}
-              `}
-            >
-              {item.nextStep}
-            </span>
-          </div>
-        </td>
+        {/* Next step - don't show on completed page */}
+        {filter !== "completed" && (
+          <td className="py-2 px-2 md:px-4 hidden xl:table-cell">
+            <div className="w-full xl:max-w-[200px] 2xl:max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap">
+              <span
+                title={item.nextStep}
+                className={`
+                  text-sm transition-colors duration-150
+                  ${
+                    isCompleted || isFailed
+                      ? "line-through text-content-dimmed"
+                      : "text-content-base group-hover:text-content-intense"
+                  }
+                  ${
+                    isDropped
+                      ? "line-through opacity-70 text-content-dimmed"
+                      : ""
+                  }
+                  ${isPending ? "text-content-dimmed" : ""}
+                `}
+              >
+                {item.nextStep}
+              </span>
+            </div>
+          </td>
+        )}
       </tr>
 
       {expanded &&
@@ -207,6 +222,7 @@ export function TableRow({ item, level, isLast }) {
             item={child}
             level={level + 1}
             isLast={index === item.children.length - 1 && isLast}
+            filter={filter}
           />
         ))}
     </>
