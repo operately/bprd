@@ -6,7 +6,7 @@ export function WorkMapTabs({ activeTab }) {
       <div className="px-6">
         <nav className="flex space-x-8" aria-label="Work Map Tabs">
           <a
-            href="#"
+            href="/work-map"
             className={`
               border-b-2 
               ${
@@ -38,12 +38,12 @@ export function WorkMapTabs({ activeTab }) {
             All work
           </a>
           <a
-            href="#"
+            href="/work-map-goals"
             className={`
               border-b-2 
               ${
                 activeTab === "goals"
-                  ? "border-link-base text-content-base"
+                  ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
               px-1 py-2.5 text-base font-medium flex items-center gap-1.5
@@ -71,12 +71,12 @@ export function WorkMapTabs({ activeTab }) {
             Goals
           </a>
           <a
-            href="#"
+            href="/work-map-projects"
             className={`
               border-b-2 
               ${
                 activeTab === "projects"
-                  ? "border-link-base text-content-base"
+                  ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
               px-1 py-2.5 text-base font-medium flex items-center gap-1.5
@@ -103,12 +103,12 @@ export function WorkMapTabs({ activeTab }) {
             Projects
           </a>
           <a
-            href="#"
+            href="/work-map-completed"
             className={`
               border-b-2 
               ${
                 activeTab === "completed"
-                  ? "border-link-base text-content-base"
+                  ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
               px-1 py-2.5 text-base font-medium flex items-center gap-1.5

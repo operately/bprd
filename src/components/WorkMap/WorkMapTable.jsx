@@ -2,7 +2,22 @@ import React from "react";
 import { TableRow } from "./TableRow";
 import { mockData } from "./mockData";
 
-export default function WorkMapTable() {
+// Helper function to filter children based on type criteria
+const filterChildrenByType = (item, filter) => {
+  if (!item.children || item.children.length === 0) return { ...item, children: [] };
+
+  const filteredChildren = item.children
+    .filter(child => {
+      if (filter === "goals" && child.type !== "goal") return false;
+      if (filter === "projects" && child.type !== "project") return false;
+      return true;
+    })
+    .map(child => filterChildrenByType(child, filter));
+
+  return { ...item, children: filteredChildren };
+};
+
+export default function WorkMapTable({ filter }) {
   return (
     <div className="w-full overflow-x-auto">
       <table className="w-full md:min-w-[1000px] table-auto">
@@ -32,14 +47,26 @@ export default function WorkMapTable() {
           </tr>
         </thead>
         <tbody>
-          {mockData.map((item, index) => (
-            <TableRow
-              key={item.id}
-              item={item}
-              level={0}
-              isLast={index === mockData.length - 1}
-            />
-          ))}
+          {mockData
+            // First filter the top-level items
+            .filter(item => {
+              if (!filter) return true;
+              if (filter === "goals") return item.type === "goal";
+              if (filter === "projects") return item.type === "project";
+              if (filter === "completed") return item.status === "completed";
+              return true;
+            })
+            // Then filter their children appropriately
+            .map(item => filter === "goals" || filter === "projects" ? 
+              filterChildrenByType(item, filter) : item)
+            .map((item, index, filteredItems) => (
+              <TableRow
+                key={item.id}
+                item={item}
+                level={0}
+                isLast={index === filteredItems.length - 1}
+              />
+            ))}
         </tbody>
       </table>
     </div>
