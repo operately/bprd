@@ -11,8 +11,10 @@ import {
 export function TableRow({ item, level, isLast, filter }) {
   const [expanded, setExpanded] = React.useState(true);
   const hasChildren = item.children && item.children.length > 0;
-  // Smaller indentation to save horizontal space
-  const indentPadding = level * 20;
+  // Decide whether to show indentation and controls
+  // Only apply indentation on hierarchical pages (all work, goals)
+  const showIndentation = !filter || filter === "goals" || filter === "all";
+  const indentPadding = showIndentation ? level * 20 : 0;
   const isGoal = item.type === "goal";
   const isProject = item.type === "project";
 
@@ -28,25 +30,30 @@ export function TableRow({ item, level, isLast, filter }) {
         {/* Name */}
         <td className="py-2 px-2 md:px-4">
           <div className="flex items-center">
-            <div
-              style={{ width: `${indentPadding}px` }}
-              className="flex-shrink-0"
-            ></div>
+            {/* Only show indentation and controls on hierarchical pages */}
+            {showIndentation && (
+              <>
+                <div
+                  style={{ width: `${indentPadding}px` }}
+                  className="flex-shrink-0"
+                ></div>
 
-            {hasChildren && (
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="mr-2 text-content-dimmed hover:text-content-base"
-              >
-                {expanded ? (
-                  <IconChevronDown size={16} />
-                ) : (
-                  <IconChevronRight size={16} />
+                {hasChildren && (
+                  <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="mr-2 text-content-dimmed hover:text-content-base"
+                  >
+                    {expanded ? (
+                      <IconChevronDown size={16} />
+                    ) : (
+                      <IconChevronRight size={16} />
+                    )}
+                  </button>
                 )}
-              </button>
-            )}
 
-            {!hasChildren && <div className="w-[24px]"></div>}
+                {!hasChildren && <div className="w-[24px]"></div>}
+              </>
+            )}
 
             <div
               className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mr-2 ${
