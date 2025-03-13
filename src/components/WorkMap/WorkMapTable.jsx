@@ -1,6 +1,6 @@
 import React from "react";
 import { TableRow } from "./TableRow";
-import { mockData } from "./mockData";
+import { mockData } from "../../mockData";
 
 // Helper function to extract all projects from the data, including nested ones
 const extractAllProjects = (data) => {

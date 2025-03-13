@@ -1,5 +1,7 @@
+// Mock data for development purposes
+
 // Avatar URLs from the Operately design system
-const avatarImages = [
+export const avatarImages = [
   "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
@@ -8,6 +10,34 @@ const avatarImages = [
   "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 ];
 
+// For backward compatibility
+export const avatarUrl = avatarImages[0];
+
+// Sample user data
+export const currentUser = {
+  id: "user-1",
+  name: "John Doe",
+  email: "john.doe@example.com",
+  avatar: avatarUrl,
+  role: "Product Manager"
+};
+
+// Sample company data
+export const companyData = {
+  id: "company-1",
+  name: "Nexus Dynamics",
+  logoUrl: "/logo.svg"
+};
+
+// Sample navigation items
+export const navItems = [
+  { id: "nav-1", label: "Home", href: "/", icon: "home" },
+  { id: "nav-2", label: "Company", href: "/work-map/", icon: "map" },
+  { id: "nav-3", label: "My work", href: "#", icon: "camera-selfie" },
+  { id: "nav-4", label: "Review", href: "#", icon: "coffee" }
+];
+
+// Work Map mock data
 export const mockData = [
   {
     id: "goal-1",
@@ -198,24 +228,6 @@ export const mockData = [
                 nextStep: "viral article draft",
                 children: [],
               },
-              {
-                id: "project-6",
-                type: "project",
-                name: "Create YouTube videos for top 3 hotel management keywords",
-                status: "pending",
-                progress: 5,
-                space: "People Ops",
-                owner: {
-                  name: "Andrew H.",
-                  initials: "AH",
-                },
-                deadline: {
-                  display: "Undefined",
-                  isPast: false,
-                },
-                nextStep: "No active milestones",
-                children: [],
-              },
             ],
           },
         ],
@@ -223,41 +235,25 @@ export const mockData = [
     ],
   },
   {
-    id: "project-standalone",
+    id: "project-10",
     type: "project",
-    name: "Legacy system migration to AWS",
-    status: "dropped",
-    progress: 18,
-    space: "Engineering",
+    name: "Migration of marketing site to new platform",
+    status: "completed",
+    progress: 100,
+    space: "Marketing",
     owner: {
-      name: "Alexandra K.",
-      initials: "AK",
-      avatar: avatarImages[4]
+      name: "Sam A.",
+      initials: "SA",
+      avatar: avatarImages[3],
     },
     deadline: {
-      display: "Oct 15 2024",
-      isPast: false
+      display: "Mar 1",
+      isPast: true,
     },
-    nextStep: "Project deprioritized in favor of new architecture",
-    children: []
-  },
-  {
-    id: "goal-4",
-    type: "goal",
-    name: "Expand to European market by Q3",
-    status: "failed",
-    progress: 25,
-    space: "International",
-    owner: {
-      name: "Michael B.",
-      initials: "MB",
-      avatar: avatarImages[5]
+    completedOn: {
+      display: "Mar 1 2025",
     },
-    deadline: {
-      display: "Sep 30 2024",
-      isPast: false
-    },
-    nextStep: "Regulatory compliance issues blocked expansion",
-    children: []
+    nextStep: "Site is live on the new platform",
+    children: [],
   },
 ];
