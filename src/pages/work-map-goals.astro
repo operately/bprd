@@ -7,30 +7,36 @@ import { WorkMapTabs } from "../components/WorkMap/WorkMapTabs";
 <FullWidthLayout
   title="Goals | Work Map | Operately BPRD"
   showBreadcrumbs={false}
-  transitionBackground={true}
+  transitionBackground={false}
 >
-  <div class="w-full flex flex-col overflow-hidden">
-    <header
-      class="flex items-center justify-between px-6 py-4 border-b border-surface-outline bg-white rounded-t-lg shadow-sm"
-    >
-      <h1 class="text-xl font-bold text-content-accent">Company work map</h1>
-      <div class="flex items-center space-x-4">
-        <button
-          class="px-4 py-2 bg-accent-1 text-white-1 rounded-md hover:bg-accent-1-light transition-colors"
-        >
-          New Goal
-        </button>
-        <button
-          class="px-4 py-2 border border-surface-outline text-content-base rounded-md hover:bg-surface-dimmed transition-colors"
-        >
-          New Project
-        </button>
-      </div>
-    </header>
+  <div class="flex-1 overflow-y-auto bg-base">
+    <div class="mx-auto relative sm:my-10 sm:max-w-[90%] lg:max-w-7xl">
+      <div class="relative bg-surface-base min-h-dvh sm:min-h-0 sm:border sm:border-surface-outline sm:rounded-lg sm:shadow-xl">
+        <div class="w-full flex flex-col overflow-hidden">
+          <header
+            class="flex items-center justify-between px-6 py-4 border-b border-surface-outline"
+          >
+            <h1 class="text-xl font-bold text-content-accent">Company work map</h1>
+            <div class="flex items-center space-x-4">
+              <button
+                class="px-4 py-2 bg-accent-1 text-white-1 rounded-md hover:bg-accent-1-light transition-colors"
+              >
+                New Goal
+              </button>
+              <button
+                class="px-4 py-2 border border-surface-outline text-content-base rounded-md hover:bg-surface-dimmed transition-colors"
+              >
+                New Project
+              </button>
+            </div>
+          </header>
 
-    <div class="flex-1 overflow-auto bg-white rounded-b-lg shadow-sm">
-      <WorkMapTabs client:load activeTab="goals" />
-      <WorkMapTable client:load filter="goals" />
+          <div class="flex-1 overflow-auto">
+            <WorkMapTabs client:load activeTab="goals" />
+            <WorkMapTable client:load filter="goals" />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </FullWidthLayout>
