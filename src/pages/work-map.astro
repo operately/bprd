@@ -16,19 +16,19 @@ import { WorkMapTabs } from "../components/WorkMap/WorkMapTabs";
       >
         <div class="w-full flex flex-col overflow-hidden">
           <header
-            class="flex items-center justify-between px-6 py-4 border-b border-surface-outline"
+            class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-6 py-4 border-b border-surface-outline"
           >
-            <h1 class="text-xl font-bold text-content-accent">
+            <h1 class="text-xl font-bold text-content-accent mb-4 sm:mb-0">
               Company work map
             </h1>
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3 sm:space-x-4">
               <button
-                class="px-4 py-2 bg-accent-1 text-white-1 rounded-md hover:bg-accent-1-light transition-colors"
+                class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-accent-1 text-white-1 rounded-md hover:bg-accent-1-light transition-colors text-sm sm:text-base"
               >
                 New Goal
               </button>
               <button
-                class="px-4 py-2 border border-surface-outline text-content-base rounded-md hover:bg-surface-dimmed transition-colors"
+                class="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-surface-outline text-content-base rounded-md hover:bg-surface-dimmed transition-colors text-sm sm:text-base"
               >
                 New Project
               </button>
@@ -36,7 +36,9 @@ import { WorkMapTabs } from "../components/WorkMap/WorkMapTabs";
           </header>
 
           <div class="flex-1 overflow-auto">
-            <WorkMapTabs client:load activeTab="all" />
+            <div class="overflow-x-auto">
+              <WorkMapTabs client:load activeTab="all" />
+            </div>
             <WorkMapTable client:load filter="all" />
           </div>
         </div>

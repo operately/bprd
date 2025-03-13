@@ -4,16 +4,16 @@ import { avatarUrl } from "../../mockData.js";
 ---
 
 <nav class="transition-all z-50 bg-base border-b border-surface-outline py-1.5">
-  <div class="flex items-center justify-between px-4">
+  <div class="flex items-center justify-between px-2 sm:px-4">
     <div class="flex items-center">
       <a href="/" class="flex items-center gap-2 cursor-pointer">
         <Logo width="22px" height="22px" />
       </a>
 
       <!-- Company dropdown -->
-      <div class="border-l border-surface-outline px-2.5 ml-4">
+      <div class="border-l border-surface-outline px-2 ml-2 sm:px-2.5 sm:ml-4">
         <button
-          class="flex items-center space-x-1 px-2 py-1 font-semibold rounded hover:bg-surface-bg-highlight"
+          class="flex items-center space-x-1 px-1 sm:px-2 py-1 text-sm sm:text-base font-semibold rounded hover:bg-surface-bg-highlight"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@ import { avatarUrl } from "../../mockData.js";
             ></path><path d="M9 17v4"></path><path d="M8 13h2"></path><path
               d="M8 9h2"></path></svg
           >
-          <span>Nexus Dynamics</span>
+          <span>Nexus Ceramics</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
@@ -50,11 +50,11 @@ import { avatarUrl } from "../../mockData.js";
 
       <!-- Home Company My work -->
       <div
-        class="flex items-center gap-2.5 border-l border-surface-outline px-4"
+        class="flex items-center gap-1 sm:gap-2.5 border-l border-surface-outline px-2 sm:px-4"
       >
         <a
           href="/"
-          class="px-1.5 py-0.5 font-semibold rounded hover:bg-surface-bg-highlight flex items-center gap-1"
+          class="px-1 sm:px-1.5 py-0.5 text-sm sm:text-base font-semibold rounded hover:bg-surface-bg-highlight flex items-center gap-1"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -72,11 +72,11 @@ import { avatarUrl } from "../../mockData.js";
               d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path><path
               d="M10 12h4v4h-4z"></path></svg
           >
-          <span>Home</span></a
+          <span class="hidden sm:inline">Home</span></a
         >
         <a
           href="/work-map/"
-          class="px-1.5 py-0.5 font-semibold rounded hover:bg-surface-bg-highlight flex items-center gap-1"
+          class="px-1 sm:px-1.5 py-0.5 text-sm sm:text-base font-semibold rounded hover:bg-surface-bg-highlight flex items-center gap-1"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -93,11 +93,11 @@ import { avatarUrl } from "../../mockData.js";
               d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13"></path><path
               d="M9 4v13"></path><path d="M15 7v13"></path></svg
           >
-          <span>Company</span></a
+          <span class="hidden sm:inline">Company</span></a
         >
         <a
           href="#"
-          class="font-semibold flex items-center gap-1 cursor-pointer group hover:bg-surface-bg-highlight px-1.5 py-0.5 rounded relative"
+          class="text-sm sm:text-base font-semibold flex items-center gap-1 cursor-pointer group hover:bg-surface-bg-highlight px-1 sm:px-1.5 py-0.5 rounded relative"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -115,14 +115,14 @@ import { avatarUrl } from "../../mockData.js";
             ></path><path d="M9.5 15a3.5 3.5 0 0 0 5 0"></path><path
               d="M15 11l.01 0"></path><path d="M9 11l.01 0"></path></svg
           >
-          <span>My work</span>
+          <span class="hidden sm:inline">My work</span>
         </a>
       </div>
 
-      <div class="border-l border-surface-outline pl-4">
+      <div class="border-l border-surface-outline pl-2 sm:pl-4">
         <a
           href="#"
-          class="font-semibold flex items-center gap-1 cursor-pointer group hover:bg-surface-bg-highlight px-1.5 py-0.5 rounded relative"
+          class="text-sm sm:text-base font-semibold flex items-center gap-1 cursor-pointer group hover:bg-surface-bg-highlight px-1 sm:px-1.5 py-0.5 rounded relative"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +142,7 @@ import { avatarUrl } from "../../mockData.js";
             ></path><path d="M3 10h14v5a6 6 0 0 1 -6 6h-2a6 6 0 0 1 -6 -6v-5z"
             ></path><path d="M16.746 16.726a3 3 0 1 0 .252 -5.555"></path></svg
           >
-          <span>Review</span>
+          <span class="hidden sm:inline">Review</span>
         </a>
       </div>
     </div>
@@ -151,7 +151,7 @@ import { avatarUrl } from "../../mockData.js";
 
     <div class="ml-auto flex items-center space-x-1">
       <button
-        class="flex items-center space-x-1 px-2 py-1 text-gray-700 font-medium rounded hover:bg-gray-100"
+        class="flex items-center space-x-1 px-1 sm:px-2 py-1 text-gray-700 text-sm sm:text-base font-medium rounded hover:bg-gray-100"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +163,7 @@ import { avatarUrl } from "../../mockData.js";
             d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
           ></path>
         </svg>
-        <span>New</span>
+        <span class="hidden sm:inline">New</span>
       </button>
 
       <button

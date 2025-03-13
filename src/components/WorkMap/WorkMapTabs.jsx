@@ -3,8 +3,8 @@ import React from "react";
 export function WorkMapTabs({ activeTab }) {
   return (
     <div className="border-b border-surface-outline">
-      <div className="px-6">
-        <nav className="flex space-x-8" aria-label="Work Map Tabs">
+      <div className="px-4 sm:px-6">
+        <nav className="flex space-x-4 sm:space-x-8 overflow-x-auto pb-1" aria-label="Work Map Tabs">
           <a
             href="/work-map"
             className={`
@@ -14,7 +14,7 @@ export function WorkMapTabs({ activeTab }) {
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-base font-medium flex items-center gap-1.5
+              px-1 py-2.5 text-sm sm:text-base font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
             aria-current={activeTab === "all" ? "page" : undefined}
           >
@@ -46,7 +46,7 @@ export function WorkMapTabs({ activeTab }) {
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-base font-medium flex items-center gap-1.5
+              px-1 py-2.5 text-sm sm:text-base font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
             aria-current={activeTab === "goals" ? "page" : undefined}
           >
@@ -79,7 +79,7 @@ export function WorkMapTabs({ activeTab }) {
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-base font-medium flex items-center gap-1.5
+              px-1 py-2.5 text-sm sm:text-base font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
             aria-current={activeTab === "projects" ? "page" : undefined}
           >
@@ -111,7 +111,7 @@ export function WorkMapTabs({ activeTab }) {
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-base font-medium flex items-center gap-1.5
+              px-1 py-2.5 text-sm sm:text-base font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
             aria-current={activeTab === "completed" ? "page" : undefined}
           >
