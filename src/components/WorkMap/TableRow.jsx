@@ -8,7 +8,7 @@ import {
   IconChevronRight,
 } from "./Icons";
 
-export function TableRow({ item, level, isLast, filter }) {
+export function TableRow({ item, level, isLast, filter, isSelected = false, onRowClick, selectedItemId }) {
   // Determine if we're on the completed page for compact styling
   const isCompletedPage = filter === "completed";
   const [expanded, setExpanded] = React.useState(true);
@@ -26,9 +26,33 @@ export function TableRow({ item, level, isLast, filter }) {
   const isDropped = item.status === "dropped";
   const isPending = item.status === "pending";
 
+  // Handle click on the row to trigger selection
+  const handleRowClick = (e) => {
+    // Prevent click from bubbling when clicking links or buttons
+    if (e.target.tagName.toLowerCase() === 'a' || 
+        e.target.tagName.toLowerCase() === 'button' ||
+        e.target.closest('a') || 
+        e.target.closest('button')) {
+      return;
+    }
+    
+    // Call the selection handler
+    if (onRowClick) {
+      onRowClick(item);
+    }
+  };
+  
+  // Determine if this item is selected
+  const isThisItemSelected = isSelected || (selectedItemId && selectedItemId === item.id);
+  
   return (
     <>
-      <tr className="group hover:bg-surface-highlight dark:hover:bg-surface-dimmed/20 border-b border-surface-outline dark:border-gray-700 transition-all duration-150 ease-in-out">
+      <tr 
+        data-workmap-selectable="true"
+        className={`group border-b border-surface-outline dark:border-gray-700 transition-all duration-150 ease-in-out cursor-pointer
+          ${isThisItemSelected ? 'bg-surface-highlight dark:bg-surface-dimmed/30' : 'hover:bg-surface-highlight dark:hover:bg-surface-dimmed/20'}`}
+        onClick={handleRowClick}
+      >
         {/* Name */}
         <td className="py-2 px-2 md:px-4">
           <div className="flex items-center">
@@ -162,19 +186,26 @@ export function TableRow({ item, level, isLast, filter }) {
         {/* Champion */}
         <td className="py-2  px-2 md:px-4 hidden xl:table-cell">
           <div className="flex items-center max-w-[120px] overflow-hidden">
-            {item.owner.avatar ? (
-              <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5 flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
-                <img
-                  src={item.owner.avatar}
-                  alt={item.owner.name}
-                  className="h-full w-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-            ) : (
-              <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-1.5 text-xs flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
-                {item.owner.initials}
-              </div>
+            {/* Only show avatar/initials if there's an owner name */}
+            {item.owner && item.owner.name && (
+              <>
+                {item.owner.avatar ? (
+                  <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5 flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
+                    <img
+                      src={item.owner.avatar}
+                      alt={item.owner.name}
+                      className="h-full w-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                ) : (
+                  item.owner.initials && (
+                    <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-1.5 text-xs flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
+                      {item.owner.initials}
+                    </div>
+                  )
+                )}
+              </>
             )}
             <a
               href="#"
@@ -232,6 +263,8 @@ export function TableRow({ item, level, isLast, filter }) {
             level={level + 1}
             isLast={index === item.children.length - 1 && isLast}
             filter={filter}
+            selectedItemId={selectedItemId}
+            onRowClick={onRowClick}
           />
         ))}
     </>

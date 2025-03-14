@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TableRow } from "./TableRow";
 import { mockData } from "../../mockData";
 
@@ -95,6 +95,78 @@ const filterChildren = (item, filter) => {
 export default function WorkMapTable({ filter }) {
   // Determine if we're on the completed page
   const isCompletedPage = filter === "completed";
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  // Create a state to store the modified data
+  const [workMapData, setWorkMapData] = useState(mockData);
+  
+  // Handle item selection
+  const handleItemSelect = (item) => {
+    setSelectedItemId(item.id);
+    
+    // Only dispatch selection event for goals, not for projects
+    if (item.type === "goal") {
+      // Dispatch a custom event that the main page can listen for
+      const event = new CustomEvent('workmap:select-item', { detail: item });
+      document.dispatchEvent(event);
+    }
+  };
+  
+  // Add listener for clear-selection and add-item events
+  React.useEffect(() => {
+    const handleClearSelection = () => {
+      setSelectedItemId(null);
+    };
+    
+    const handleAddItem = (event) => {
+      const { parentItem, newItem } = event.detail;
+      
+      // Create a deep copy of the data
+      const newData = JSON.parse(JSON.stringify(workMapData));
+      
+      // Helper function to add the item to the correct place in the hierarchy
+      const addItemToHierarchy = (items, parentId) => {
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id === parentId) {
+            // Found the parent, add the new item to its children
+            if (!items[i].children) {
+              items[i].children = [];
+            }
+            items[i].children.push(newItem);
+            return true;
+          }
+          
+          // Check in children
+          if (items[i].children && items[i].children.length > 0) {
+            if (addItemToHierarchy(items[i].children, parentId)) {
+              return true;
+            }
+          }
+        }
+        return false;
+      };
+      
+      // If there's a parent item, add it to its children
+      if (parentItem) {
+        addItemToHierarchy(newData, parentItem.id);
+      } else {
+        // If no parent, add it to the root level
+        newData.push(newItem);
+      }
+      
+      // Update the data
+      setWorkMapData(newData);
+    };
+    
+    // Add event listeners
+    document.addEventListener('workmap:clear-selection', handleClearSelection);
+    document.addEventListener('workmap:add-item', handleAddItem);
+    
+    // Clean up on unmount
+    return () => {
+      document.removeEventListener('workmap:clear-selection', handleClearSelection);
+      document.removeEventListener('workmap:add-item', handleAddItem);
+    };
+  }, [workMapData]);
   
   return (
     <div className="w-full overflow-x-auto">
@@ -136,7 +208,7 @@ export default function WorkMapTable({ filter }) {
           </tr>
         </thead>
         <tbody>
-          {mockData
+          {workMapData
             // Special case for projects and completed pages - show flat lists
             .flatMap((item) => {
               // For projects page, extract all projects from the hierarchy and make a flat list
@@ -179,15 +251,21 @@ export default function WorkMapTable({ filter }) {
             .map((item) =>
               filter === "goals" ? filterChildren(item, filter) : item
             )
-            .map((item, index, filteredItems) => (
-              <TableRow
-                key={item.id}
-                item={item}
-                level={0}
-                isLast={index === filteredItems.length - 1}
-                filter={filter}
-              />
-            ))}
+            .map((item, index, filteredItems) => {
+              // Use the table row directly, add click handler to the TR via props
+              return (
+                <TableRow
+                  key={item.id}
+                  item={item}
+                  level={0}
+                  isLast={index === filteredItems.length - 1}
+                  filter={filter}
+                  isSelected={selectedItemId === item.id}
+                  onRowClick={handleItemSelect}
+                  selectedItemId={selectedItemId}
+                />
+              );
+            })}
         </tbody>
       </table>
     </div>

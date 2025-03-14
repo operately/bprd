@@ -2,6 +2,7 @@
 import FullWidthLayout from "../layouts/FullWidthLayout.astro";
 import WorkMapTable from "../components/WorkMap/WorkMapTable";
 import { WorkMapTabs } from "../components/WorkMap/WorkMapTabs";
+import { QuickEntryWidget } from "../components/WorkMap/QuickEntryWidget";
 ---
 
 <FullWidthLayout
@@ -18,20 +19,13 @@ import { WorkMapTabs } from "../components/WorkMap/WorkMapTabs";
           <header
             class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-6 py-4 border-b border-surface-outline"
           >
-            <h1 class="text-xl font-bold text-content-accent mb-4 sm:mb-0">
-              Company work map
-            </h1>
-            <div class="flex items-center space-x-3 sm:space-x-4">
-              <button
-                class="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-accent-1 text-white-1 rounded-md hover:bg-accent-1-light transition-colors text-sm sm:text-base"
-              >
-                New Goal
-              </button>
-              <button
-                class="flex-1 sm:flex-none px-3 sm:px-4 py-2 border border-surface-outline text-content-base rounded-md hover:bg-surface-dimmed transition-colors text-sm sm:text-base"
-              >
-                New Project
-              </button>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+              <h1 class="text-xl font-bold text-content-accent">
+                Company work map
+              </h1>
+              <div class="quick-entry-container" id="quickEntryContainer">
+                <QuickEntryWidget client:load />
+              </div>
             </div>
           </header>
 
@@ -41,6 +35,111 @@ import { WorkMapTabs } from "../components/WorkMap/WorkMapTabs";
             </div>
             <WorkMapTable client:load filter="all" />
           </div>
+
+          <script>
+            // Client-side script to manage table item selection and item creation
+            document.addEventListener("DOMContentLoaded", () => {
+              // Define a type for our item to help TypeScript
+              type WorkItem = {
+                id: string;
+                name: string;
+                type: string;
+                status: string;
+                parentId?: string;
+              };
+
+              let selectedItem: WorkItem | null = null;
+
+              // Custom event listener for item selection from the table
+              document.addEventListener("workmap:select-item", (event) => {
+                // Handle custom event
+                selectedItem = (event as any).detail;
+
+                // We need to wait a bit for the component to be fully rendered
+                setTimeout(() => {
+                  try {
+                    // Find the quick entry widget and update its context
+                    const widget = document.querySelector(
+                      "#quickEntryContainer"
+                    );
+                    // We've moved the instruction text directly into the QuickEntryWidget component
+                    // No need to dynamically create or update context labels anymore
+                  } catch (e) {
+                    console.error("Error updating quick entry widget:", e);
+                  }
+                }, 100);
+              });
+
+              // Handle adding new items
+              document.addEventListener("workmap:add-item", (event) => {
+                // Handle custom event
+                const newItem = (event as any).detail;
+                console.log("Adding new item:", newItem);
+              });
+
+              // Add an event listener to clear selection
+              const container = document.querySelector("#quickEntryContainer");
+              if (container) {
+                container.addEventListener("click", (e) => {
+                  // Prevent this from bubbling up to any potential parent handlers
+                  e.stopPropagation();
+
+                  // Handle click on the clear selection link
+                  if ((e.target as HTMLElement).id === "clear-selection") {
+                    e.preventDefault();
+
+                    // Clear selection
+                    selectedItem = null;
+
+                    // Remove selection styling from all rows
+                    document
+                      .querySelectorAll(".cursor-pointer")
+                      .forEach((el) => {
+                        el.classList.remove("bg-surface-highlight");
+                        el.classList.remove("dark:bg-surface-dimmed/30");
+                      });
+
+                    // Dispatch an event to notify the table that selection has been cleared
+                    document.dispatchEvent(
+                      new CustomEvent("workmap:clear-selection")
+                    );
+                  }
+                });
+              }
+
+              // Global click handler to clear selection when clicking empty space
+              const mainContainer = document.querySelector(
+                ".flex-1.overflow-auto"
+              );
+              if (mainContainer) {
+                mainContainer.addEventListener("click", (e) => {
+                  // Only clear if clicking directly on the container (not on a row)
+                  if (
+                    (e.target as HTMLElement).classList.contains(
+                      "overflow-auto"
+                    ) ||
+                    (e.target as HTMLElement).classList.contains("flex-1")
+                  ) {
+                    // Clear selection
+                    selectedItem = null;
+
+                    // Dispatch an event to notify the widget that selection has been cleared
+                    document.dispatchEvent(
+                      new CustomEvent("workmap:clear-selection")
+                    );
+
+                    // Remove selection styling from all rows
+                    document
+                      .querySelectorAll(".cursor-pointer")
+                      .forEach((el) => {
+                        el.classList.remove("bg-surface-highlight");
+                        el.classList.remove("dark:bg-surface-dimmed/30");
+                      });
+                  }
+                });
+              }
+            });
+          </script>
         </div>
       </div>
     </div>
