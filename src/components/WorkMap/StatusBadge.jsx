@@ -5,66 +5,66 @@ export function StatusBadge({ status }) {
 
   switch (status) {
     case "on_track":
-      bgColor = "bg-green-50";
-      textColor = "text-green-700";
-      dotColor = "bg-green-500";
-      borderColor = "border-green-200";
+      bgColor = "bg-green-50 dark:bg-green-900/30";
+      textColor = "text-green-700 dark:text-green-300";
+      dotColor = "bg-green-500 dark:bg-green-400";
+      borderColor = "border-green-200 dark:border-green-800";
       label = "On track";
       break;
     case "completed":
-      bgColor = "bg-green-50";
-      textColor = "text-green-700";
-      dotColor = "bg-green-500";
-      borderColor = "border-green-200";
+      bgColor = "bg-green-50 dark:bg-green-900/30";
+      textColor = "text-green-700 dark:text-green-300";
+      dotColor = "bg-green-500 dark:bg-green-400";
+      borderColor = "border-green-200 dark:border-green-800";
       label = "Completed";
       break;
     case "paused":
-      bgColor = "bg-gray-100";
-      textColor = "text-gray-700";
-      dotColor = "bg-gray-400";
-      borderColor = "border-gray-200";
+      bgColor = "bg-gray-100 dark:bg-gray-700";
+      textColor = "text-gray-700 dark:text-gray-300";
+      dotColor = "bg-gray-400 dark:bg-gray-400";
+      borderColor = "border-gray-200 dark:border-gray-600";
       label = "Paused";
       break;
     case "dropped":
-      bgColor = "bg-gray-100";
-      textColor = "text-gray-700";
-      dotColor = "bg-gray-400";
-      borderColor = "border-gray-200";
+      bgColor = "bg-gray-100 dark:bg-gray-700";
+      textColor = "text-gray-700 dark:text-gray-300";
+      dotColor = "bg-gray-400 dark:bg-gray-400";
+      borderColor = "border-gray-200 dark:border-gray-600";
       label = "Dropped";
       break;
     case "caution":
-      bgColor = "bg-amber-50";
-      textColor = "text-amber-800";
-      dotColor = "bg-amber-500";
-      borderColor = "border-amber-200";
+      bgColor = "bg-amber-50 dark:bg-amber-900/30";
+      textColor = "text-amber-800 dark:text-amber-300";
+      dotColor = "bg-amber-500 dark:bg-amber-400";
+      borderColor = "border-amber-200 dark:border-amber-800";
       label = "Caution";
       break;
     case "issue":
-      bgColor = "bg-red-50";
-      textColor = "text-red-700";
-      dotColor = "bg-red-500";
-      borderColor = "border-red-200";
+      bgColor = "bg-red-50 dark:bg-red-900/30";
+      textColor = "text-red-700 dark:text-red-300";
+      dotColor = "bg-red-500 dark:bg-red-400";
+      borderColor = "border-red-200 dark:border-red-800";
       label = "Issue";
       break;
     case "failed":
-      bgColor = "bg-red-50";
-      textColor = "text-red-700";
-      dotColor = "bg-red-500";
-      borderColor = "border-red-200";
+      bgColor = "bg-red-50 dark:bg-red-900/30";
+      textColor = "text-red-700 dark:text-red-300";
+      dotColor = "bg-red-500 dark:bg-red-400";
+      borderColor = "border-red-200 dark:border-red-800";
       label = "Failed";
       break;
     case "pending":
-      bgColor = "bg-blue-50";
-      textColor = "text-blue-700";
-      dotColor = "bg-blue-500";
-      borderColor = "border-blue-200";
+      bgColor = "bg-blue-50 dark:bg-blue-900/30";
+      textColor = "text-blue-700 dark:text-blue-300";
+      dotColor = "bg-blue-500 dark:bg-blue-400";
+      borderColor = "border-blue-200 dark:border-blue-800";
       label = "Pending";
       break;
     default:
-      bgColor = "bg-gray-50";
-      textColor = "text-gray-700";
-      dotColor = "bg-gray-400";
-      borderColor = "border-gray-200";
+      bgColor = "bg-gray-50 dark:bg-gray-700";
+      textColor = "text-gray-700 dark:text-gray-300";
+      dotColor = "bg-gray-400 dark:bg-gray-400";
+      borderColor = "border-gray-200 dark:border-gray-600";
       label = status;
   }
 

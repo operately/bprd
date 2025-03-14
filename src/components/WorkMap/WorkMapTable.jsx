@@ -100,7 +100,7 @@ export default function WorkMapTable({ filter }) {
     <div className="w-full overflow-x-auto">
       <table className="w-full md:min-w-[1000px] table-auto">
         <thead>
-          <tr className="border-b-2 border-surface-outline bg-surface-dimmed text-content-base text-sm sticky top-0">
+          <tr className="border-b-2 border-surface-outline dark:border-gray-600 bg-surface-dimmed dark:bg-gray-800/80 text-content-base dark:text-gray-200 text-sm sticky top-0">
             {/* Name column - max width to prevent excessive spacing */}
             <th className={`text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold ${isCompletedPage ? "max-w-[35%] w-[35%]" : ""}`}>
               Name

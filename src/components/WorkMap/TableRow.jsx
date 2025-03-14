@@ -28,7 +28,7 @@ export function TableRow({ item, level, isLast, filter }) {
 
   return (
     <>
-      <tr className="group hover:bg-surface-highlight border-b border-surface-outline transition-all duration-150 ease-in-out">
+      <tr className="group hover:bg-surface-highlight dark:hover:bg-surface-dimmed/20 border-b border-surface-outline dark:border-gray-700 transition-all duration-150 ease-in-out">
         {/* Name */}
         <td className="py-2 px-2 md:px-4">
           <div className="flex items-center">
@@ -43,7 +43,7 @@ export function TableRow({ item, level, isLast, filter }) {
                 {hasChildren && (
                   <button
                     onClick={() => setExpanded(!expanded)}
-                    className="mr-2 text-content-dimmed hover:text-content-base"
+                    className="mr-2 text-content-dimmed hover:text-content-base dark:text-gray-400 dark:hover:text-gray-300"
                   >
                     {expanded ? (
                       <IconChevronDown size={16} />
@@ -59,7 +59,7 @@ export function TableRow({ item, level, isLast, filter }) {
 
             <div
               className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mr-2 ${
-                isGoal ? "text-red-500 bg-red-50" : "text-blue-500 bg-blue-50"
+                isGoal ? "text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/30" : "text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30"
               }`}
             >
               {isGoal && <IconTargetArrow size={12} />}
@@ -72,14 +72,14 @@ export function TableRow({ item, level, isLast, filter }) {
                 font-medium text-xs md:text-sm hover:underline transition-colors
                 ${isCompleted || isFailed ? "line-through" : ""}
                 ${isDropped ? "line-through opacity-70" : ""}
-                ${isPending ? "text-content-dimmed" : ""}
+                ${isPending ? "text-content-dimmed dark:text-gray-400" : ""}
                 ${
                   filter === "completed" &&
                   (isCompleted || isFailed || isDropped)
-                    ? "text-content-dimmed"
+                    ? "text-content-dimmed dark:text-gray-400"
                     : isCompleted || isFailed || isDropped
-                    ? "text-content-dimmed"
-                    : "text-content-base hover:text-link-hover"
+                    ? "text-content-dimmed dark:text-gray-400"
+                    : "text-content-base dark:text-gray-200 hover:text-link-hover dark:hover:text-white"
                 }
               `}
             >
