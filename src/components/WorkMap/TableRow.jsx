@@ -52,7 +52,7 @@ export function TableRow({ item, level, isLast, filter, isSelected = false, onRo
     <>
       <tr 
         data-workmap-selectable="true"
-        className={`group border-b border-surface-outline dark:border-gray-700 transition-all duration-150 ease-in-out cursor-pointer relative
+        className={`group border-b border-stroke-base transition-all duration-150 ease-in-out cursor-pointer relative
           ${isThisItemSelected ? 'bg-surface-highlight dark:bg-surface-dimmed/30' : 'hover:bg-surface-highlight dark:hover:bg-surface-dimmed/20'}`}
         onClick={handleRowClick}
         onMouseEnter={() => setShowAddButton(true)}
