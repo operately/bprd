@@ -108,7 +108,7 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder={`New ${itemType} in ${parentItem ? parentItem.name : 'root'}...`}
+            placeholder={`New ${itemType} ${parentItem ? `in ${parentItem.name}` : 'company-wide'}...`}
             className="h-9 pl-2 pr-3 py-1 bg-surface-base text-content-base focus:outline-none min-w-[240px] text-sm border-y border-surface-outline"
           />
           
