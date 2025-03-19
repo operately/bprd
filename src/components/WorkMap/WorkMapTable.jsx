@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TableRow } from "./TableRow";
+import { QuickAddRow } from "./QuickAddRow";
 import { mockData } from "../../mockData";
 
 // Helper function to extract all projects from the data, including nested ones
@@ -95,28 +96,17 @@ const filterChildren = (item, filter) => {
 export default function WorkMapTable({ filter }) {
   // Determine if we're on the completed page
   const isCompletedPage = filter === "completed";
-  const [selectedItemId, setSelectedItemId] = useState(null);
   // Create a state to store the modified data
   const [workMapData, setWorkMapData] = useState(mockData);
   
-  // Handle item selection
-  const handleItemSelect = (item) => {
-    setSelectedItemId(item.id);
-    
-    // Only dispatch selection event for goals, not for projects
-    if (item.type === "goal") {
-      // Dispatch a custom event that the main page can listen for
-      const event = new CustomEvent('workmap:select-item', { detail: item });
-      document.dispatchEvent(event);
-    }
+  // Get the column count based on filter
+  const getColumnCount = () => {
+    if (filter === "completed") return 6; // Name, Status, Progress, Completed On, Space, Champion
+    return 7; // Name, Status, Progress, Deadline, Space, Champion, Next step
   };
   
-  // Add listener for clear-selection and add-item events
+  // Add listeners for add-item and delete-item events
   React.useEffect(() => {
-    const handleClearSelection = () => {
-      setSelectedItemId(null);
-    };
-    
     const handleAddItem = (event) => {
       const { parentItem, newItem } = event.detail;
       
@@ -157,14 +147,57 @@ export default function WorkMapTable({ filter }) {
       setWorkMapData(newData);
     };
     
+    const handleDeleteItem = (event) => {
+      const { itemId } = event.detail;
+      
+      // Create a deep copy of the data
+      const newData = JSON.parse(JSON.stringify(workMapData));
+      
+      // Helper function to delete the item from the hierarchy
+      const deleteItemFromHierarchy = (items) => {
+        // Check if the item is at the root level
+        const rootIndex = items.findIndex(item => item.id === itemId);
+        if (rootIndex !== -1) {
+          // Found at root level, remove it
+          items.splice(rootIndex, 1);
+          return true;
+        }
+        
+        // Check in children of each item
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].children && items[i].children.length > 0) {
+            // Check if item is in this item's children
+            const childIndex = items[i].children.findIndex(child => child.id === itemId);
+            if (childIndex !== -1) {
+              // Found in children, remove it
+              items[i].children.splice(childIndex, 1);
+              return true;
+            }
+            
+            // Check deeper in the hierarchy
+            if (deleteItemFromHierarchy(items[i].children)) {
+              return true;
+            }
+          }
+        }
+        return false;
+      };
+      
+      // Delete the item from the hierarchy
+      deleteItemFromHierarchy(newData);
+      
+      // Update the data
+      setWorkMapData(newData);
+    };
+    
     // Add event listeners
-    document.addEventListener('workmap:clear-selection', handleClearSelection);
     document.addEventListener('workmap:add-item', handleAddItem);
+    document.addEventListener('workmap:delete-item', handleDeleteItem);
     
     // Clean up on unmount
     return () => {
-      document.removeEventListener('workmap:clear-selection', handleClearSelection);
       document.removeEventListener('workmap:add-item', handleAddItem);
+      document.removeEventListener('workmap:delete-item', handleDeleteItem);
     };
   }, [workMapData]);
   
@@ -252,7 +285,7 @@ export default function WorkMapTable({ filter }) {
               filter === "goals" ? filterChildren(item, filter) : item
             )
             .map((item, index, filteredItems) => {
-              // Use the table row directly, add click handler to the TR via props
+              // Use the table row directly
               return (
                 <TableRow
                   key={item.id}
@@ -260,12 +293,17 @@ export default function WorkMapTable({ filter }) {
                   level={0}
                   isLast={index === filteredItems.length - 1}
                   filter={filter}
-                  isSelected={selectedItemId === item.id}
-                  onRowClick={handleItemSelect}
-                  selectedItemId={selectedItemId}
+                  isSelected={false}
+                  onRowClick={null}
+                  selectedItemId={null}
                 />
               );
             })}
+            
+            {/* Permanent quick add row at the bottom of the table, not shown on completed page */}
+            {filter !== "completed" && (
+              <QuickAddRow columnCount={getColumnCount()} />
+            )}
         </tbody>
       </table>
     </div>
