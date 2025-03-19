@@ -4,7 +4,10 @@ export function WorkMapTabs({ activeTab }) {
   return (
     <div className="border-b border-surface-outline">
       <div className="px-4 sm:px-6">
-        <nav className="flex space-x-4 sm:space-x-8 overflow-x-auto pb-1" aria-label="Work Map Tabs">
+        <nav
+          className="flex space-x-4 overflow-x-auto pb-1"
+          aria-label="Work Map Tabs"
+        >
           <a
             href="/work-map"
             className={`
@@ -14,7 +17,7 @@ export function WorkMapTabs({ activeTab }) {
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-sm sm:text-base font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
+              px-1 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
             aria-current={activeTab === "all" ? "page" : undefined}
           >
@@ -28,7 +31,7 @@ export function WorkMapTabs({ activeTab }) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-5 w-5"
+              className="h-4 w-4"
             >
               <rect x="3" y="3" width="7" height="7"></rect>
               <rect x="14" y="3" width="7" height="7"></rect>
@@ -46,7 +49,7 @@ export function WorkMapTabs({ activeTab }) {
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-sm sm:text-base font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
+              px-1 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
             aria-current={activeTab === "goals" ? "page" : undefined}
           >
@@ -60,7 +63,7 @@ export function WorkMapTabs({ activeTab }) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-5 w-5"
+              className="h-4 w-4"
             >
               <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
               <path d="M12 7a5 5 0 1 0 5 5"></path>
@@ -79,7 +82,7 @@ export function WorkMapTabs({ activeTab }) {
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-sm sm:text-base font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
+              px-1 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
             aria-current={activeTab === "projects" ? "page" : undefined}
           >
@@ -93,7 +96,7 @@ export function WorkMapTabs({ activeTab }) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-5 w-5"
+              className="h-4 w-4"
             >
               <path d="M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8"></path>
               <path d="M14 19l2 2l4 -4"></path>
@@ -111,7 +114,7 @@ export function WorkMapTabs({ activeTab }) {
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-sm sm:text-base font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
+              px-1 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
             aria-current={activeTab === "completed" ? "page" : undefined}
           >
@@ -125,7 +128,7 @@ export function WorkMapTabs({ activeTab }) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-5 w-5"
+              className="h-4 w-4"
             >
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
               <polyline points="22 4 12 14.01 9 11.01" />
