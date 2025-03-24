@@ -90,7 +90,7 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
             <select
               value={itemType}
               onChange={(e) => setItemType(e.target.value)}
-              className="appearance-none h-9 bg-surface-base text-content-base pl-2 pr-7 py-1 focus:outline-none text-sm"
+              className="appearance-none h-9 bg-surface-base dark:bg-surface-dimmed text-content-base pl-2 pr-7 py-1 focus:outline-none text-sm"
             >
               <option value="goal">Goal</option>
               <option value="project">Project</option>
@@ -109,13 +109,13 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder={`New ${itemType} ${parentItem ? `in ${parentItem.name}` : 'company-wide'}...`}
-            className="h-9 pl-2 pr-3 py-1 bg-surface-base text-content-base focus:outline-none min-w-[240px] text-sm border-y border-surface-outline"
+            className="h-9 pl-2 pr-3 py-1 bg-surface-base dark:bg-surface-dimmed text-content-base focus:outline-none min-w-[240px] text-sm border-y border-surface-outline"
           />
           
           {/* Add button */}
           <button
             type="submit"
-            className="h-9 px-3 text-sm bg-accent-1 hover:bg-accent-1-light text-white-1 border-r border-white-1/20 transition-colors"
+            className="h-9 px-3 text-sm bg-accent-1 hover:bg-accent-1-light text-white-1 transition-colors"
             disabled={!inputValue.trim()}
           >
             Add
@@ -125,7 +125,7 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
           <button
             type="button"
             onClick={onClose}
-            className="h-9 px-3 text-sm border border-l-0 border-surface-outline text-content-base rounded-r-md hover:bg-surface-dimmed transition-colors"
+            className="h-9 px-3 text-sm bg-surface-base dark:bg-surface-dimmed border border-l-0 border-surface-outline text-content-base rounded-r-md hover:bg-surface-dimmed dark:hover:bg-surface-highlight transition-colors"
           >
             Cancel
           </button>

@@ -351,7 +351,7 @@ export function TableRow({
                 className="absolute z-10 mt-1"
                 style={{ marginLeft: `${indentPadding + 40}px` }}
               >
-                <div className="bg-surface-base shadow-lg border border-surface-outline rounded-md p-2 inline-block">
+                <div className="bg-surface-base dark:bg-surface-dimmed shadow-lg border border-surface-outline rounded-md p-2 inline-block">
                   <HoverQuickEntryWidget
                     parentItem={item}
                     onClose={() => setShowQuickEntryWidget(false)}
