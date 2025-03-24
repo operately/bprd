@@ -9,7 +9,15 @@ import {
 } from "./Icons";
 import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget";
 
-export function TableRow({ item, level, isLast, filter, isSelected = false, onRowClick, selectedItemId }) {
+export function TableRow({
+  item,
+  level,
+  isLast,
+  filter,
+  isSelected = false,
+  onRowClick,
+  selectedItemId,
+}) {
   // Determine if we're on the completed page for compact styling
   const isCompletedPage = filter === "completed";
   const [expanded, setExpanded] = useState(true);
@@ -32,28 +40,35 @@ export function TableRow({ item, level, isLast, filter, isSelected = false, onRo
   // Handle click on the row to trigger selection
   const handleRowClick = (e) => {
     // Prevent click from bubbling when clicking links or buttons
-    if (e.target.tagName.toLowerCase() === 'a' || 
-        e.target.tagName.toLowerCase() === 'button' ||
-        e.target.closest('a') || 
-        e.target.closest('button')) {
+    if (
+      e.target.tagName.toLowerCase() === "a" ||
+      e.target.tagName.toLowerCase() === "button" ||
+      e.target.closest("a") ||
+      e.target.closest("button")
+    ) {
       return;
     }
-    
+
     // Call the selection handler
     if (onRowClick) {
       onRowClick(item);
     }
   };
-  
+
   // Determine if this item is selected
-  const isThisItemSelected = isSelected || (selectedItemId && selectedItemId === item.id);
-  
+  const isThisItemSelected =
+    isSelected || (selectedItemId && selectedItemId === item.id);
+
   return (
     <>
-      <tr 
+      <tr
         data-workmap-selectable="true"
         className={`group border-b border-stroke-base transition-all duration-150 ease-in-out cursor-pointer relative
-          ${isThisItemSelected ? 'bg-surface-highlight dark:bg-surface-dimmed/30' : 'hover:bg-surface-highlight dark:hover:bg-surface-dimmed/20'}`}
+          ${
+            isThisItemSelected
+              ? "bg-surface-highlight dark:bg-surface-dimmed/30"
+              : "hover:bg-surface-highlight dark:hover:bg-surface-dimmed/20"
+          }`}
         onClick={handleRowClick}
         onMouseEnter={() => setShowAddButton(true)}
         onMouseLeave={() => setShowAddButton(false)}
@@ -88,7 +103,9 @@ export function TableRow({ item, level, isLast, filter, isSelected = false, onRo
 
             <div
               className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mr-2 ${
-                isGoal ? "text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/30" : "text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30"
+                isGoal
+                  ? "text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/30"
+                  : "text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30"
               }`}
             >
               {isGoal && <IconTargetArrow size={12} />}
@@ -115,33 +132,37 @@ export function TableRow({ item, level, isLast, filter, isSelected = false, onRo
               >
                 {item.name}
               </a>
-              
+
               {/* Quick add button on hover */}
-              {isGoal && showAddButton && !showQuickEntryWidget && !isCompletedPage && (
-                <button
-                  className="ml-2 p-1 rounded-full text-content-dimmed hover:text-content-base hover:bg-surface-dimmed transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowQuickEntryWidget(true);
-                  }}
-                  title="Add sub-item"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              {isGoal &&
+                showAddButton &&
+                !showQuickEntryWidget &&
+                !isCompletedPage && (
+                  <button
+                    className="ml-2 relative flex items-center gap-1 text-xs font-semibold border border-surface-outline bg-surface-base text-content-dimmed hover:text-content-base hover:bg-surface-accent rounded-2xl pl-2 pr-3 py-[1px] transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowQuickEntryWidget(true);
+                    }}
+                    title="Add sub-item"
                   >
-                    <path d="M12 5v14m-7-7h14" />
-                  </svg>
-                </button>
-              )}
-              
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 5v14m-7-7h14" />
+                    </svg>
+                    <span>Add</span>
+                  </button>
+                )}
+
               {/* Delete button for pending items */}
               {isPending && showAddButton && (
                 <button
@@ -149,8 +170,8 @@ export function TableRow({ item, level, isLast, filter, isSelected = false, onRo
                   onClick={(e) => {
                     e.stopPropagation();
                     // Dispatch a custom event to delete this item
-                    const event = new CustomEvent('workmap:delete-item', { 
-                      detail: { itemId: item.id }
+                    const event = new CustomEvent("workmap:delete-item", {
+                      detail: { itemId: item.id },
                     });
                     document.dispatchEvent(event);
                   }}
@@ -320,15 +341,18 @@ export function TableRow({ item, level, isLast, filter, isSelected = false, onRo
           </td>
         )}
       </tr>
-      
+
       {/* Quick entry widget shown when add button is clicked as an overlay */}
       {showQuickEntryWidget && (
         <tr className="bg-transparent">
           <td colSpan="7" className="p-0">
             <div className="relative">
-              <div className="absolute z-10 mt-1" style={{ marginLeft: `${indentPadding + 40}px` }}>
+              <div
+                className="absolute z-10 mt-1"
+                style={{ marginLeft: `${indentPadding + 40}px` }}
+              >
                 <div className="bg-surface-base shadow-lg border border-surface-outline rounded-md p-2 inline-block">
-                  <HoverQuickEntryWidget 
+                  <HoverQuickEntryWidget
                     parentItem={item}
                     onClose={() => setShowQuickEntryWidget(false)}
                   />
