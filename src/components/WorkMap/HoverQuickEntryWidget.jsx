@@ -5,7 +5,7 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
   const [itemType, setItemType] = useState("goal"); // Default to goal
   const inputRef = useRef(null);
   const widgetRef = useRef(null);
-  
+
   // Focus the input on mount
   useEffect(() => {
     if (inputRef.current) {
@@ -19,7 +19,7 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
     if (inputValue.trim()) {
       // Generate a unique ID for the new item
       const newItemId = Math.random().toString(36).substring(2, 9);
-      
+
       // Create the new item object with all necessary fields for display
       const newItem = {
         id: newItemId,
@@ -28,25 +28,26 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
         status: "pending",
         progress: 0,
         children: [],
-        deadline: { display: "" },  // Empty deadline
-        space: "",                  // Empty space
-        owner: {                    // Empty owner
+        deadline: { display: "" }, // Empty deadline
+        space: "", // Empty space
+        owner: {
+          // Empty owner
           name: "",
           avatar: null,
-          initials: ""
+          initials: "",
         },
-        nextStep: ""                // Empty next step
+        nextStep: "", // Empty next step
       };
-      
+
       // Dispatch a custom event for the WorkMapTable to handle
-      const event = new CustomEvent('workmap:add-item', { 
+      const event = new CustomEvent("workmap:add-item", {
         detail: {
-          parentItem: parentItem,  // The parent item
-          newItem: newItem         // The new item to add
-        }
+          parentItem: parentItem, // The parent item
+          newItem: newItem, // The new item to add
+        },
       });
       document.dispatchEvent(event);
-      
+
       // Close the widget after submission
       onClose();
     }
@@ -60,24 +61,24 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
 
   // Handle escape key to cancel
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
 
@@ -96,8 +97,18 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
               <option value="project">Project</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-content-dimmed">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </div>
           </div>
@@ -108,10 +119,12 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder={`New ${itemType} ${parentItem ? `in ${parentItem.name}` : 'company-wide'}...`}
-            className="h-9 pl-2 pr-3 py-1 bg-surface-base dark:bg-surface-dimmed text-content-base focus:outline-none min-w-[240px] text-sm border-y border-surface-outline"
+            placeholder={`New ${itemType} ${
+              parentItem ? `in ${parentItem.name}` : "company-wide"
+            }...`}
+            className="h-9 pl-2 pr-3 py-1 bg-surface-base dark:bg-surface-dimmed text-content-base focus:outline-none min-w-[360px] text-sm border-y border-surface-outline"
           />
-          
+
           {/* Add button */}
           <button
             type="submit"
