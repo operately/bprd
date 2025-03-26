@@ -37,14 +37,14 @@ export function StatusBadge({ status }) {
       textColor = "text-amber-800 dark:text-amber-300";
       dotColor = "bg-amber-500 dark:bg-amber-400";
       borderColor = "border-amber-200 dark:border-amber-800";
-      label = "Caution";
+      label = "Attention";
       break;
     case "issue":
       bgColor = "bg-red-50 dark:bg-red-900/30";
       textColor = "text-red-700 dark:text-red-300";
       dotColor = "bg-red-500 dark:bg-red-400";
       borderColor = "border-red-200 dark:border-red-800";
-      label = "Issue";
+      label = "At risk";
       break;
     case "failed":
       bgColor = "bg-red-50 dark:bg-red-900/30";
