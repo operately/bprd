@@ -106,7 +106,8 @@ export function WorkMapTabs({ activeTab }) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-4 w-4"
+              className="h-4 w-4 hidden sm:inline"
+              data-component-name="WorkMapTabs"
             >
               <rect x="3" y="3" width="7" height="7"></rect>
               <rect x="14" y="3" width="7" height="7"></rect>
@@ -138,7 +139,8 @@ export function WorkMapTabs({ activeTab }) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-4 w-4"
+              className="h-4 w-4 hidden sm:inline"
+              data-component-name="WorkMapTabs"
             >
               <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
               <path d="M12 7a5 5 0 1 0 5 5"></path>
@@ -171,7 +173,8 @@ export function WorkMapTabs({ activeTab }) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-4 w-4"
+              className="h-4 w-4 hidden sm:inline"
+              data-component-name="WorkMapTabs"
             >
               <path d="M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8"></path>
               <path d="M14 19l2 2l4 -4"></path>
@@ -203,7 +206,8 @@ export function WorkMapTabs({ activeTab }) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-4 w-4"
+              className="h-4 w-4 hidden sm:inline"
+              data-component-name="WorkMapTabs"
             >
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
               <polyline points="22 4 12 14.01 9 11.01" />
@@ -213,12 +217,13 @@ export function WorkMapTabs({ activeTab }) {
           </div>
           
           {/* Time period selector with dropdown */}
-          <div className="relative self-center">
+          <div className="relative self-center mt-2 sm:mt-0">
             <button
               ref={buttonRef}
-              className={`px-4 py-1.5 border rounded-full flex items-center gap-2 text-sm transition-colors ${selectedTimePeriod !== 'current' ? 'bg-surface-highlight border-surface-outline' : 'bg-surface-base hover:bg-surface-dimmed border-surface-outline'}`}
+              className={`px-2 sm:px-4 py-1 sm:py-1.5 border rounded-full flex items-center gap-1 sm:gap-2 text-xs sm:text-sm transition-colors ${selectedTimePeriod !== 'current' ? 'bg-surface-highlight border-surface-outline' : 'bg-surface-base hover:bg-surface-dimmed border-surface-outline'}`}
               onClick={toggleDropdown}
               title="Filter work items by time period"
+              data-component-name="WorkMapTabs"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -237,7 +242,7 @@ export function WorkMapTabs({ activeTab }) {
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
               </svg>
-              {displayPeriod.display}
+              <span className="whitespace-nowrap">{displayPeriod.display}</span>
               
               {/* Dropdown indicator */}
               <svg 
@@ -281,15 +286,19 @@ export function WorkMapTabs({ activeTab }) {
               )}
             </button>
             
-            {/* Dropdown menu - rendered in fixed position */}
+            {/* Dropdown menu - responsive positioning */}
             {isDropdownOpen && (
               <div 
                 ref={dropdownRef}
                 className="fixed bg-surface-base border border-surface-outline rounded-md shadow-lg z-[9999] min-w-[160px]"
                 style={{
                   top: `${dropdownPosition.top}px`,
-                  left: `${dropdownPosition.left}px`,
-                  width: `${dropdownPosition.width}px`,
+                  left: window.innerWidth < 640 ? 
+                    `${Math.min(dropdownPosition.left, window.innerWidth - 170)}px` : // Mobile: ensure it stays on screen
+                    `${dropdownPosition.left}px`,
+                  width: window.innerWidth < 640 ? 
+                    '160px' : // Fixed width on mobile
+                    `${dropdownPosition.width}px`,
                 }}
               >
                 {timePeriods.map((period) => (
