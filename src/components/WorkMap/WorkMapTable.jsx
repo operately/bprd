@@ -25,29 +25,34 @@ const extractAllProjects = (data) => {
   return allProjects;
 };
 
-// Helper function to extract all completed, dropped, and failed items
+// Helper function to extract all completed, dropped, failed, achieved, partial, and missed items
 const extractCompletedItems = (data) => {
   let completedItems = [];
 
   const extractItems = (items) => {
     items.forEach((item) => {
-      // If this item is completed, dropped, or failed, add it to the list
+      // If this item is completed, dropped, failed, achieved, partial, or missed, add it to the list
       if (
         item.status === "completed" ||
         item.status === "dropped" ||
-        item.status === "failed"
+        item.status === "failed" ||
+        item.status === "achieved" ||
+        item.status === "partial" ||
+        item.status === "missed"
       ) {
         // For completed page, use completedOn date if available, or create a mock one if not
         const enhancedItem = { ...item, children: [] }; // Reset children to make it flat
 
         // If completedOn is not present, add a mock date based on status
         if (!enhancedItem.completedOn) {
-          if (enhancedItem.status === "completed") {
+          if (enhancedItem.status === "completed" || enhancedItem.status === "achieved") {
             enhancedItem.completedOn = { display: "Feb 28 2025" };
           } else if (enhancedItem.status === "dropped") {
             enhancedItem.completedOn = { display: "Jan 15 2025" };
-          } else if (enhancedItem.status === "failed") {
+          } else if (enhancedItem.status === "failed" || enhancedItem.status === "missed") {
             enhancedItem.completedOn = { display: "Mar 5 2025" };
+          } else if (enhancedItem.status === "partial") {
+            enhancedItem.completedOn = { display: "Mar 10 2025" };
           }
         }
 
@@ -76,13 +81,16 @@ const filterChildren = (item, filter) => {
       if (filter === "goals" && child.type !== "goal") return false;
       if (filter === "projects" && child.type !== "project") return false;
 
-      // On goals page, exclude completed, failed, or dropped goals
+      // On goals page, exclude all completed goals (all closed statuses)
       if (
         filter === "goals" &&
         child.type === "goal" &&
         (child.status === "completed" ||
           child.status === "failed" ||
-          child.status === "dropped")
+          child.status === "dropped" ||
+          child.status === "achieved" ||
+          child.status === "partial" ||
+          child.status === "missed")
       )
         return false;
 
@@ -101,7 +109,7 @@ export default function WorkMapTable({ filter }) {
   
   // Get the column count based on filter
   const getColumnCount = () => {
-    if (filter === "completed") return 6; // Name, Status, Progress, Completed On, Space, Champion
+    if (filter === "completed") return 5; // Name, Status, Completed On, Space, Champion
     return 7; // Name, Status, Progress, Deadline, Space, Champion, Next step
   };
   
@@ -214,10 +222,12 @@ export default function WorkMapTable({ filter }) {
             <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[100px] md:w-[130px]">
               Status
             </th>
-            {/* Progress column */}
-            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[75px] md:w-[90px]">
-              Progress
-            </th>
+            {/* Progress column - not shown on completed page */}
+            {filter !== "completed" && (
+              <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[75px] md:w-[90px]">
+                Progress
+              </th>
+            )}
             {/* Deadline/Completed On column */}
             <th
               className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold hidden md:table-cell w-[120px]"
@@ -255,9 +265,37 @@ export default function WorkMapTable({ filter }) {
                 );
               }
 
-              // For completed page, extract all completed/dropped/failed items in a flat list
+              // For completed page, extract all completed/dropped/failed/achieved/partial/missed items in a flat list
               if (filter === "completed") {
-                return extractCompletedItems([item]);
+                // Sort by completedOn date, most recent first
+                const completedItems = extractCompletedItems([item]);
+                
+                // Parse dates in "Month DD YYYY" format
+                const parseDate = (dateStr) => {
+                  if (!dateStr) return new Date(0);
+                  
+                  const months = {
+                    'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+                    'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+                  };
+                  
+                  // Extract components from format like "Mar 10 2025"
+                  const parts = dateStr.split(' ');
+                  if (parts.length === 3) {
+                    const month = months[parts[0]];
+                    const day = parseInt(parts[1], 10);
+                    const year = parseInt(parts[2], 10);
+                    return new Date(year, month, day);
+                  }
+                  
+                  return new Date(0); // Default to oldest date if parsing fails
+                };
+                
+                return completedItems.sort((a, b) => {
+                  const dateA = parseDate(a.completedOn?.display);
+                  const dateB = parseDate(b.completedOn?.display);
+                  return dateB - dateA; // Most recent first
+                });
               }
 
               // For other views, use the normal filtering
@@ -267,11 +305,14 @@ export default function WorkMapTable({ filter }) {
                   if (!filter) return [item];
 
                   if (filter === "goals") {
-                    // For goals page, exclude completed, failed or dropped goals
+                    // For goals page, exclude all completed goals (all closed statuses)
                     return item.type === "goal" &&
                       item.status !== "completed" &&
                       item.status !== "failed" &&
-                      item.status !== "dropped"
+                      item.status !== "dropped" &&
+                      item.status !== "achieved" &&
+                      item.status !== "partial" &&
+                      item.status !== "missed"
                       ? [item]
                       : [];
                   }

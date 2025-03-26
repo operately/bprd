@@ -19,14 +19,14 @@ export const currentUser = {
   name: "John Doe",
   email: "john.doe@example.com",
   avatar: avatarUrl,
-  role: "Product Manager"
+  role: "Product Manager",
 };
 
 // Sample company data
 export const companyData = {
   id: "company-1",
   name: "Nexus Dynamics",
-  logoUrl: "/logo.svg"
+  logoUrl: "/logo.svg",
 };
 
 // Sample navigation items
@@ -34,7 +34,7 @@ export const navItems = [
   { id: "nav-1", label: "Home", href: "/", icon: "home" },
   { id: "nav-2", label: "Company", href: "/work-map/", icon: "map" },
   { id: "nav-3", label: "My work", href: "#", icon: "camera-selfie" },
-  { id: "nav-4", label: "Review", href: "#", icon: "coffee" }
+  { id: "nav-4", label: "Review", href: "#", icon: "coffee" },
 ];
 
 // Work Map mock data
@@ -76,7 +76,7 @@ export const mockData = [
         completedOn: {
           display: "Mar 10 2025",
         },
-        nextStep: "Account management section launched",
+        nextStep: "",
         children: [],
       },
       {
@@ -154,7 +154,52 @@ export const mockData = [
       isPast: false,
     },
     nextStep: "Increase total active users",
-    children: [],
+    children: [
+      {
+        id: "goal-22",
+        type: "goal",
+        name: "Increase TikTok impressions by 60%",
+        status: "missed",
+        progress: 30,
+        space: "Marketing",
+        owner: {
+          name: "Sam A.",
+          initials: "SA",
+          avatar: avatarImages[3],
+        },
+        deadline: {
+          display: "Feb 28 2025",
+          isPast: true,
+        },
+        completedOn: {
+          display: "Mar 4 2025",
+        },
+        nextStep: "",
+        children: [],
+      },
+      {
+        id: "goal-23",
+        type: "goal",
+        name: "Increase LinkedIn followers by 40%",
+        status: "partial",
+        progress: 75,
+        space: "Marketing",
+        owner: {
+          name: "Sam A.",
+          initials: "SA",
+          avatar: avatarImages[3],
+        },
+        deadline: {
+          display: "Mar 15 2025",
+          isPast: true,
+        },
+        completedOn: {
+          display: "Mar 15 2025",
+        },
+        nextStep: "",
+        children: [],
+      },
+    ],
   },
   {
     id: "goal-3",
@@ -253,7 +298,52 @@ export const mockData = [
     completedOn: {
       display: "Mar 1 2025",
     },
-    nextStep: "Site is live on the new platform",
+    nextStep: "",
     children: [],
+  },
+  {
+    id: "goal-121",
+    type: "goal",
+    name: "Improve customer onboarding experience",
+    status: "achieved",
+    progress: 100,
+    space: "Customer Success",
+    owner: {
+      name: "Adriano L.",
+      initials: "AL",
+      avatar: avatarImages[5],
+    },
+    deadline: {
+      display: "Mar 15 2025",
+      isPast: true,
+    },
+    completedOn: {
+      display: "Mar 10 2025",
+    },
+    nextStep: "",
+    children: [
+      {
+        id: "goal-122",
+        type: "goal",
+        name: "Reduce customer support response time by 50%",
+        status: "achieved",
+        progress: 100,
+        space: "Customer Support",
+        owner: {
+          name: "Jennifer L.",
+          initials: "JL",
+          avatar: avatarImages[2],
+        },
+        deadline: {
+          display: "Mar 1 2025",
+          isPast: true,
+        },
+        completedOn: {
+          display: "Feb 28 2025",
+        },
+        nextStep: "",
+        children: [],
+      },
+    ],
   },
 ];

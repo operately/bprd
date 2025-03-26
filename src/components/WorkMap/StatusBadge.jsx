@@ -18,6 +18,20 @@ export function StatusBadge({ status }) {
       borderColor = "border-green-200 dark:border-green-800";
       label = "Completed";
       break;
+    case "achieved":
+      bgColor = "bg-green-50 dark:bg-green-900/30";
+      textColor = "text-green-700 dark:text-green-300";
+      dotColor = "bg-green-500 dark:bg-green-400";
+      borderColor = "border-green-200 dark:border-green-800";
+      label = "Achieved";
+      break;
+    case "partial":
+      bgColor = "bg-amber-50 dark:bg-amber-900/30";
+      textColor = "text-amber-800 dark:text-amber-300";
+      dotColor = "bg-amber-500 dark:bg-amber-400";
+      borderColor = "border-amber-200 dark:border-amber-800";
+      label = "Partial";
+      break;
     case "paused":
       bgColor = "bg-gray-100 dark:bg-gray-700";
       textColor = "text-gray-700 dark:text-gray-300";
@@ -46,12 +60,12 @@ export function StatusBadge({ status }) {
       borderColor = "border-red-200 dark:border-red-800";
       label = "At risk";
       break;
-    case "failed":
+    case "missed":
       bgColor = "bg-red-50 dark:bg-red-900/30";
       textColor = "text-red-700 dark:text-red-300";
       dotColor = "bg-red-500 dark:bg-red-400";
       borderColor = "border-red-200 dark:border-red-800";
-      label = "Failed";
+      label = "Missed";
       break;
     case "pending":
       bgColor = "bg-blue-50 dark:bg-blue-900/30";
@@ -72,6 +86,7 @@ export function StatusBadge({ status }) {
   const getStatusIcon = () => {
     switch (status) {
       case "completed":
+      case "achieved":
         return (
           <svg
             className={`w-2.5 h-2.5 ${textColor} mr-1.5 flex-shrink-0`}
@@ -88,7 +103,30 @@ export function StatusBadge({ status }) {
             />
           </svg>
         );
-      case "failed":
+      case "partial":
+        return (
+          <svg
+            className={`w-2.5 h-2.5 ${textColor} mr-1.5 flex-shrink-0`}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {/* Half-filled circle to represent partial completion */}
+            <path
+              d="M12 3a9 9 0 0 1 0 18 9 9 0 0 1 0-18Z"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M12 3a9 9 0 0 0 0 18"
+              fill="currentColor"
+              stroke="none"
+            />
+          </svg>
+        );
+      case "missed":
       case "dropped":
         return (
           <svg
