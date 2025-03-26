@@ -144,6 +144,23 @@ export function StatusBadge({ status }) {
             />
           </svg>
         );
+      case "paused":
+        return (
+          <svg
+            className={`w-2.5 h-2.5 ${textColor} mr-1.5 flex-shrink-0`}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 4h-2v16h2V4zM16 4h-2v16h2V4z"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        );
       default:
         return (
           <span
