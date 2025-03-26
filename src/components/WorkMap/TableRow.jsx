@@ -207,13 +207,17 @@ export function TableRow({
           </div>
         </td>
 
-        {/* Progress bar - hidden on completed page */}
-        {filter !== "completed" && (
+        {/* Progress bar - hidden on completed page and for completed items */}
+        {filter !== "completed" && !isCompleted && (
           <td className="py-2  px-2 md:px-4">
             <div className="transform group-hover:scale-[1.02] transition-transform duration-150">
               <ProgressBar progress={item.progress} status={item.status} />
             </div>
           </td>
+        )}
+        {/* Empty cell for completed items on non-completed pages to maintain table structure */}
+        {filter !== "completed" && isCompleted && (
+          <td className="py-2 px-2 md:px-4"></td>
         )}
 
         {/* Deadline or Completed On */}
