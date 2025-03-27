@@ -1,8 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 
-export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
+export function HoverQuickEntryWidget({ parentItem, filter, onClose = () => {} }) {
   const [inputValue, setInputValue] = useState("");
-  const [itemType, setItemType] = useState("goal"); // Default to goal
+  // Set default item type based on the filter
+  let defaultType = "goal"; // Default to goal for most views
+  if (filter === "projects") {
+    defaultType = "project";
+  }
+  const [itemType, setItemType] = useState(defaultType);
   const inputRef = useRef(null);
   const widgetRef = useRef(null);
 
@@ -88,31 +93,41 @@ export function HoverQuickEntryWidget({ parentItem, onClose = () => {} }) {
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 w-full">
           {/* First row for mobile (type + input) */}
           <div className="flex flex-1 w-full">
-            {/* Type selection dropdown */}
+            {/* Type selection or label - only show dropdown if no specific filter is set */}
             <div className="relative border border-r-0 border-surface-outline rounded-l-md">
-              <select
-                value={itemType}
-                onChange={(e) => setItemType(e.target.value)}
-                className="appearance-none h-9 bg-surface-base dark:bg-surface-dimmed text-content-base pl-2 pr-7 py-1 focus:outline-none text-sm"
-              >
-                <option value="goal">Goal</option>
-                <option value="project">Project</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-content-dimmed">
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
+              {filter === "projects" || filter === "goals" ? (
+                // Display fixed item type based on filter
+                <div className="h-9 bg-surface-base dark:bg-surface-dimmed text-content-base pl-2 pr-3 py-1.5 text-sm flex items-center">
+                  {filter === "projects" ? "Project" : "Goal"}
+                </div>
+              ) : (
+                // Show dropdown when no specific filter is set
+                <>
+                  <select
+                    value={itemType}
+                    onChange={(e) => setItemType(e.target.value)}
+                    className="appearance-none h-9 bg-surface-base dark:bg-surface-dimmed text-content-base pl-2 pr-7 py-1 focus:outline-none text-sm"
+                  >
+                    <option value="goal">Goal</option>
+                    <option value="project">Project</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-content-dimmed">
+                    <svg
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Input field */}

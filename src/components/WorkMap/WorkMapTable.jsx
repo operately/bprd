@@ -343,7 +343,7 @@ export default function WorkMapTable({ filter }) {
             
             {/* Permanent quick add row at the bottom of the table, not shown on completed page */}
             {filter !== "completed" && (
-              <QuickAddRow columnCount={getColumnCount()} />
+              <QuickAddRow columnCount={getColumnCount()} filter={filter} />
             )}
         </tbody>
       </table>

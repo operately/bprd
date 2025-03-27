@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget";
 
-export function QuickAddRow({ columnCount }) {
+export function QuickAddRow({ columnCount, filter }) {
   const [isAddingItem, setIsAddingItem] = useState(false);
 
   const handleAddClick = () => {
@@ -12,6 +12,14 @@ export function QuickAddRow({ columnCount }) {
     setIsAddingItem(false);
   };
 
+  // Determine button text based on filter
+  let buttonText = "Add new item";
+  if (filter === "projects") {
+    buttonText = "Add new project";
+  } else if (filter === "goals") {
+    buttonText = "Add new goal";
+  }
+
   return (
     <tr className="border-t border-surface-outline">
       <td colSpan={columnCount} className="py-2 px-4">
@@ -19,7 +27,7 @@ export function QuickAddRow({ columnCount }) {
           <button
             onClick={handleAddClick}
             className="flex items-center gap-1 text-sm text-content-dimmed hover:text-content-base transition-colors py-1.5 px-2 rounded-md hover:bg-surface-highlight"
-            aria-label="Add new item"
+            aria-label={buttonText}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -34,13 +42,14 @@ export function QuickAddRow({ columnCount }) {
             >
               <path d="M12 5v14m-7-7h14" />
             </svg>
-            <span>Add new item</span>
+            <span>{buttonText}</span>
           </button>
         ) : (
           <div className="inline-block bg-surface-base dark:bg-surface-dimmed border border-surface-outline rounded-md p-2">
             <HoverQuickEntryWidget
               parentItem={null} // No parent item for root level
               onClose={handleClose}
+              filter={filter}
             />
           </div>
         )}
