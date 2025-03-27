@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 
-export function HoverQuickEntryWidget({ parentItem, filter, onClose = () => {} }) {
+export function HoverQuickEntryWidget({
+  parentItem,
+  filter,
+  onClose = () => {},
+}) {
   const [inputValue, setInputValue] = useState("");
   // Set default item type based on the filter
   let defaultType = "goal"; // Default to goal for most views
@@ -97,7 +101,7 @@ export function HoverQuickEntryWidget({ parentItem, filter, onClose = () => {} }
             <div className="relative border border-r-0 border-surface-outline rounded-l-md">
               {filter === "projects" || filter === "goals" ? (
                 // Display fixed item type based on filter
-                <div className="h-9 bg-surface-base dark:bg-surface-dimmed text-content-base pl-2 pr-3 py-1.5 text-sm flex items-center">
+                <div className="h-8 bg-surface-base dark:bg-surface-dimmed text-content-base pl-2 pr-3 py-1.5 text-sm flex items-center">
                   {filter === "projects" ? "Project" : "Goal"}
                 </div>
               ) : (
@@ -106,7 +110,7 @@ export function HoverQuickEntryWidget({ parentItem, filter, onClose = () => {} }
                   <select
                     value={itemType}
                     onChange={(e) => setItemType(e.target.value)}
-                    className="appearance-none h-9 bg-surface-base dark:bg-surface-dimmed text-content-base pl-2 pr-7 py-1 focus:outline-none text-sm"
+                    className="appearance-none h-8 bg-surface-base dark:bg-surface-dimmed text-content-base pl-2 pr-7 py-1 focus:outline-none text-sm"
                   >
                     <option value="goal">Goal</option>
                     <option value="project">Project</option>
