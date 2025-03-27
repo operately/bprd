@@ -25,8 +25,8 @@
   --color-toggle-active: var(--color-sky-200);
   --color-stale-selection: var(--color-sky-100);
 
-  --color-accent-1: rgba(37, 155, 105, 1);
-  --color-accent-1-light: rgba(37, 155, 105, 0.8);
+  --color-accent-1: rgba(49, 133, 255, 1);
+  --color-accent-1-light: rgba(49, 133, 255, 0.8);
 
   --color-danger: var(--color-red-500);
   --color-danger-light: var(--color-red-400);
@@ -111,8 +111,8 @@
   --color-toggle-active: var(--color-sky-700);
   --color-stale-selection: var(--color-sky-900);
 
-  --color-accent-1: rgba(37, 155, 105, 1);
-  --color-accent-1-light: rgba(37, 155, 105, 0.8);
+  --color-accent-1: rgba(49, 133, 255, 1);
+  --color-accent-1-light: rgba(49, 133, 255, 0.8);
 
   --color-danger: var(--color-red-500);
   --color-danger-light: var(--color-red-400);
