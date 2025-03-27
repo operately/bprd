@@ -16,19 +16,21 @@ import { WorkMapTabs } from "../components/WorkMap/WorkMapTabs";
       >
         <div class="w-full flex flex-col overflow-hidden">
           <header
-            class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-6 py-4 border-b border-surface-outline"
+            class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-6 py-3 border-b border-surface-outline"
           >
-            <h1 class="text-xl font-bold text-content-accent mb-4 sm:mb-0">
-              Company work map
-            </h1>
-          </header>
-
-          <div class="flex-1 overflow-auto">
-            <div class="overflow-x-auto">
-              <WorkMapTabs client:load activeTab="goals" />
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+              <h1 class="text-sm sm:text-base font-bold text-content-accent">
+                Company work map
+              </h1>
             </div>
-            <WorkMapTable client:load filter="goals" />
+          </header>
+        </div>
+
+        <div class="flex-1 overflow-auto">
+          <div class="overflow-x-auto">
+            <WorkMapTabs client:load activeTab="goals" />
           </div>
+          <WorkMapTable client:load filter="goals" />
         </div>
       </div>
     </div>
