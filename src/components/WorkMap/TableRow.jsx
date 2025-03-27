@@ -32,7 +32,11 @@ export function TableRow({
   const isProject = item.type === "project";
 
   // Determine if item should have strikethrough or other special styling
-  const isCompleted = item.status === "completed" || item.status === "achieved" || item.status === "partial" || item.status === "missed";
+  const isCompleted =
+    item.status === "completed" ||
+    item.status === "achieved" ||
+    item.status === "partial" ||
+    item.status === "missed";
   const isFailed = item.status === "missed";
   const isDropped = item.status === "dropped";
   const isPending = item.status === "pending";
@@ -221,9 +225,13 @@ export function TableRow({
         )}
 
         {/* Deadline or Completed On */}
-        <td className="py-2 px-2 md:px-4 hidden md:table-cell">
+        <td
+          className={`py-2 px-2 md:px-4 ${
+            filter === "completed" ? "" : "hidden md:table-cell"
+          }`}
+        >
           {filter === "completed" && item.completedOn ? (
-            <span className="text-sm whitespace-nowrap text-content-base">
+            <span className="text-xs sm:text-sm whitespace-nowrap text-content-base">
               {item.completedOn.display}
             </span>
           ) : (

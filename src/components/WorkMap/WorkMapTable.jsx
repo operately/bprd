@@ -45,11 +45,17 @@ const extractCompletedItems = (data) => {
 
         // If completedOn is not present, add a mock date based on status
         if (!enhancedItem.completedOn) {
-          if (enhancedItem.status === "completed" || enhancedItem.status === "achieved") {
+          if (
+            enhancedItem.status === "completed" ||
+            enhancedItem.status === "achieved"
+          ) {
             enhancedItem.completedOn = { display: "Feb 28 2025" };
           } else if (enhancedItem.status === "dropped") {
             enhancedItem.completedOn = { display: "Jan 15 2025" };
-          } else if (enhancedItem.status === "failed" || enhancedItem.status === "missed") {
+          } else if (
+            enhancedItem.status === "failed" ||
+            enhancedItem.status === "missed"
+          ) {
             enhancedItem.completedOn = { display: "Mar 5 2025" };
           } else if (enhancedItem.status === "partial") {
             enhancedItem.completedOn = { display: "Mar 10 2025" };
@@ -106,21 +112,21 @@ export default function WorkMapTable({ filter }) {
   const isCompletedPage = filter === "completed";
   // Create a state to store the modified data
   const [workMapData, setWorkMapData] = useState(mockData);
-  
+
   // Get the column count based on filter
   const getColumnCount = () => {
     if (filter === "completed") return 5; // Name, Status, Completed On, Space, Champion
     return 7; // Name, Status, Progress, Deadline, Space, Champion, Next step
   };
-  
+
   // Add listeners for add-item and delete-item events
   React.useEffect(() => {
     const handleAddItem = (event) => {
       const { parentItem, newItem } = event.detail;
-      
+
       // Create a deep copy of the data
       const newData = JSON.parse(JSON.stringify(workMapData));
-      
+
       // Helper function to add the item to the correct place in the hierarchy
       const addItemToHierarchy = (items, parentId) => {
         for (let i = 0; i < items.length; i++) {
@@ -132,7 +138,7 @@ export default function WorkMapTable({ filter }) {
             items[i].children.push(newItem);
             return true;
           }
-          
+
           // Check in children
           if (items[i].children && items[i].children.length > 0) {
             if (addItemToHierarchy(items[i].children, parentId)) {
@@ -142,7 +148,7 @@ export default function WorkMapTable({ filter }) {
         }
         return false;
       };
-      
+
       // If there's a parent item, add it to its children
       if (parentItem) {
         addItemToHierarchy(newData, parentItem.id);
@@ -150,38 +156,40 @@ export default function WorkMapTable({ filter }) {
         // If no parent, add it to the root level
         newData.push(newItem);
       }
-      
+
       // Update the data
       setWorkMapData(newData);
     };
-    
+
     const handleDeleteItem = (event) => {
       const { itemId } = event.detail;
-      
+
       // Create a deep copy of the data
       const newData = JSON.parse(JSON.stringify(workMapData));
-      
+
       // Helper function to delete the item from the hierarchy
       const deleteItemFromHierarchy = (items) => {
         // Check if the item is at the root level
-        const rootIndex = items.findIndex(item => item.id === itemId);
+        const rootIndex = items.findIndex((item) => item.id === itemId);
         if (rootIndex !== -1) {
           // Found at root level, remove it
           items.splice(rootIndex, 1);
           return true;
         }
-        
+
         // Check in children of each item
         for (let i = 0; i < items.length; i++) {
           if (items[i].children && items[i].children.length > 0) {
             // Check if item is in this item's children
-            const childIndex = items[i].children.findIndex(child => child.id === itemId);
+            const childIndex = items[i].children.findIndex(
+              (child) => child.id === itemId
+            );
             if (childIndex !== -1) {
               // Found in children, remove it
               items[i].children.splice(childIndex, 1);
               return true;
             }
-            
+
             // Check deeper in the hierarchy
             if (deleteItemFromHierarchy(items[i].children)) {
               return true;
@@ -190,36 +198,46 @@ export default function WorkMapTable({ filter }) {
         }
         return false;
       };
-      
+
       // Delete the item from the hierarchy
       deleteItemFromHierarchy(newData);
-      
+
       // Update the data
       setWorkMapData(newData);
     };
-    
+
     // Add event listeners
-    document.addEventListener('workmap:add-item', handleAddItem);
-    document.addEventListener('workmap:delete-item', handleDeleteItem);
-    
+    document.addEventListener("workmap:add-item", handleAddItem);
+    document.addEventListener("workmap:delete-item", handleDeleteItem);
+
     // Clean up on unmount
     return () => {
-      document.removeEventListener('workmap:add-item', handleAddItem);
-      document.removeEventListener('workmap:delete-item', handleDeleteItem);
+      document.removeEventListener("workmap:add-item", handleAddItem);
+      document.removeEventListener("workmap:delete-item", handleDeleteItem);
     };
   }, [workMapData]);
-  
+
   return (
     <div className="w-full overflow-x-auto">
       <table className="w-full md:min-w-[1000px] table-auto">
         <thead>
           <tr className="border-b-2 border-surface-outline dark:border-gray-600 bg-surface-dimmed dark:bg-gray-800/80 text-content-base dark:text-gray-200 text-sm sticky top-0">
-            {/* Name column - max width to prevent excessive spacing */}
-            <th className={`text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold ${isCompletedPage ? "max-w-[35%] w-[35%]" : ""}`}>
+            {/* Name column - more space on mobile for completed page */}
+            <th
+              className={`text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold ${
+                isCompletedPage ? "w-[60%] md:w-[50%]" : ""
+              }`}
+            >
               Name
             </th>
             {/* Status column */}
-            <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[100px] md:w-[130px]">
+            <th
+              className={`text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold ${
+                isCompletedPage
+                  ? "w-[110px] md:w-[130px]"
+                  : "w-[100px] md:w-[130px]"
+              }`}
+            >
               Status
             </th>
             {/* Progress column - not shown on completed page */}
@@ -230,7 +248,11 @@ export default function WorkMapTable({ filter }) {
             )}
             {/* Deadline/Completed On column */}
             <th
-              className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold hidden md:table-cell w-[120px]"
+              className={`text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold ${
+                isCompletedPage
+                  ? "w-[100px] md:w-[120px]"
+                  : "hidden md:table-cell w-[120px]"
+              }`}
             >
               {isCompletedPage ? "Completed On" : "Deadline"}
             </th>
@@ -269,28 +291,38 @@ export default function WorkMapTable({ filter }) {
               if (filter === "completed") {
                 // Sort by completedOn date, most recent first
                 const completedItems = extractCompletedItems([item]);
-                
+
                 // Parse dates in "Month DD YYYY" format
                 const parseDate = (dateStr) => {
                   if (!dateStr) return new Date(0);
-                  
+
                   const months = {
-                    'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
-                    'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+                    Jan: 0,
+                    Feb: 1,
+                    Mar: 2,
+                    Apr: 3,
+                    May: 4,
+                    Jun: 5,
+                    Jul: 6,
+                    Aug: 7,
+                    Sep: 8,
+                    Oct: 9,
+                    Nov: 10,
+                    Dec: 11,
                   };
-                  
+
                   // Extract components from format like "Mar 10 2025"
-                  const parts = dateStr.split(' ');
+                  const parts = dateStr.split(" ");
                   if (parts.length === 3) {
                     const month = months[parts[0]];
                     const day = parseInt(parts[1], 10);
                     const year = parseInt(parts[2], 10);
                     return new Date(year, month, day);
                   }
-                  
+
                   return new Date(0); // Default to oldest date if parsing fails
                 };
-                
+
                 return completedItems.sort((a, b) => {
                   const dateA = parseDate(a.completedOn?.display);
                   const dateB = parseDate(b.completedOn?.display);
@@ -340,11 +372,11 @@ export default function WorkMapTable({ filter }) {
                 />
               );
             })}
-            
-            {/* Permanent quick add row at the bottom of the table, not shown on completed page */}
-            {filter !== "completed" && (
-              <QuickAddRow columnCount={getColumnCount()} filter={filter} />
-            )}
+
+          {/* Permanent quick add row at the bottom of the table, not shown on completed page */}
+          {filter !== "completed" && (
+            <QuickAddRow columnCount={getColumnCount()} filter={filter} />
+          )}
         </tbody>
       </table>
     </div>
