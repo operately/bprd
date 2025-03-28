@@ -9,7 +9,7 @@ import {
 } from "./Icons";
 import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget";
 
-export function TableRow({
+export const TableRow = React.forwardRef(({
   item,
   level,
   isLast,
@@ -17,7 +17,10 @@ export function TableRow({
   isSelected = false,
   onRowClick,
   selectedItemId,
-}) {
+  isEditMode = false,
+  dragHandleProps = null,
+  isDragging = false,
+}, ref) => {
   // Determine if we're on the completed page for compact styling
   const isCompletedPage = filter === "completed";
   const [expanded, setExpanded] = useState(true);
@@ -63,23 +66,156 @@ export function TableRow({
   const isThisItemSelected =
     isSelected || (selectedItemId && selectedItemId === item.id);
 
+  // Create a combined ref if one is provided
+  const rowRef = React.useRef(null);
+  
+  // Handle ref forwarding
+  React.useEffect(() => {
+    if (ref && rowRef.current) {
+      if (typeof ref === 'function') {
+        ref(rowRef.current);
+      } else {
+        ref.current = rowRef.current;
+      }
+    }
+  }, [ref]);
+  
   return (
     <>
       <tr
+        ref={rowRef}
         data-workmap-selectable="true"
+        data-id={item.id}
+        data-type={item.type}
         className={`group border-b border-stroke-base transition-all duration-150 ease-in-out cursor-pointer relative
           ${
             isThisItemSelected
               ? "bg-surface-highlight dark:bg-surface-dimmed/30"
               : "hover:bg-surface-highlight dark:hover:bg-surface-dimmed/20"
-          }`}
+          }
+          ${isDragging ? "opacity-50" : ""}
+        `}
         onClick={handleRowClick}
-        onMouseEnter={() => setShowAddButton(true)}
+        onMouseEnter={() => !isEditMode && setShowAddButton(true)}
         onMouseLeave={() => setShowAddButton(false)}
+        onDragOver={(e) => {
+          // Only allow drop if in edit mode and this is a goal
+          if (isEditMode && isGoal) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Get mouse position relative to the row
+            const rect = e.currentTarget.getBoundingClientRect();
+            const mouseY = e.clientY - rect.top;
+            const rowHeight = rect.height;
+            
+            // Mark the table as in dragging state
+            const tbody = e.currentTarget.closest('tbody');
+            if (tbody) tbody.classList.add('dragging-in-progress');
+            
+            // Get or create the drop indicator
+            let indicator = document.getElementById('drop-indicator');
+            if (!indicator) {
+              indicator = document.createElement('div');
+              indicator.id = 'drop-indicator';
+              document.body.appendChild(indicator);
+            }
+            
+            // Position the indicator at the top or bottom of the row
+            if (mouseY < rowHeight / 2) {
+              // Position at top of row
+              indicator.style.top = `${rect.top}px`;
+            } else {
+              // Position at bottom of row
+              indicator.style.top = `${rect.bottom - 3}px`;
+            }
+            
+            // Store position information for the drop
+            e.currentTarget.dataset.dropPosition = mouseY < rowHeight / 2 ? 'top' : 'bottom';
+          }
+        }}
+        onDragLeave={(e) => {
+          // Check if we're still within the table
+          const relatedTarget = e.relatedTarget;
+          if (relatedTarget && (relatedTarget === e.currentTarget || e.currentTarget.contains(relatedTarget) || relatedTarget.closest('table') === e.currentTarget.closest('table'))) {
+            return; // Still within the table, don't remove indicators yet
+          }
+          
+          // Remove the drop indicator
+          const indicator = document.getElementById('drop-indicator');
+          if (indicator) indicator.remove();
+          
+          // Remove dragging state from table
+          const tbody = e.currentTarget.closest('tbody');
+          if (tbody) tbody.classList.remove('dragging-in-progress');
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Remove the drop indicator
+          const indicator = document.getElementById('drop-indicator');
+          if (indicator) indicator.remove();
+          
+          // Remove dragging state from table
+          const tbody = e.currentTarget.closest('tbody');
+          if (tbody) tbody.classList.remove('dragging-in-progress');
+          
+          // Get the dragged item ID
+          const sourceId = e.dataTransfer.getData('text/plain');
+          const targetId = item.id;
+          
+          if (sourceId && targetId && sourceId !== targetId) {
+            // Get position based on stored data attribute
+            const insertBefore = e.currentTarget.dataset.dropPosition === 'top';
+            
+            // Dispatch event to handle the drop
+            document.dispatchEvent(
+              new CustomEvent("workmap:drag-drop-goal", {
+                detail: { sourceId, targetId, insertBefore }
+              })
+            );
+          }
+        }}
       >
         {/* Name */}
-        <td className="py-2 px-2 md:px-4">
-          <div className="flex items-center">
+        <td className="py-2 px-2 md:px-4 relative">
+          {/* Drag handle - only visible in edit mode for goals that aren't completed */}
+          {isEditMode && isGoal && !isCompleted && (
+            <div 
+              className="absolute left-0 top-1/2 -translate-y-1/2 pl-1 z-10 touch-none"
+              draggable="true"
+              onDragStart={(e) => {
+                e.stopPropagation();
+                // Set data transfer with the item ID
+                e.dataTransfer.setData('text/plain', item.id);
+                e.dataTransfer.effectAllowed = 'move';
+                // Add a class to indicate drag
+                e.currentTarget.closest('tr').classList.add('opacity-50');
+              }}
+              onDragEnd={(e) => {
+                e.stopPropagation();
+                // Remove the drag class
+                e.currentTarget.closest('tr').classList.remove('opacity-50');
+              }}
+            >
+              <div 
+                className="w-6 h-6 flex items-center justify-center cursor-grab active:cursor-grabbing text-content-dimmed hover:text-content-base"
+                title="Drag to reorder"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="9" cy="5" r="1"/>
+                  <circle cx="9" cy="12" r="1"/>
+                  <circle cx="9" cy="19" r="1"/>
+                  <circle cx="15" cy="5" r="1"/>
+                  <circle cx="15" cy="12" r="1"/>
+                  <circle cx="15" cy="19" r="1"/>
+                </svg>
+              </div>
+            </div>
+          )}
+
+          <div className={`flex items-center ${isEditMode && isGoal && !isCompleted ? "pl-8" : ""}`}>
             {/* Only show indentation and controls on hierarchical pages */}
             {showIndentation && (
               <>
@@ -204,33 +340,33 @@ export function TableRow({
           </div>
         </td>
 
-        {/* Status */}
+        {/* Status - empty when in edit mode */}
         <td className="py-2 px-2 md:px-4">
-          <div className="transform group-hover:scale-105 transition-transform duration-150">
-            <StatusBadge status={item.status} />
-          </div>
+          {!isEditMode && (
+            <div className="transform group-hover:scale-105 transition-transform duration-150">
+              <StatusBadge status={item.status} />
+            </div>
+          )}
         </td>
 
-        {/* Progress bar - hidden on completed page and for completed items */}
-        {filter !== "completed" && !isCompleted && (
-          <td className="py-2  px-2 md:px-4">
-            <div className="transform group-hover:scale-[1.02] transition-transform duration-150">
-              <ProgressBar progress={item.progress} status={item.status} />
-            </div>
+        {/* Progress bar - empty when in edit mode */}
+        {filter !== "completed" && (
+          <td className="py-2 px-2 md:px-4">
+            {!isEditMode && !isCompleted && (
+              <div className="transform group-hover:scale-[1.02] transition-transform duration-150">
+                <ProgressBar progress={item.progress} status={item.status} />
+              </div>
+            )}
           </td>
         )}
-        {/* Empty cell for completed items on non-completed pages to maintain table structure */}
-        {filter !== "completed" && isCompleted && (
-          <td className="py-2 px-2 md:px-4"></td>
-        )}
 
-        {/* Deadline or Completed On */}
+        {/* Deadline or Completed On - empty when in edit mode */}
         <td
           className={`py-2 px-2 md:px-4 ${
             filter === "completed" ? "" : "hidden md:table-cell"
           }`}
         >
-          {filter === "completed" && item.completedOn ? (
+          {!isEditMode && (filter === "completed" && item.completedOn ? (
             <span className="text-xs sm:text-sm whitespace-nowrap text-content-base">
               {item.completedOn.display}
             </span>
@@ -260,98 +396,104 @@ export function TableRow({
             >
               {item.deadline.display}
             </span>
-          )}
+          ))}
         </td>
 
-        {/* Space */}
+        {/* Space - empty when in edit mode */}
         <td className="py-2 px-2 md:px-4 hidden lg:table-cell">
-          <div className="w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
-            <a
-              href="#"
-              title={item.space}
-              className={`
-                text-sm hover:underline
-                ${
-                  isCompleted || isFailed
-                    ? "text-content-dimmed"
-                    : "text-content-base hover:text-link-hover"
-                }
-                ${isDropped ? "opacity-70 text-content-dimmed" : ""}
-                ${isPending ? "text-content-dimmed" : ""}
-              `}
-            >
-              {item.space}
-            </a>
-          </div>
-        </td>
-
-        {/* Champion */}
-        <td className="py-2  px-2 md:px-4 hidden xl:table-cell">
-          <div className="flex items-center max-w-[120px] overflow-hidden">
-            {/* Only show avatar/initials if there's an owner name */}
-            {item.owner && item.owner.name && (
-              <>
-                {item.owner.avatar ? (
-                  <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5 flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
-                    <img
-                      src={item.owner.avatar}
-                      alt={item.owner.name}
-                      className="h-full w-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                ) : (
-                  item.owner.initials && (
-                    <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-1.5 text-xs flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
-                      {item.owner.initials}
-                    </div>
-                  )
-                )}
-              </>
-            )}
-            <a
-              href="#"
-              title={item.owner.name}
-              className={`
-                text-sm truncate hover:underline transition-colors whitespace-nowrap overflow-hidden text-ellipsis inline-block
-                ${
-                  isCompleted || isFailed
-                    ? "text-content-dimmed"
-                    : "text-content-base hover:text-link-hover"
-                }
-                ${isDropped ? "opacity-70 text-content-dimmed" : ""}
-                ${isPending ? "text-content-dimmed" : ""}
-              `}
-            >
-              {item.owner.name}
-            </a>
-          </div>
-        </td>
-
-        {/* Next step - don't show on completed page */}
-        {filter !== "completed" && (
-          <td className="py-2 px-2 md:px-4 hidden xl:table-cell">
-            <div className="w-full xl:max-w-[200px] 2xl:max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap">
-              <span
-                title={item.nextStep}
+          {!isEditMode && (
+            <div className="w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
+              <a
+                href="#"
+                title={item.space}
                 className={`
-                  text-sm transition-colors duration-150
+                  text-sm hover:underline
                   ${
                     isCompleted || isFailed
-                      ? "line-through text-content-dimmed"
-                      : "text-content-base group-hover:text-content-intense"
+                      ? "text-content-dimmed"
+                      : "text-content-base hover:text-link-hover"
                   }
-                  ${
-                    isDropped
-                      ? "line-through opacity-70 text-content-dimmed"
-                      : ""
-                  }
+                  ${isDropped ? "opacity-70 text-content-dimmed" : ""}
                   ${isPending ? "text-content-dimmed" : ""}
                 `}
               >
-                {item.nextStep}
-              </span>
+                {item.space}
+              </a>
             </div>
+          )}
+        </td>
+
+        {/* Champion - empty when in edit mode */}
+        <td className="py-2 px-2 md:px-4 hidden xl:table-cell">
+          {!isEditMode && (
+            <div className="flex items-center max-w-[120px] overflow-hidden">
+              {/* Only show avatar/initials if there's an owner name */}
+              {item.owner && item.owner.name && (
+                <>
+                  {item.owner.avatar ? (
+                    <div className="w-5 h-5 rounded-full overflow-hidden border border-stroke-base mr-1.5 flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
+                      <img
+                        src={item.owner.avatar}
+                        alt={item.owner.name}
+                        className="h-full w-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  ) : (
+                    item.owner.initials && (
+                      <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-1.5 text-xs flex-shrink-0 transform group-hover:scale-110 transition-transform duration-150 shadow-sm">
+                        {item.owner.initials}
+                      </div>
+                    )
+                  )}
+                </>
+              )}
+              <a
+                href="#"
+                title={item.owner.name}
+                className={`
+                  text-sm truncate hover:underline transition-colors whitespace-nowrap overflow-hidden text-ellipsis inline-block
+                  ${
+                    isCompleted || isFailed
+                      ? "text-content-dimmed"
+                      : "text-content-base hover:text-link-hover"
+                  }
+                  ${isDropped ? "opacity-70 text-content-dimmed" : ""}
+                  ${isPending ? "text-content-dimmed" : ""}
+                `}
+              >
+                {item.owner.name}
+              </a>
+            </div>
+          )}
+        </td>
+
+        {/* Next step - empty when in edit mode */}
+        {filter !== "completed" && (
+          <td className="py-2 px-2 md:px-4 hidden xl:table-cell">
+            {!isEditMode && (
+              <div className="w-full xl:max-w-[200px] 2xl:max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap">
+                <span
+                  title={item.nextStep}
+                  className={`
+                    text-sm transition-colors duration-150
+                    ${
+                      isCompleted || isFailed
+                        ? "line-through text-content-dimmed"
+                        : "text-content-base group-hover:text-content-intense"
+                    }
+                    ${
+                      isDropped
+                        ? "line-through opacity-70 text-content-dimmed"
+                        : ""
+                    }
+                    ${isPending ? "text-content-dimmed" : ""}
+                  `}
+                >
+                  {item.nextStep}
+                </span>
+              </div>
+            )}
           </td>
         )}
       </tr>
@@ -388,8 +530,9 @@ export function TableRow({
             filter={filter}
             selectedItemId={selectedItemId}
             onRowClick={onRowClick}
+            isEditMode={isEditMode}
           />
         ))}
     </>
   );
-}
+});

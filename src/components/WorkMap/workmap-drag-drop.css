@@ -1,0 +1,55 @@
+/* Drop indicator element that will be injected */
+#drop-indicator {
+  position: absolute;
+  height: 4px;
+  background-color: #2563eb; /* primary-600 */
+  z-index: 1000;
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+  animation: pulse 1.5s infinite;
+  pointer-events: none;
+  left: 0;
+  right: 0;
+}
+
+/* Drop preview highlight */
+.drop-preview {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 24px; /* Adjust based on where you want to show the preview */
+  background-color: rgba(37, 99, 235, 0.05);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 90;
+}
+
+/* Animation for the drop indicator line */
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* Style for the dragged element */
+.dragging {
+  opacity: 0.6;
+  background-color: rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+  border: 2px dashed #2563eb;
+  z-index: 50;
+  pointer-events: none; /* Prevent the dragged element from interfering with drop targets */
+}
+
+/* Add this class to the tbody element when dragging happens */
+.dragging-in-progress tr:hover {
+  background-color: rgba(37, 99, 235, 0.03);
+}
+
+/* Cursor styles for draggable items */
+[draggable="true"] {
+  cursor: grab;
+}
+[draggable="true"]:active {
+  cursor: grabbing;
+}

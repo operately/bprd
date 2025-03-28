@@ -42,7 +42,7 @@ export const mockData = [
   {
     id: "goal-1",
     type: "goal",
-    name: "Acquire the first users of Operately outside Semaphore",
+    name: "Sign up the first organic users of Operately",
     status: "on_track",
     progress: 45,
     space: "General",
@@ -140,7 +140,7 @@ export const mockData = [
   {
     id: "goal-2",
     type: "goal",
-    name: "Accelerate growth from current customers",
+    name: "Boost growth from current customers",
     status: "issue",
     progress: 15,
     space: "Customer Success",

@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { TableRow } from "./TableRow";
 import { QuickAddRow } from "./QuickAddRow";
 import { mockData } from "../../mockData";
+import { IconChevronDown, IconChevronRight } from "./Icons";
+
+// Import drag-and-drop styles
+import "./workmap-drag-drop.css";
 
 // Helper function to extract all projects from the data, including nested ones
 const extractAllProjects = (data) => {
@@ -110,8 +114,156 @@ const filterChildren = (item, filter) => {
 export default function WorkMapTable({ filter }) {
   // Determine if we're on the completed page
   const isCompletedPage = filter === "completed";
+  // Add state for edit mode
+  const [isEditMode, setIsEditMode] = useState(false);
   // Create a state to store the modified data
   const [workMapData, setWorkMapData] = useState(mockData);
+  // Add state to track currently dragged item
+  const [draggedItemId, setDraggedItemId] = useState(null);
+  const [draggedParentPath, setDraggedParentPath] = useState([]);
+  
+  // Mock function to check if user has permission to edit
+  // This would be replaced with an actual authorization check
+  const userCanEdit = () => {
+    // In a real implementation, this would check against user roles
+    // e.g., isCompanyAdmin || isSpaceAdmin
+    return true;
+  };
+  
+  // Function to handle drag-and-drop operation
+  const handleDragAndDrop = (sourceId, targetId, insertBefore = false) => {
+    // Create a deep copy of the data
+    const newData = JSON.parse(JSON.stringify(workMapData));
+    
+    // Function to flatten the hierarchy for DnD operations while preserving parent info
+    const flattenWithParentPath = (items, parentPath = []) => {
+      let result = [];
+      
+      items.forEach(item => {
+        const itemPath = [...parentPath, item.id];
+        // Add the item with its path information
+        result.push({
+          id: item.id,
+          item: item,
+          parentPath: parentPath,
+          depth: parentPath.length
+        });
+        
+        // Process children
+        if (item.children && item.children.length > 0) {
+          result = [...result, ...flattenWithParentPath(item.children, itemPath)];
+        }
+      });
+      
+      return result;
+    };
+    
+    // Flatten the hierarchy for easier manipulation
+    const flatItems = flattenWithParentPath(newData);
+    
+    // Find the source and target items
+    const sourceItem = flatItems.find(i => i.id === sourceId);
+    const targetItem = flatItems.find(i => i.id === targetId);
+    
+    if (!sourceItem || !targetItem) return;
+    
+    // Check constraints:
+    // 1. Can only reorder within the same parent
+    // 2. Only goals can be reordered
+    if (sourceItem.item.type !== 'goal' || 
+        JSON.stringify(sourceItem.parentPath) !== JSON.stringify(targetItem.parentPath)) {
+      return; // Can't reorder if constraints are violated
+    }
+    
+    // Function to find and update items order in the hierarchy
+    const updateItemsOrder = (items, parentPath) => {
+      // If we're at the right level based on parentPath
+      if (JSON.stringify(parentPath) === JSON.stringify(sourceItem.parentPath)) {
+        // Find indices
+        const sourceIndex = items.findIndex(item => item.id === sourceId);
+        const targetIndex = items.findIndex(item => item.id === targetId);
+        
+        if (sourceIndex !== -1 && targetIndex !== -1) {
+          // Remove source item
+          const [movedItem] = items.splice(sourceIndex, 1);
+          // Insert at target position (either before or after the target)
+          if (insertBefore) {
+            items.splice(targetIndex, 0, movedItem);
+          } else {
+            // If inserting after, we need to adjust the index
+            items.splice(targetIndex + 1, 0, movedItem);
+          }
+          return true;
+        }
+      }
+      
+      // If we're not at the right level, process children
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].children && items[i].children.length > 0) {
+          if (updateItemsOrder(items[i].children, [...parentPath, items[i].id])) {
+            return true;
+          }
+        }
+      }
+      
+      return false;
+    };
+    
+    // Update the order
+    if (updateItemsOrder(newData, [])) {
+      // If successful, update the data
+      setWorkMapData(newData);
+    }
+  };
+
+  // Function to handle legacy up/down reordering (fallback)
+  const handleReorderGoal = (goalId, direction) => {
+    // Create a deep copy of the data
+    const newData = JSON.parse(JSON.stringify(workMapData));
+    
+    // Helper function to find a goal in the hierarchy and move it up or down
+    const moveGoalInHierarchy = (items, parentPath = []) => {
+      // Find the index of the goal at this level
+      const goalIndex = items.findIndex(item => item.id === goalId && item.type === "goal");
+      
+      if (goalIndex !== -1) {
+        // Found the goal at this level, now move it up or down
+        if (direction === "up" && goalIndex > 0) {
+          // Can move up (not already at the top)
+          const temp = items[goalIndex];
+          items[goalIndex] = items[goalIndex - 1];
+          items[goalIndex - 1] = temp;
+          return true;
+        } else if (direction === "down" && goalIndex < items.length - 1) {
+          // Can move down (not already at the bottom)
+          const temp = items[goalIndex];
+          items[goalIndex] = items[goalIndex + 1];
+          items[goalIndex + 1] = temp;
+          return true;
+        }
+        return false; // Can't move (already at top/bottom)
+      }
+      
+      // Goal not found at this level, search in children
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].children && items[i].children.length > 0) {
+          // When searching children, pass the current parent path
+          const childPath = [...parentPath, items[i].id];
+          if (moveGoalInHierarchy(items[i].children, childPath)) {
+            return true;
+          }
+        }
+      }
+      
+      return false; // Goal not found in this branch
+    };
+    
+    // Try to move the goal in the hierarchy
+    if (moveGoalInHierarchy(newData)) {
+      // If successful, update the data
+      setWorkMapData(newData);
+    }
+  };
 
   // Get the column count based on filter
   const getColumnCount = () => {
@@ -119,8 +271,57 @@ export default function WorkMapTable({ filter }) {
     return 7; // Name, Status, Progress, Deadline, Space, Champion, Next step
   };
 
-  // Add listeners for add-item and delete-item events
+  // Add listeners for add-item, delete-item, and reorder-goal events
   React.useEffect(() => {
+    // Handle reordering goals
+    const handleReorderGoal = (event) => {
+      const { goalId, direction } = event.detail;
+      
+      // Create a deep copy of the data
+      const newData = JSON.parse(JSON.stringify(workMapData));
+
+      // Helper function to find a goal in the hierarchy and move it up or down
+      const moveGoalInHierarchy = (items) => {
+        // Find the index of the goal at the current level
+        const goalIndex = items.findIndex(item => item.id === goalId && item.type === "goal");
+        
+        if (goalIndex !== -1) {
+          // Found the goal at this level, now move it up or down
+          if (direction === "up" && goalIndex > 0) {
+            // Can move up (not already at the top)
+            const temp = items[goalIndex];
+            items[goalIndex] = items[goalIndex - 1];
+            items[goalIndex - 1] = temp;
+            return true;
+          } else if (direction === "down" && goalIndex < items.length - 1) {
+            // Can move down (not already at the bottom)
+            const temp = items[goalIndex];
+            items[goalIndex] = items[goalIndex + 1];
+            items[goalIndex + 1] = temp;
+            return true;
+          }
+          return false; // Can't move (already at top/bottom)
+        }
+        
+        // Goal not found at this level, search in children
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].children && items[i].children.length > 0) {
+            if (moveGoalInHierarchy(items[i].children)) {
+              return true;
+            }
+          }
+        }
+        
+        return false; // Goal not found in this branch
+      };
+      
+      // Try to move the goal in the hierarchy
+      if (moveGoalInHierarchy(newData)) {
+        // If successful, update the data
+        setWorkMapData(newData);
+      }
+    };
+
     const handleAddItem = (event) => {
       const { parentItem, newItem } = event.detail;
 
@@ -209,17 +410,74 @@ export default function WorkMapTable({ filter }) {
     // Add event listeners
     document.addEventListener("workmap:add-item", handleAddItem);
     document.addEventListener("workmap:delete-item", handleDeleteItem);
+    document.addEventListener("workmap:reorder-goal", (event) => {
+      const { goalId, direction } = event.detail;
+      handleReorderGoal(goalId, direction);
+    });
+    document.addEventListener("workmap:drag-drop-goal", (event) => {
+      const { sourceId, targetId, insertBefore } = event.detail;
+      handleDragAndDrop(sourceId, targetId, insertBefore);
+    });
+
+    // Add a global dragend handler to clean up drop indicators
+    const handleDragEnd = () => {
+      // Remove any drop indicator element
+      const indicator = document.getElementById('drop-indicator');
+      if (indicator) indicator.remove();
+      
+      // Remove dragging state from tables
+      document.querySelectorAll('tbody.dragging-in-progress').forEach(tbody => {
+        tbody.classList.remove('dragging-in-progress');
+      });
+    };
+    
+    document.addEventListener("dragend", handleDragEnd);
 
     // Clean up on unmount
     return () => {
       document.removeEventListener("workmap:add-item", handleAddItem);
       document.removeEventListener("workmap:delete-item", handleDeleteItem);
+      document.removeEventListener("workmap:reorder-goal", handleReorderGoal);
+      document.removeEventListener("workmap:drag-drop-goal", handleDragAndDrop);
+      document.removeEventListener("dragend", handleDragEnd);
     };
   }, [workMapData]);
 
+
+
   return (
     <div className="w-full overflow-x-auto">
-      <table className="w-full md:min-w-[1000px] table-auto">
+      {/* Edit mode toggle button - only visible to authorized users and not on completed page */}
+      {userCanEdit() && filter !== "completed" && (
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={() => setIsEditMode(!isEditMode)}
+            className={`flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-colors ${isEditMode
+              ? "bg-primary-600 text-white hover:bg-primary-700"
+              : "bg-surface-dimmed hover:bg-surface-outline/50 text-content-base"
+              }`}
+          >
+            {isEditMode ? (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline mr-1">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Done
+              </>
+            ) : (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline mr-1">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Reorder Goals
+              </>
+            )}
+          </button>
+        </div>
+      )}
+      
+      <table className={`w-full md:min-w-[1000px] table-auto ${isEditMode ? "border-2 border-primary-500 rounded" : ""}`}>
         <thead>
           <tr className="border-b-2 border-surface-outline dark:border-gray-600 bg-surface-dimmed dark:bg-gray-800/80 text-content-base dark:text-gray-200 text-sm sticky top-0">
             {/* Name column - more space on mobile for completed page */}
@@ -273,9 +531,10 @@ export default function WorkMapTable({ filter }) {
           </tr>
         </thead>
         <tbody>
-          {workMapData
-            // Special case for projects and completed pages - show flat lists
-            .flatMap((item) => {
+          {
+            workMapData
+              // Special case for projects and completed pages - show flat lists
+              .flatMap((item) => {
               // For projects page, extract all projects from the hierarchy and make a flat list
               if (filter === "projects") {
                 const allProjects = extractAllProjects([item]);
@@ -369,6 +628,7 @@ export default function WorkMapTable({ filter }) {
                   isSelected={false}
                   onRowClick={null}
                   selectedItemId={null}
+                  isEditMode={isEditMode}
                 />
               );
             })}
@@ -379,6 +639,7 @@ export default function WorkMapTable({ filter }) {
           )}
         </tbody>
       </table>
+      
     </div>
   );
 }
