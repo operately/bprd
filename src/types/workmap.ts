@@ -20,6 +20,7 @@ import type { BaseComponentProps, WithChildren, WithId } from './common';
  * Legacy/alternative states:
  * - completed: Legacy term for achieved
  * - dropped: Goal was intentionally abandoned
+ * - failed: Legacy term for missed (red)
  */
 export type GoalStatus = 
   // Progress states
@@ -34,7 +35,8 @@ export type GoalStatus =
   | 'missed'     // Goal not accomplished (red)
   // Legacy/alternative states
   | 'completed'  // Legacy term for achieved
-  | 'dropped';   // Goal abandoned
+  | 'dropped'    // Goal abandoned
+  | 'failed';    // Legacy term for missed
 
 /**
  * StatusBadge component props
@@ -48,7 +50,7 @@ export interface StatusBadgeProps extends BaseComponentProps {
  */
 export interface Owner {
   name: string;
-  initials: string;
+  initials?: string; // Making initials optional to accommodate existing data
   avatar?: string;
 }
 
@@ -58,6 +60,14 @@ export interface Owner {
 export interface Deadline {
   display: string;
   isPast?: boolean;
+  date?: string | Date;
+}
+
+/**
+ * Completion date information for completed work items
+ */
+export interface CompletedOn {
+  display: string;
   date?: string | Date;
 }
 
@@ -72,9 +82,10 @@ export interface WorkMapItem extends WithId {
   space: string;
   owner: Owner;
   children: WorkMapItem[];
-  deadline: Deadline;
+  deadline?: Deadline; // Making optional to accommodate existing data
   nextStep?: string;
   description?: string;
+  completedOn?: CompletedOn; // Date when the item was completed (for completed items)
 }
 
 /**
