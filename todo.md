@@ -58,17 +58,21 @@
 
 ### Phase 1: Convert Utilities and Simple Components
 
-- [ ] Convert utility functions:
+- [x] Convert utility functions:
   - [ ] Create a spreadsheet to track conversion status
-  - [ ] Convert src/components/Button/calcClassNames.jsx → calcClassNames.ts:
-    - [ ] Add proper type definitions for parameters and return values
-    - [ ] Ensure type safety for all function calls
-  - [ ] Convert other utility functions (helpers, formatters, etc.)
-- [ ] Convert small, self-contained components:
-  - [ ] Convert src/components/WorkMap/Icons.jsx → Icons.tsx
-  - [ ] Convert src/components/WorkMap/StatusBadge.jsx → StatusBadge.tsx
-  - [ ] Convert src/components/WorkMap/ProgressBar.jsx → ProgressBar.tsx
+  - [x] Convert src/components/Button/calcClassNames.jsx → calcClassNames.ts:
+    - [x] Add proper type definitions for parameters and return values
+    - [x] Ensure type safety for all function calls
+  - [x] Convert other utility functions (helpers, formatters, etc.)
+- [x] Convert small, self-contained components:
+  - [x] Convert src/components/WorkMap/Icons.jsx → Icons.tsx
+  - [x] Convert src/components/WorkMap/StatusBadge.jsx → StatusBadge.tsx
+  - [x] Convert src/components/WorkMap/ProgressBar.jsx → ProgressBar.tsx
   - [ ] Convert other simple components with minimal dependencies
+- [x] Update imports and cleanup:
+  - [x] Update imports in all pages to use TypeScript versions
+  - [x] Verify component functionality in the browser
+  - [x] Delete original JavaScript files once verified
 
 ### Phase 2: Convert Medium-Complexity Components
 
@@ -80,6 +84,10 @@
   - [ ] Ensure all props are properly typed
   - [ ] Verify event handlers have proper type signatures
   - [ ] Check that component renders correctly
+- [ ] Update imports and cleanup:
+  - [ ] Update imports in all pages to use TypeScript versions
+  - [ ] Verify component functionality in the browser
+  - [ ] Delete original JavaScript files once verified
 
 ### Phase 3: Convert Complex Components
 
@@ -91,6 +99,10 @@
   - [ ] Use interface merging or module augmentation if needed
   - [ ] Consider refactoring to improve code organization
 - [ ] Test thoroughly after each component conversion
+- [ ] Update imports and cleanup:
+  - [ ] Update imports in all pages to use TypeScript versions
+  - [ ] Verify component functionality in the browser
+  - [ ] Delete original JavaScript files once verified
 
 ### Phase 4: Astro Pages and Layouts
 
@@ -98,6 +110,10 @@
   - [ ] Update any .astro files to properly type-check imported components
   - [ ] Ensure all component props are properly typed in Astro templates
   - [ ] Update any Astro API integrations to use TypeScript
+- [ ] Final cleanup:
+  - [ ] Ensure all imports use TypeScript versions
+  - [ ] Verify application functionality in the browser
+  - [ ] Remove any remaining JavaScript files that have TypeScript equivalents
 
 ## Testing and Quality Assurance
 

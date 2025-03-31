@@ -1,12 +1,16 @@
 import React from "react";
 
+interface IconProps {
+  /**
+   * Size of the icon
+   */
+  size?: number;
+}
+
 /**
  * Chevron Down Icon
- * @param {Object} props
- * @param {number} [props.size=24] - Size of the icon
- * @returns {JSX.Element}
  */
-export function IconChevronDown({ size = 24 }) {
+export function IconChevronDown({ size = 24 }: IconProps): React.ReactElement {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -26,11 +30,8 @@ export function IconChevronDown({ size = 24 }) {
 
 /**
  * Plus Icon
- * @param {Object} props
- * @param {number} [props.size=24] - Size of the icon
- * @returns {JSX.Element}
  */
-export function IconPlus({ size = 24 }) {
+export function IconPlus({ size = 24 }: IconProps): React.ReactElement {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -50,11 +51,8 @@ export function IconPlus({ size = 24 }) {
 
 /**
  * Edit Icon
- * @param {Object} props
- * @param {number} [props.size=24] - Size of the icon
- * @returns {JSX.Element}
  */
-export function IconEdit({ size = 24 }) {
+export function IconEdit({ size = 24 }: IconProps): React.ReactElement {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

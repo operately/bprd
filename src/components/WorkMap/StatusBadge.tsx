@@ -1,7 +1,8 @@
 import React from "react";
+import type { StatusBadgeProps } from "../../types/workmap";
 
-export function StatusBadge({ status }) {
-  let bgColor, textColor, dotColor, borderColor, label;
+export function StatusBadge({ status }: StatusBadgeProps): React.ReactElement {
+  let bgColor: string, textColor: string, dotColor: string, borderColor: string, label: string;
 
   switch (status) {
     case "on_track":
@@ -83,7 +84,7 @@ export function StatusBadge({ status }) {
   }
 
   // Determine which icon to show based on status
-  const getStatusIcon = () => {
+  const getStatusIcon = (): React.ReactNode => {
     switch (status) {
       case "completed":
       case "achieved":

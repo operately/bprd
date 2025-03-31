@@ -7,14 +7,13 @@ import {
   DangerGhostButton,
   TextButton,
 } from "./index";
-import { IconPlus, IconEdit } from "./icons";
+import { IconPlus, IconEdit } from "./icons"; // This will import from the TypeScript file now
 import { Menu } from "../Menu";
 
 /**
  * Example showcasing all button variants
- * @returns {JSX.Element}
  */
-export function ButtonExampleVariants() {
+export function ButtonExampleVariants(): React.ReactElement {
   return (
     <div className="flex flex-wrap gap-4">
       <PrimaryButton>
@@ -38,9 +37,8 @@ export function ButtonExampleVariants() {
 
 /**
  * Example showcasing different button sizes
- * @returns {JSX.Element}
  */
-export function ButtonExampleSizes() {
+export function ButtonExampleSizes(): React.ReactElement {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center gap-4">
@@ -84,12 +82,11 @@ export function ButtonExampleSizes() {
 
 /**
  * Example showcasing loading state buttons
- * @returns {JSX.Element}
  */
-export function ButtonExampleLoading() {
+export function ButtonExampleLoading(): React.ReactElement {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = (): void => {
     setIsLoading(true);
     setTimeout(() => setIsLoading(false), 2000);
   };
@@ -125,9 +122,8 @@ export function ButtonExampleLoading() {
 
 /**
  * Example showcasing buttons with icons
- * @returns {JSX.Element}
  */
-export function ButtonExampleWithIcons() {
+export function ButtonExampleWithIcons(): React.ReactElement {
   return (
     <div className="flex flex-wrap gap-4">
       <PrimaryButton>
@@ -156,9 +152,8 @@ export function ButtonExampleWithIcons() {
 
 /**
  * Example showcasing menu buttons (dropdown)
- * @returns {JSX.Element}
  */
-export function ButtonExampleWithMenu() {
+export function ButtonExampleWithMenu(): React.ReactElement {
   const menuItems = [
     <Menu.MenuLinkItem key="1" to="#">
       Option 1
@@ -188,9 +183,8 @@ export function ButtonExampleWithMenu() {
 
 /**
  * Example showcasing link buttons
- * @returns {JSX.Element}
  */
-export function ButtonExampleLinks() {
+export function ButtonExampleLinks(): React.ReactElement {
   return (
     <div className="flex flex-wrap gap-4">
       <PrimaryButton linkTo="#primary">
@@ -211,16 +205,15 @@ export function ButtonExampleLinks() {
 
 /**
  * Example showcasing danger button variants
- * @returns {JSX.Element}
  */
-export function ButtonExampleDanger() {
+export function ButtonExampleDanger(): React.ReactElement {
   return (
     <div className="flex flex-wrap gap-4">
       <DangerButton>
-        <span>Danger Button</span>
+        <span>Delete Item</span>
       </DangerButton>
       <DangerGhostButton>
-        <span>Danger Ghost</span>
+        <span>Cancel Subscription</span>
       </DangerGhostButton>
     </div>
   );
