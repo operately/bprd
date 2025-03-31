@@ -5,6 +5,11 @@ dist/
 # generated types
 .astro/
 
+# typescript
+*.tsbuildinfo
+*.js.map
+*.d.ts.map
+
 # dependencies
 node_modules/
 

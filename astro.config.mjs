@@ -5,5 +5,13 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), react()]
+  integrations: [
+    tailwind(),
+    react({
+      // Enable TypeScript JSX components
+      include: ['**/*.{jsx,tsx}'],
+      // For React 19
+      experimentalReactChildren: true
+    })
+  ]
 });
