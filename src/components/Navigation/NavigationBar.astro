@@ -1,6 +1,11 @@
 ---
 import Logo from "../Logo.astro";
-import { avatarUrl } from "../../mockData.js";
+import { avatarUrl } from "../../mockData";
+import type { NavigationBarProps } from "../../types/astro";
+
+type Props = NavigationBarProps;
+
+const { activeItem } = Astro.props;
 ---
 
 <nav class="transition-all z-50 bg-base border-b border-surface-outline py-1.5">

@@ -1,5 +1,9 @@
 ---
-// Theme toggle component
+import type { ThemeToggleProps } from "../types/astro";
+
+type Props = ThemeToggleProps;
+
+const { initialTheme = 'system' } = Astro.props;
 ---
 
 <div class="theme-toggle fixed bottom-4 right-4 z-50">

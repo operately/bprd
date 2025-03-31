@@ -106,14 +106,14 @@
 
 ### Phase 4: Astro Pages and Layouts
 
-- [ ] Convert Astro-specific files:
-  - [ ] Update any .astro files to properly type-check imported components
-  - [ ] Ensure all component props are properly typed in Astro templates
-  - [ ] Update any Astro API integrations to use TypeScript
-- [ ] Final cleanup:
-  - [ ] Ensure all imports use TypeScript versions
-  - [ ] Verify application functionality in the browser
-  - [ ] Remove any remaining JavaScript files that have TypeScript equivalents
+- [x] Convert Astro-specific files:
+  - [x] Update any .astro files to properly type-check imported components
+  - [x] Ensure all component props are properly typed in Astro templates
+  - [x] Update any Astro API integrations to use TypeScript
+- [x] Final cleanup:
+  - [x] Ensure all imports use TypeScript versions
+  - [x] Verify application functionality in the browser
+  - [x] Remove any remaining JavaScript files that have TypeScript equivalents
 
 ## Testing and Quality Assurance
 
