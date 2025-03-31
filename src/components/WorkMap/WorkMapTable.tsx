@@ -3,7 +3,7 @@ import { TableRow } from "./TableRow.tsx";
 import { QuickAddRow } from "./QuickAddRow.tsx";
 import { SelectableTableRow } from "./SelectableTableRow.tsx";
 import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget.tsx";
-import { mockData } from "../../mockData";
+import { mockData } from "../../mockData.ts";
 import type { WorkMapItem, GoalStatus } from "../../types/workmap";
 
 interface WorkMapTableProps {
