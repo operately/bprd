@@ -1,13 +1,27 @@
-import React, { useState } from "react";
-import { TableRow } from "./TableRow";
-import { QuickAddRow } from "./QuickAddRow";
-import { mockData } from "../../mockData";
+import React, { useState, useEffect } from "react";
+import { TableRow } from "./TableRow.tsx";
+import { QuickAddRow } from "./QuickAddRow.tsx";
+import { SelectableTableRow } from "./SelectableTableRow.tsx";
+import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget.tsx";
+import { mockData } from "../../mockData.ts";
+import type { WorkMapItem, GoalStatus } from "../../types/workmap";
 
-// Helper function to extract all projects from the data, including nested ones
-const extractAllProjects = (data) => {
-  let allProjects = [];
+interface WorkMapTableProps {
+  filter?: string;
+}
 
-  const extractProjects = (items) => {
+interface CompletedOnInfo {
+  display: string;
+}
+
+/**
+ * Helper function to extract all projects from the data, including nested ones
+ * Returns a flat list of all projects
+ */
+const extractAllProjects = (data: WorkMapItem[]): WorkMapItem[] => {
+  let allProjects: WorkMapItem[] = [];
+
+  const extractProjects = (items: WorkMapItem[]): void => {
     items.forEach((item) => {
       // If this item is a project, add it to the list
       if (item.type === "project") {
@@ -25,26 +39,33 @@ const extractAllProjects = (data) => {
   return allProjects;
 };
 
-// Helper function to extract all completed, dropped, failed, achieved, partial, and missed items
-const extractCompletedItems = (data) => {
-  let completedItems = [];
+/**
+ * Helper function to extract all completed items (achieved, partial, missed, dropped)
+ * Returns a flat list of all completed items with completedOn dates
+ */
+const extractCompletedItems = (data: WorkMapItem[]): WorkMapItem[] => {
+  let completedItems: WorkMapItem[] = [];
 
-  const extractItems = (items) => {
+  const extractItems = (items: WorkMapItem[]): void => {
     items.forEach((item) => {
       // If this item is completed, dropped, failed, achieved, partial, or missed, add it to the list
       if (
         item.status === "completed" ||
         item.status === "dropped" ||
-        item.status === "failed" ||
+        item.status === "failed" || // Legacy status
         item.status === "achieved" ||
         item.status === "partial" ||
         item.status === "missed"
       ) {
         // For completed page, use completedOn date if available, or create a mock one if not
-        const enhancedItem = { ...item, children: [] }; // Reset children to make it flat
+        const enhancedItem = { 
+          ...item, 
+          children: [], // Reset children to make it flat
+          completedOn: item.completedOn || { display: "" } 
+        };
 
-        // If completedOn is not present, add a mock date based on status
-        if (!enhancedItem.completedOn) {
+        // If completedOn is not present or has no display, add a mock date based on status
+        if (!enhancedItem.completedOn || !enhancedItem.completedOn.display) {
           if (
             enhancedItem.status === "completed" ||
             enhancedItem.status === "achieved"
@@ -76,8 +97,11 @@ const extractCompletedItems = (data) => {
   return completedItems;
 };
 
-// Helper function to filter children based on type and status criteria
-const filterChildren = (item, filter) => {
+/**
+ * Helper function to filter children based on type and status criteria
+ * Returns a new WorkMapItem with children filtered according to the filter criteria
+ */
+const filterChildren = (item: WorkMapItem, filter?: string): WorkMapItem => {
   if (!item.children || item.children.length === 0)
     return { ...item, children: [] };
 
@@ -107,28 +131,37 @@ const filterChildren = (item, filter) => {
   return { ...item, children: filteredChildren };
 };
 
-export default function WorkMapTable({ filter }) {
+/**
+ * WorkMapTable component that displays work items in a table format
+ * Supports filtering by type (goals, projects) and status (completed)
+ */
+export default function WorkMapTable({ filter }: WorkMapTableProps): React.ReactElement {
   // Determine if we're on the completed page
   const isCompletedPage = filter === "completed";
+  
   // Create a state to store the modified data
-  const [workMapData, setWorkMapData] = useState(mockData);
+  const [workMapData, setWorkMapData] = useState<WorkMapItem[]>(() => mockData);
 
   // Get the column count based on filter
-  const getColumnCount = () => {
+  const getColumnCount = (): number => {
     if (filter === "completed") return 5; // Name, Status, Completed On, Space, Champion
     return 7; // Name, Status, Progress, Deadline, Space, Champion, Next step
   };
 
   // Add listeners for add-item and delete-item events
-  React.useEffect(() => {
-    const handleAddItem = (event) => {
-      const { parentItem, newItem } = event.detail;
+  useEffect(() => {
+    // Event handler for adding new items
+    const handleAddItem = (event: CustomEvent): void => {
+      const { parentItem, newItem } = event.detail as { 
+        parentItem: WorkMapItem | null; 
+        newItem: WorkMapItem;
+      };
 
       // Create a deep copy of the data
       const newData = JSON.parse(JSON.stringify(workMapData));
 
       // Helper function to add the item to the correct place in the hierarchy
-      const addItemToHierarchy = (items, parentId) => {
+      const addItemToHierarchy = (items: WorkMapItem[], parentId: string): boolean => {
         for (let i = 0; i < items.length; i++) {
           if (items[i].id === parentId) {
             // Found the parent, add the new item to its children
@@ -161,14 +194,15 @@ export default function WorkMapTable({ filter }) {
       setWorkMapData(newData);
     };
 
-    const handleDeleteItem = (event) => {
-      const { itemId } = event.detail;
+    // Event handler for deleting items
+    const handleDeleteItem = (event: CustomEvent): void => {
+      const { itemId } = event.detail as { itemId: string };
 
       // Create a deep copy of the data
       const newData = JSON.parse(JSON.stringify(workMapData));
 
       // Helper function to delete the item from the hierarchy
-      const deleteItemFromHierarchy = (items) => {
+      const deleteItemFromHierarchy = (items: WorkMapItem[]): boolean => {
         // Check if the item is at the root level
         const rootIndex = items.findIndex((item) => item.id === itemId);
         if (rootIndex !== -1) {
@@ -207,15 +241,48 @@ export default function WorkMapTable({ filter }) {
     };
 
     // Add event listeners
-    document.addEventListener("workmap:add-item", handleAddItem);
-    document.addEventListener("workmap:delete-item", handleDeleteItem);
+    document.addEventListener("workmap:add-item", handleAddItem as EventListener);
+    document.addEventListener("workmap:delete-item", handleDeleteItem as EventListener);
 
     // Clean up on unmount
     return () => {
-      document.removeEventListener("workmap:add-item", handleAddItem);
-      document.removeEventListener("workmap:delete-item", handleDeleteItem);
+      document.removeEventListener("workmap:add-item", handleAddItem as EventListener);
+      document.removeEventListener("workmap:delete-item", handleDeleteItem as EventListener);
     };
   }, [workMapData]);
+
+  // Parse dates in "Month DD YYYY" format
+  const parseDate = (dateStr?: string): Date => {
+    if (!dateStr) return new Date(0);
+
+    const months: Record<string, number> = {
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
+    };
+
+    // Extract components from format like "Mar 10 2025"
+    const parts = dateStr.split(" ");
+    if (parts.length === 3) {
+      const month = months[parts[0]];
+      const day = parseInt(parts[1], 10);
+      const year = parseInt(parts[2], 10);
+      if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
+        return new Date(year, month, day);
+      }
+    }
+
+    return new Date(0); // Default to oldest date if parsing fails
+  };
 
   return (
     <div className="w-full overflow-x-auto">
@@ -292,41 +359,14 @@ export default function WorkMapTable({ filter }) {
                 // Sort by completedOn date, most recent first
                 const completedItems = extractCompletedItems([item]);
 
-                // Parse dates in "Month DD YYYY" format
-                const parseDate = (dateStr) => {
-                  if (!dateStr) return new Date(0);
-
-                  const months = {
-                    Jan: 0,
-                    Feb: 1,
-                    Mar: 2,
-                    Apr: 3,
-                    May: 4,
-                    Jun: 5,
-                    Jul: 6,
-                    Aug: 7,
-                    Sep: 8,
-                    Oct: 9,
-                    Nov: 10,
-                    Dec: 11,
-                  };
-
-                  // Extract components from format like "Mar 10 2025"
-                  const parts = dateStr.split(" ");
-                  if (parts.length === 3) {
-                    const month = months[parts[0]];
-                    const day = parseInt(parts[1], 10);
-                    const year = parseInt(parts[2], 10);
-                    return new Date(year, month, day);
-                  }
-
-                  return new Date(0); // Default to oldest date if parsing fails
-                };
-
                 return completedItems.sort((a, b) => {
-                  const dateA = parseDate(a.completedOn?.display);
-                  const dateB = parseDate(b.completedOn?.display);
-                  return dateB - dateA; // Most recent first
+                  // Type assertion to add completedOn property
+                  const itemA = a as WorkMapItem & { completedOn?: CompletedOnInfo };
+                  const itemB = b as WorkMapItem & { completedOn?: CompletedOnInfo };
+                  
+                  const dateA = parseDate(itemA.completedOn?.display);
+                  const dateB = parseDate(itemB.completedOn?.display);
+                  return dateB.getTime() - dateA.getTime(); // Most recent first
                 });
               }
 
@@ -367,8 +407,8 @@ export default function WorkMapTable({ filter }) {
                   isLast={index === filteredItems.length - 1}
                   filter={filter}
                   isSelected={false}
-                  onRowClick={null}
-                  selectedItemId={null}
+                  onRowClick={undefined}
+                  selectedItemId={undefined}
                 />
               );
             })}

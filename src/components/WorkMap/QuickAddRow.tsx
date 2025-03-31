@@ -1,14 +1,30 @@
-import React, { useState, useRef } from "react";
-import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget";
+import React, { useState } from "react";
+import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget.tsx";
 
-export function QuickAddRow({ columnCount, filter }) {
-  const [isAddingItem, setIsAddingItem] = useState(false);
+interface QuickAddRowProps {
+  /**
+   * Number of columns in the table, used for the colspan attribute
+   */
+  columnCount: number;
+  
+  /**
+   * Filter type to determine what kind of item to add (projects, goals, etc.)
+   */
+  filter?: string;
+}
 
-  const handleAddClick = () => {
+/**
+ * A component that renders a row with an "Add new item" button at the bottom of a WorkMap table
+ * When clicked, it shows the HoverQuickEntryWidget for adding new items
+ */
+export function QuickAddRow({ columnCount, filter }: QuickAddRowProps): React.ReactElement {
+  const [isAddingItem, setIsAddingItem] = useState<boolean>(false);
+
+  const handleAddClick = (): void => {
     setIsAddingItem(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsAddingItem(false);
   };
 

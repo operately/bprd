@@ -1,7 +1,54 @@
 // Mock data for development purposes
+import type { GoalStatus } from "./types/workmap";
+
+// Define types for our mock data
+interface User {
+  id?: string; // Making id optional for mock data users
+  name: string;
+  email?: string;
+  avatar?: string;
+  initials?: string;
+  role?: string;
+}
+
+interface Company {
+  id: string;
+  name: string;
+  logoUrl: string;
+}
+
+interface NavigationItem {
+  id: string;
+  label: string;
+  href: string;
+  icon: string;
+}
+
+interface Deadline {
+  display: string;
+  isPast: boolean;
+}
+
+interface CompletedOn {
+  display: string;
+}
+
+interface WorkMapItem {
+  id: string;
+  type: "goal" | "project";
+  name: string;
+  status: GoalStatus;
+  progress: number;
+  space: string;
+  owner: User;
+  deadline?: Deadline;
+  completedOn?: CompletedOn;
+  nextStep?: string;
+  children: WorkMapItem[];
+}
 
 // Avatar URLs from the Operately design system
-export const avatarImages = [
+export const avatarImages: string[] = [
   "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
@@ -11,10 +58,10 @@ export const avatarImages = [
 ];
 
 // For backward compatibility
-export const avatarUrl = avatarImages[0];
+export const avatarUrl: string = avatarImages[0];
 
 // Sample user data
-export const currentUser = {
+export const currentUser: User = {
   id: "user-1",
   name: "John Doe",
   email: "john.doe@example.com",
@@ -23,14 +70,14 @@ export const currentUser = {
 };
 
 // Sample company data
-export const companyData = {
+export const companyData: Company = {
   id: "company-1",
   name: "Nexus Dynamics",
   logoUrl: "/logo.svg",
 };
 
 // Sample navigation items
-export const navItems = [
+export const navItems: NavigationItem[] = [
   { id: "nav-1", label: "Home", href: "/", icon: "home" },
   { id: "nav-2", label: "Company", href: "/work-map/", icon: "map" },
   { id: "nav-3", label: "My work", href: "#", icon: "camera-selfie" },
@@ -38,7 +85,7 @@ export const navItems = [
 ];
 
 // Work Map mock data
-export const mockData = [
+export const mockData: WorkMapItem[] = [
   {
     id: "goal-1",
     type: "goal",
@@ -159,7 +206,7 @@ export const mockData = [
         id: "goal-22",
         type: "goal",
         name: "Increase TikTok impressions by 60%",
-        status: "missed",
+        status: "missed", // Goal not accomplished (red)
         progress: 30,
         space: "Marketing",
         owner: {
@@ -181,7 +228,7 @@ export const mockData = [
         id: "goal-23",
         type: "goal",
         name: "Increase LinkedIn followers by 40%",
-        status: "partial",
+        status: "partial", // Goal partially accomplished (amber/yellow)
         progress: 75,
         space: "Marketing",
         owner: {

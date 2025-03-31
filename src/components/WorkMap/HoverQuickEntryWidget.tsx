@@ -1,19 +1,44 @@
 import React, { useState, useRef, useEffect } from "react";
+import type { WorkMapItem, GoalStatus } from "../../types/workmap";
 
+interface HoverQuickEntryWidgetProps {
+  /**
+   * The parent item under which the new item will be created
+   * If null, item will be created at the root level
+   */
+  parentItem: WorkMapItem | null;
+  
+  /**
+   * Current filter to determine what type of item can be created
+   * (e.g., "goals", "projects", "all")
+   */
+  filter?: string;
+  
+  /**
+   * Callback function when the widget is closed
+   */
+  onClose?: () => void;
+}
+
+/**
+ * Widget for quickly adding new goals or projects to the WorkMap
+ */
 export function HoverQuickEntryWidget({
   parentItem,
   filter,
   onClose = () => {},
-}) {
-  const [inputValue, setInputValue] = useState("");
+}: HoverQuickEntryWidgetProps): React.ReactElement {
+  const [inputValue, setInputValue] = useState<string>("");
+  
   // Set default item type based on the filter
-  let defaultType = "goal"; // Default to goal for most views
+  let defaultType: "goal" | "project" = "goal"; // Default to goal for most views
   if (filter === "projects") {
     defaultType = "project";
   }
-  const [itemType, setItemType] = useState(defaultType);
-  const inputRef = useRef(null);
-  const widgetRef = useRef(null);
+  
+  const [itemType, setItemType] = useState<"goal" | "project">(defaultType);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const widgetRef = useRef<HTMLDivElement>(null);
 
   // Focus the input on mount
   useEffect(() => {
@@ -23,27 +48,29 @@ export function HoverQuickEntryWidget({
   }, []);
 
   // Handle the form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     if (inputValue.trim()) {
       // Generate a unique ID for the new item
       const newItemId = Math.random().toString(36).substring(2, 9);
 
       // Create the new item object with all necessary fields for display
-      const newItem = {
+      const newItem: WorkMapItem = {
         id: newItemId,
-        name: inputValue.trim(),
         type: itemType,
-        status: "pending",
+        name: inputValue.trim(),
+        status: "pending" as GoalStatus, // Initial status is pending
         progress: 0,
-        children: [],
-        deadline: { display: "" }, // Empty deadline
         space: "", // Empty space
         owner: {
           // Empty owner
           name: "",
-          avatar: null,
           initials: "",
+        },
+        children: [],
+        deadline: { 
+          display: "",
+          isPast: false 
         },
         nextStep: "", // Empty next step
       };
@@ -64,8 +91,8 @@ export function HoverQuickEntryWidget({
 
   // Handle clicks outside to close the input field
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (widgetRef.current && !widgetRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent): void => {
+      if (widgetRef.current && !widgetRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
@@ -79,7 +106,7 @@ export function HoverQuickEntryWidget({
 
   // Handle escape key to cancel
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent): void => {
       if (e.key === "Escape") {
         onClose();
       }
@@ -109,7 +136,7 @@ export function HoverQuickEntryWidget({
                 <>
                   <select
                     value={itemType}
-                    onChange={(e) => setItemType(e.target.value)}
+                    onChange={(e) => setItemType(e.target.value as "goal" | "project")}
                     className="appearance-none h-8 bg-surface-base dark:bg-surface-dimmed text-content-base pl-2 pr-7 py-1 focus:outline-none text-sm"
                   >
                     <option value="goal">Goal</option>

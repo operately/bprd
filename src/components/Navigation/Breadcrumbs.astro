@@ -1,6 +1,8 @@
 ---
+import type { BreadcrumbItem } from "../../types/astro";
+
 interface Props {
-  items?: { label: string; href: string }[];
+  items?: BreadcrumbItem[];
 }
 
 const { items = [] } = Astro.props;

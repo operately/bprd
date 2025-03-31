@@ -1,6 +1,10 @@
 import React from "react";
 
-export function IconTargetArrow({ size = 24 }) {
+interface IconProps {
+  size?: number;
+}
+
+export function IconTargetArrow({ size = 24 }: IconProps): React.ReactElement {
   return (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
@@ -25,7 +29,7 @@ export function IconTargetArrow({ size = 24 }) {
   );
 }
 
-export function IconChecklist({ size = 24 }) {
+export function IconChecklist({ size = 24 }: IconProps): React.ReactElement {
   return (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
@@ -47,7 +51,7 @@ export function IconChecklist({ size = 24 }) {
   );
 }
 
-export function IconChevronDown({ size = 24 }) {
+export function IconChevronDown({ size = 24 }: IconProps): React.ReactElement {
   return (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
@@ -66,7 +70,7 @@ export function IconChevronDown({ size = 24 }) {
   );
 }
 
-export function IconChevronRight({ size = 24 }) {
+export function IconChevronRight({ size = 24 }: IconProps): React.ReactElement {
   return (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 

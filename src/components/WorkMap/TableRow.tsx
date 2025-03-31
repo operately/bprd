@@ -7,8 +7,14 @@ import {
   IconChevronDown,
   IconChevronRight,
 } from "./Icons";
-import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget";
+import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget.tsx";
+import type { WorkMapItem, GoalStatus, TableRowProps } from "../../types/workmap";
 
+/**
+ * TableRow component for rendering a WorkMap item (goal or project) in a table
+ * Handles recursive rendering of children, styling for different item states,
+ * and interactions like hover, selection, and adding new items
+ */
 export function TableRow({
   item,
   level,
@@ -17,13 +23,14 @@ export function TableRow({
   isSelected = false,
   onRowClick,
   selectedItemId,
-}) {
+}: TableRowProps): React.ReactElement {
   // Determine if we're on the completed page for compact styling
   const isCompletedPage = filter === "completed";
-  const [expanded, setExpanded] = useState(true);
-  const [showAddButton, setShowAddButton] = useState(false);
-  const [showQuickEntryWidget, setShowQuickEntryWidget] = useState(false);
+  const [expanded, setExpanded] = useState<boolean>(true);
+  const [showAddButton, setShowAddButton] = useState<boolean>(false);
+  const [showQuickEntryWidget, setShowQuickEntryWidget] = useState<boolean>(false);
   const hasChildren = item.children && item.children.length > 0;
+  
   // Decide whether to show indentation and controls
   // Only apply indentation on hierarchical pages (all work, goals)
   const showIndentation = !filter || filter === "goals" || filter === "all";
@@ -32,6 +39,7 @@ export function TableRow({
   const isProject = item.type === "project";
 
   // Determine if item should have strikethrough or other special styling
+  // Based on the three-state goal completion model: achieved, partial, missed
   const isCompleted =
     item.status === "completed" ||
     item.status === "achieved" ||
@@ -42,13 +50,14 @@ export function TableRow({
   const isPending = item.status === "pending";
 
   // Handle click on the row to trigger selection
-  const handleRowClick = (e) => {
+  const handleRowClick = (e: React.MouseEvent<HTMLTableRowElement>): void => {
     // Prevent click from bubbling when clicking links or buttons
+    const target = e.target as HTMLElement;
     if (
-      e.target.tagName.toLowerCase() === "a" ||
-      e.target.tagName.toLowerCase() === "button" ||
-      e.target.closest("a") ||
-      e.target.closest("button")
+      target.tagName.toLowerCase() === "a" ||
+      target.tagName.toLowerCase() === "button" ||
+      target.closest("a") ||
+      target.closest("button")
     ) {
       return;
     }
@@ -90,7 +99,10 @@ export function TableRow({
 
                 {hasChildren && (
                   <button
-                    onClick={() => setExpanded(!expanded)}
+                    onClick={(e: React.MouseEvent) => {
+                      e.stopPropagation();
+                      setExpanded(!expanded);
+                    }}
                     className="mr-2 text-content-dimmed hover:text-content-base dark:text-gray-400 dark:hover:text-gray-300"
                   >
                     {expanded ? (
@@ -147,7 +159,7 @@ export function TableRow({
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10">
                 <button
                   className="flex items-center gap-1 text-xs font-semibold border border-surface-outline bg-surface-base text-content-dimmed hover:text-content-base hover:bg-surface-accent rounded-2xl pl-2 pr-3 py-[1px] transition-colors shadow-sm"
-                  onClick={(e) => {
+                  onClick={(e: React.MouseEvent) => {
                     e.stopPropagation();
                     setShowQuickEntryWidget(true);
                   }}
@@ -176,7 +188,7 @@ export function TableRow({
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10">
               <button
                 className="flex items-center p-1 rounded-full text-red-500 hover:text-red-600 hover:bg-red-50 transition-colors"
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent) => {
                   e.stopPropagation();
                   // Dispatch a custom event to delete this item
                   const event = new CustomEvent("workmap:delete-item", {
@@ -243,7 +255,7 @@ export function TableRow({
               className={`
                 text-sm whitespace-nowrap
                 ${
-                  item.deadline.isPast &&
+                  item.deadline?.isPast &&
                   !isCompleted &&
                   !isFailed &&
                   !isDropped &&
@@ -262,7 +274,7 @@ export function TableRow({
                 ${isPending ? "text-content-dimmed" : ""}
               `}
             >
-              {item.deadline.display}
+              {item.deadline?.display}
             </span>
           )}
         </td>
@@ -363,7 +375,7 @@ export function TableRow({
       {/* Quick entry widget shown when add button is clicked as an overlay */}
       {showQuickEntryWidget && (
         <tr className="bg-transparent">
-          <td colSpan="7" className="p-0">
+          <td colSpan={7} className="p-0">
             <div className="relative">
               <div
                 className="absolute z-10 mt-1"
@@ -383,7 +395,7 @@ export function TableRow({
 
       {expanded &&
         hasChildren &&
-        item.children.map((child, index) => (
+        item.children.map((child: WorkMapItem, index: number) => (
           <TableRow
             key={child.id}
             item={child}

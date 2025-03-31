@@ -1,10 +1,9 @@
 ---
 import "../styles/global.css";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import type { LayoutProps } from "../types/astro";
 
-interface Props {
-  title?: string;
-}
+type Props = LayoutProps;
 
 const { title = "Operately BPRD" } = Astro.props;
 ---

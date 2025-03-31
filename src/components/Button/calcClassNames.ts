@@ -1,15 +1,16 @@
 import classNames from "classnames";
+import type { BaseButtonProps, ButtonThemeOptions } from "../../types/button";
 
 /**
  * Calculate class names for button based on props and theme options
- * @param {import('./UnstyledButton').BaseButtonProps} props - Button props
- * @param {Object} options - Theme options
- * @param {string} options.normal - Classes to apply in normal state
- * @param {string} options.loading - Classes to apply in loading state
- * @param {string} options.always - Classes to always apply
- * @returns {string} - Calculated class names
+ * @param props - Button props
+ * @param options - Theme options
+ * @returns Calculated class names
  */
-export function calcClassName(props, { normal, loading, always }) {
+export function calcClassName(
+  props: BaseButtonProps, 
+  { normal, loading, always }: ButtonThemeOptions
+): string {
   const size = props.size || "base";
 
   return classNames(

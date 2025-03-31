@@ -1,20 +1,49 @@
 import React, { useState, useRef, useEffect } from "react";
 
-export function WorkMapTabs({ activeTab }) {
+interface WorkMapTabsProps {
+  /**
+   * The currently active tab
+   * Possible values: "all", "goals", "projects", "completed"
+   */
+  activeTab: string;
+}
+
+interface TimePeriod {
+  id: string;
+  display: string;
+}
+
+interface DropdownPosition {
+  top: number;
+  left: number;
+  width: number;
+}
+
+interface QuarterYear {
+  quarter: number;
+  year: number;
+  display: string;
+}
+
+/**
+ * Navigation component for switching between different WorkMap views
+ * Also includes a time period selector for filtering items by quarter/year
+ */
+export function WorkMapTabs({ activeTab }: WorkMapTabsProps): React.ReactElement {
   // Reference to the button element for positioning the dropdown
-  const buttonRef = useRef(null);
-  const dropdownRef = useRef(null);
-  const [dropdownPosition, setDropdownPosition] = useState({
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
     top: 0,
     left: 0,
     width: 0,
   });
   // State for the time period selection
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState("current");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState<string>("current");
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   // Get current quarter and year
-  const getCurrentQuarterYear = () => {
+  const getCurrentQuarterYear = (): QuarterYear => {
     const now = new Date();
     const year = now.getFullYear();
     const quarter = Math.floor(now.getMonth() / 3) + 1;
@@ -24,7 +53,7 @@ export function WorkMapTabs({ activeTab }) {
   const currentPeriod = getCurrentQuarterYear();
 
   // Available time periods
-  const timePeriods = [
+  const timePeriods: TimePeriod[] = [
     { id: "current", display: currentPeriod.display },
     {
       id: "prev-quarter",
@@ -42,7 +71,7 @@ export function WorkMapTabs({ activeTab }) {
     timePeriods.find((p) => p.id === selectedTimePeriod) || timePeriods[0];
 
   // Toggle dropdown
-  const toggleDropdown = () => {
+  const toggleDropdown = (): void => {
     // Calculate position before toggling
     if (!isDropdownOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
@@ -59,12 +88,12 @@ export function WorkMapTabs({ activeTab }) {
   useEffect(() => {
     if (!isDropdownOpen) return;
 
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: MouseEvent): void => {
       if (
         buttonRef.current &&
-        !buttonRef.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target as Node) &&
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
+        !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsDropdownOpen(false);
       }
@@ -75,7 +104,7 @@ export function WorkMapTabs({ activeTab }) {
   }, [isDropdownOpen]);
 
   // Select a time period
-  const selectTimePeriod = (periodId) => {
+  const selectTimePeriod = (periodId: string): void => {
     setSelectedTimePeriod(periodId);
     setIsDropdownOpen(false);
     // Here you would trigger filtering of the data based on the selected period
@@ -83,12 +112,13 @@ export function WorkMapTabs({ activeTab }) {
   };
 
   // Reset to default (current quarter)
-  const resetToDefault = (e) => {
+  const resetToDefault = (e: React.MouseEvent): void => {
     e.stopPropagation(); // Prevent dropdown from opening
     setSelectedTimePeriod("current");
     // Here you would reset the filtering
     console.log("Reset to current period");
   };
+  
   return (
     <div className="border-b border-surface-outline">
       <div className="px-4 sm:px-6">
