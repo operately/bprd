@@ -23,7 +23,7 @@
 
 ## Milestone 2: Create Type Definitions
 
-- [ ] Create a types directory structure:
+- [x] Create a types directory structure:
   ```
   src/
   └── types/
@@ -32,8 +32,8 @@
       ├── button.ts     # Button-specific types
       └── ...           # Other domain-specific type files
   ```
-- [ ] Define common types used throughout the application:
-  - [ ] Create GoalStatus enum/type with all status values:
+- [x] Define common types used throughout the application:
+  - [x] Create GoalStatus enum/type with all status values:
     ```typescript
     export type GoalStatus = 
       | "on_track" 
@@ -47,12 +47,12 @@
       | "missed" 
       | "pending";
     ```
-  - [ ] Define component prop interfaces for each component
-  - [ ] Create types for common data structures and state
-- [ ] If using external APIs, define interfaces for API responses
-- [ ] Define utility types for common patterns (e.g., Partial, Pick, etc.)
-- [ ] Create theme types to enforce consistent styling
-- [ ] Define event handler types for consistent event handling
+  - [x] Define component prop interfaces for each component
+  - [x] Create types for common data structures and state
+- [x] If using external APIs, define interfaces for API responses
+- [x] Define utility types for common patterns (e.g., Partial, Pick, etc.)
+- [x] Create theme types to enforce consistent styling
+- [x] Define event handler types for consistent event handling
 
 ## Milestone 3: Incremental Implementation
 
