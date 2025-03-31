@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { TableRow } from "./TableRow";
-import { QuickAddRow } from "./QuickAddRow";
+import { QuickAddRow } from "./QuickAddRow.tsx";
+import { SelectableTableRow } from "./SelectableTableRow.tsx";
+import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget.tsx";
 import { mockData } from "../../mockData";
 
 // Helper function to extract all projects from the data, including nested ones

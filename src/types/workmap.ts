@@ -44,6 +44,40 @@ export interface StatusBadgeProps extends BaseComponentProps {
 }
 
 /**
+ * Owner information structure
+ */
+export interface Owner {
+  name: string;
+  initials: string;
+  avatar?: string;
+}
+
+/**
+ * Deadline information
+ */
+export interface Deadline {
+  display: string;
+  isPast?: boolean;
+  date?: string | Date;
+}
+
+/**
+ * WorkMap Item - represents a goal or project in the work map
+ */
+export interface WorkMapItem extends WithId {
+  name: string;
+  type: 'goal' | 'project';
+  status: GoalStatus;
+  progress: number; // 0-100
+  space: string;
+  owner: Owner;
+  children: WorkMapItem[];
+  deadline: Deadline;
+  nextStep?: string;
+  description?: string;
+}
+
+/**
  * WorkMap entry/row props (basic version)
  */
 export interface WorkMapEntryProps extends WithId {
@@ -67,10 +101,14 @@ export interface WorkMapTableProps extends BaseComponentProps, WithChildren {
 /**
  * Props for TableRow component
  */
-export interface TableRowProps extends BaseComponentProps, WithChildren {
-  entry: WorkMapEntryProps;
+export interface TableRowProps extends BaseComponentProps {
+  item: WorkMapItem;
+  level: number;
+  isLast: boolean;
+  filter?: string;
   isSelected?: boolean;
-  onClick?: () => void;
+  onRowClick?: (item: WorkMapItem) => void;
+  selectedItemId?: string;
 }
 
 /**

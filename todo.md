@@ -35,16 +35,16 @@
 - [x] Define common types used throughout the application:
   - [x] Create GoalStatus enum/type with all status values:
     ```typescript
-    export type GoalStatus = 
-      | "on_track" 
-      | "completed" 
-      | "achieved" 
-      | "partial" 
-      | "paused" 
-      | "dropped" 
-      | "caution" 
-      | "issue" 
-      | "missed" 
+    export type GoalStatus =
+      | "on_track"
+      | "completed"
+      | "achieved"
+      | "partial"
+      | "paused"
+      | "dropped"
+      | "caution"
+      | "issue"
+      | "missed"
       | "pending";
     ```
   - [x] Define component prop interfaces for each component
@@ -76,18 +76,18 @@
 
 ### Phase 2: Convert Medium-Complexity Components
 
-- [ ] Identify components with moderate complexity:
-  - [ ] Convert src/components/WorkMap/QuickAddRow.jsx → QuickAddRow.tsx
-  - [ ] Convert src/components/WorkMap/SelectableTableRow.jsx → SelectableTableRow.tsx
-  - [ ] Convert src/components/WorkMap/HoverQuickEntryWidget.jsx → HoverQuickEntryWidget.tsx
-- [ ] Test each component after conversion:
-  - [ ] Ensure all props are properly typed
-  - [ ] Verify event handlers have proper type signatures
-  - [ ] Check that component renders correctly
-- [ ] Update imports and cleanup:
-  - [ ] Update imports in all pages to use TypeScript versions
-  - [ ] Verify component functionality in the browser
-  - [ ] Delete original JavaScript files once verified
+- [x] Identify components with moderate complexity:
+  - [x] Convert src/components/WorkMap/QuickAddRow.jsx → QuickAddRow.tsx
+  - [x] Convert src/components/WorkMap/SelectableTableRow.jsx → SelectableTableRow.tsx
+  - [x] Convert src/components/WorkMap/HoverQuickEntryWidget.jsx → HoverQuickEntryWidget.tsx
+- [x] Test each component after conversion:
+  - [x] Ensure all props are properly typed
+  - [x] Verify event handlers have proper type signatures
+  - [x] Check that component renders correctly
+- [x] Update imports and cleanup:
+  - [x] Update imports in all pages to use TypeScript versions
+  - [x] Verify component functionality in the browser
+  - [x] Delete original JavaScript files once verified
 
 ### Phase 3: Convert Complex Components
 

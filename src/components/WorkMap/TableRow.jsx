@@ -7,7 +7,7 @@ import {
   IconChevronDown,
   IconChevronRight,
 } from "./Icons";
-import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget";
+import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget.tsx";
 
 export function TableRow({
   item,
