@@ -86,6 +86,7 @@ export interface WorkMapItem extends WithId {
   nextStep?: string;
   description?: string;
   completedOn?: CompletedOn; // Date when the item was completed (for completed items)
+  isNew?: boolean; // Flag to indicate newly added items for highlighting
 }
 
 /**

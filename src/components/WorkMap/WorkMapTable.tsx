@@ -187,6 +187,9 @@ export default function WorkMapTable({
         return false;
       };
 
+      // Add isNew flag to the new item for highlighting
+      newItem.isNew = true;
+
       // If there's a parent item, add it to its children
       if (parentItem) {
         addItemToHierarchy(newData, parentItem.id);
@@ -197,6 +200,35 @@ export default function WorkMapTable({
 
       // Update the data
       setWorkMapData(newData);
+
+      // Remove the isNew flag after 5 seconds
+      setTimeout(() => {
+        setWorkMapData((prevData) => {
+          const updatedData = JSON.parse(JSON.stringify(prevData));
+
+          // Helper function to find and update the item
+          const removeNewFlag = (items: WorkMapItem[]): boolean => {
+            for (let i = 0; i < items.length; i++) {
+              if (items[i].id === newItem.id) {
+                // Found the item, remove isNew flag
+                delete items[i].isNew;
+                return true;
+              }
+
+              // Check in children
+              if (items[i].children && items[i].children.length > 0) {
+                if (removeNewFlag(items[i].children)) {
+                  return true;
+                }
+              }
+            }
+            return false;
+          };
+
+          removeNewFlag(updatedData);
+          return updatedData;
+        });
+      }, 5000); // Remove highlight after 5 seconds
     };
 
     // Event handler for deleting items

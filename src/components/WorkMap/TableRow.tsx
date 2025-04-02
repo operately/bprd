@@ -82,6 +82,7 @@ export function TableRow({
       <tr
         data-workmap-selectable="true"
         className={`group border-b border-stroke-base transition-all duration-150 ease-in-out cursor-pointer relative
+          ${item.isNew ? "bg-amber-50/70 dark:bg-amber-900/20" : ""}
           ${
             isThisItemSelected
               ? "bg-surface-highlight dark:bg-surface-dimmed/30"
