@@ -335,7 +335,7 @@ export default function WorkMapTable({
 
   return (
     <div className="w-full overflow-x-auto">
-      <table className="w-full md:min-w-[1000px] table-auto">
+      <table className="w-full lg:min-w-[1000px] table-auto">
         <thead>
           <tr className="border-b-2 border-surface-outline dark:border-gray-600 bg-surface-dimmed dark:bg-gray-800/80 text-content-base dark:text-gray-200 text-xs sm:text-sm sticky top-0">
             {/* Name column - more space on mobile for completed page */}
@@ -367,7 +367,7 @@ export default function WorkMapTable({
               className={`text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold ${
                 isCompletedPage
                   ? "w-[100px] md:w-[120px]"
-                  : "hidden md:table-cell w-[120px]"
+                  : "hidden lg:table-cell w-[120px]"
               }`}
             >
               {isCompletedPage ? "Completed On" : "Deadline"}

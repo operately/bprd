@@ -196,7 +196,7 @@ export function TableRow({
                   <span>Add</span>
                 </button>
               )}
-              
+
               {/* Delete button for pending items */}
               {isPending && (
                 <button
@@ -257,7 +257,7 @@ export function TableRow({
         {/* Deadline or Completed On */}
         <td
           className={`py-2 px-2 md:px-4 ${
-            filter === "completed" ? "" : "hidden md:table-cell"
+            filter === "completed" ? "" : "hidden lg:table-cell"
           }`}
         >
           {filter === "completed" && item.completedOn ? (
@@ -400,7 +400,7 @@ export function TableRow({
                   />
                 </div>
               </div>
-              
+
               {/* Desktop view - positioned with indent */}
               <div
                 className="hidden sm:block absolute z-10 mt-1"
