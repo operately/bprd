@@ -358,7 +358,7 @@ export default function WorkMapTable({
             </th>
             {/* Progress column - not shown on completed page */}
             {filter !== "completed" && (
-              <th className="text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold w-[75px] md:w-[90px]">
+              <th className="text-left py-2 md:py-3.5 px-2 pr-6 lg:px-4 font-semibold w-[75px] md:w-[90px]">
                 Progress
               </th>
             )}
