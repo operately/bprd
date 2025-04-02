@@ -38,7 +38,7 @@ export function QuickAddRow({ columnCount, filter }: QuickAddRowProps): React.Re
 
   return (
     <tr className="border-t border-surface-outline">
-      <td colSpan={columnCount} className="py-2 px-4">
+      <td colSpan={columnCount} className="py-2 px-2 sm:px-4">
         {!isAddingItem ? (
           <button
             onClick={handleAddClick}
@@ -61,12 +61,14 @@ export function QuickAddRow({ columnCount, filter }: QuickAddRowProps): React.Re
             <span>{buttonText}</span>
           </button>
         ) : (
-          <div className="inline-block bg-surface-base dark:bg-surface-dimmed border border-surface-outline rounded-md p-2">
-            <HoverQuickEntryWidget
-              parentItem={null} // No parent item for root level
-              onClose={handleClose}
-              filter={filter}
-            />
+          <div className="flex justify-start w-full">
+            <div className="w-full sm:w-auto max-w-full sm:max-w-[460px] bg-surface-base dark:bg-surface-dimmed border border-surface-outline rounded-md px-2 py-2">
+              <HoverQuickEntryWidget
+                parentItem={null} // No parent item for root level
+                onClose={handleClose}
+                filter={filter}
+              />
+            </div>
           </div>
         )}
       </td>

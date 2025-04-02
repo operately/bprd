@@ -90,7 +90,16 @@ export function HoverQuickEntryWidget({
   };
 
   // Handle clicks outside to close the input field
+  // For parent item popups, we'll rely only on the explicit cancel button
+  // For the bottom quick add row, we'll use the standard click-outside behavior
   useEffect(() => {
+    // Skip click outside handling for parent item popups ("+ Add" button)
+    // This prevents the popup from closing when clicking inside it
+    if (parentItem) {
+      return; // Do nothing for parent item popups
+    }
+
+    // Only apply click-outside for the bottom quick add row
     const handleClickOutside = (event: MouseEvent): void => {
       if (widgetRef.current && !widgetRef.current.contains(event.target as Node)) {
         onClose();
@@ -98,11 +107,11 @@ export function HoverQuickEntryWidget({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
+    
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [onClose]);
+  }, [onClose, parentItem]);
 
   // Handle escape key to cancel
   useEffect(() => {
@@ -119,9 +128,17 @@ export function HoverQuickEntryWidget({
   }, [onClose]);
 
   return (
-    <div ref={widgetRef} className="inline-block w-full sm:w-auto">
-      <form onSubmit={handleSubmit} className="w-full sm:w-auto">
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 w-full">
+    <div 
+      ref={widgetRef} 
+      className="w-full sm:inline-block"
+      onClick={(e: React.MouseEvent) => e.stopPropagation()}
+    >
+      <form 
+        onSubmit={handleSubmit} 
+        className="w-full sm:w-auto"
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      >
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 w-full max-w-full">
           {/* First row for mobile (type + input) */}
           <div className="flex flex-1 w-full">
             {/* Type selection or label - only show dropdown if no specific filter is set */}
@@ -170,7 +187,7 @@ export function HoverQuickEntryWidget({
               placeholder={`New ${itemType} ${
                 parentItem ? `in ${parentItem.name}` : "company-wide"
               }...`}
-              className="h-9 pl-2 pr-3 py-1 bg-surface-base dark:bg-surface-dimmed text-content-base focus:outline-none w-full sm:min-w-[360px] text-sm border-y border-r sm:border-y sm:border-r-0 border-surface-outline rounded-r-md sm:rounded-none"
+              className="h-9 pl-2 pr-3 py-1 bg-surface-base dark:bg-surface-dimmed text-content-base focus:outline-none w-full text-sm border-y border-r sm:border-y sm:border-r-0 border-surface-outline rounded-r-md sm:rounded-none sm:min-w-[360px]"
             />
           </div>
 

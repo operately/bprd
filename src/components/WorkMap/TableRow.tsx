@@ -392,11 +392,22 @@ export function TableRow({
         <tr className="bg-transparent">
           <td colSpan={7} className="p-0">
             <div className="relative">
+              {/* Mobile view - full width with proper padding */}
+              <div className="block sm:hidden w-full px-2 pt-1 pb-2">
+                <div className="bg-surface-base dark:bg-surface-dimmed shadow-lg border border-surface-outline rounded-md px-2 py-2 w-full">
+                  <HoverQuickEntryWidget
+                    parentItem={item}
+                    onClose={() => setShowQuickEntryWidget(false)}
+                  />
+                </div>
+              </div>
+              
+              {/* Desktop view - positioned with indent */}
               <div
-                className="absolute z-10 mt-1"
+                className="hidden sm:block absolute z-10 mt-1"
                 style={{ marginLeft: `${indentPadding + 40}px` }}
               >
-                <div className="bg-surface-base dark:bg-surface-dimmed shadow-lg border border-surface-outline rounded-md p-2 inline-block">
+                <div className="bg-surface-base dark:bg-surface-dimmed shadow-lg border border-surface-outline rounded-md px-2 py-2 w-auto min-w-[400px]">
                   <HoverQuickEntryWidget
                     parentItem={item}
                     onClose={() => setShowQuickEntryWidget(false)}
