@@ -2,7 +2,11 @@ import React from "react";
 import type { StatusBadgeProps } from "../../types/workmap";
 
 export function StatusBadge({ status }: StatusBadgeProps): React.ReactElement {
-  let bgColor: string, textColor: string, dotColor: string, borderColor: string, label: string;
+  let bgColor: string,
+    textColor: string,
+    dotColor: string,
+    borderColor: string,
+    label: string;
 
   switch (status) {
     case "on_track":
@@ -120,11 +124,7 @@ export function StatusBadge({ status }: StatusBadgeProps): React.ReactElement {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <path
-              d="M12 3a9 9 0 0 0 0 18"
-              fill="currentColor"
-              stroke="none"
-            />
+            <path d="M12 3a9 9 0 0 0 0 18" fill="currentColor" stroke="none" />
           </svg>
         );
       case "missed":
@@ -173,7 +173,7 @@ export function StatusBadge({ status }: StatusBadgeProps): React.ReactElement {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${bgColor} ${textColor} border ${borderColor} shadow-sm backdrop-blur-[2px]`}
+      className={`inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium ${bgColor} ${textColor} border ${borderColor} shadow-sm backdrop-blur-[2px]`}
     >
       {getStatusIcon()}
       {label}

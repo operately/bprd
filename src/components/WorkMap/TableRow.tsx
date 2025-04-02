@@ -8,7 +8,11 @@ import {
   IconChevronRight,
 } from "./Icons";
 import { HoverQuickEntryWidget } from "./HoverQuickEntryWidget.tsx";
-import type { WorkMapItem, GoalStatus, TableRowProps } from "../../types/workmap";
+import type {
+  WorkMapItem,
+  GoalStatus,
+  TableRowProps,
+} from "../../types/workmap";
 
 /**
  * TableRow component for rendering a WorkMap item (goal or project) in a table
@@ -28,9 +32,10 @@ export function TableRow({
   const isCompletedPage = filter === "completed";
   const [expanded, setExpanded] = useState<boolean>(true);
   const [showAddButton, setShowAddButton] = useState<boolean>(false);
-  const [showQuickEntryWidget, setShowQuickEntryWidget] = useState<boolean>(false);
+  const [showQuickEntryWidget, setShowQuickEntryWidget] =
+    useState<boolean>(false);
   const hasChildren = item.children && item.children.length > 0;
-  
+
   // Decide whether to show indentation and controls
   // Only apply indentation on hierarchical pages (all work, goals)
   const showIndentation = !filter || filter === "goals" || filter === "all";
@@ -105,15 +110,25 @@ export function TableRow({
                     }}
                     className="mr-2 text-content-dimmed hover:text-content-base dark:text-gray-400 dark:hover:text-gray-300"
                   >
-                    {expanded ? (
-                      <IconChevronDown size={16} />
-                    ) : (
-                      <IconChevronRight size={16} />
-                    )}
+                    {/* Use responsive size for chevron icons - smaller on mobile */}
+                    <div className="hidden sm:block">
+                      {expanded ? (
+                        <IconChevronDown size={16} />
+                      ) : (
+                        <IconChevronRight size={16} />
+                      )}
+                    </div>
+                    <div className="sm:hidden">
+                      {expanded ? (
+                        <IconChevronDown size={12} />
+                      ) : (
+                        <IconChevronRight size={12} />
+                      )}
+                    </div>
                   </button>
                 )}
 
-                {!hasChildren && <div className="w-[24px]"></div>}
+                {!hasChildren && <div className="w-[16px] sm:w-[24px]"></div>}
               </>
             )}
 
