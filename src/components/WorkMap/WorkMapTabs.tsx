@@ -29,7 +29,9 @@ interface QuarterYear {
  * Navigation component for switching between different WorkMap views
  * Also includes a time period selector for filtering items by quarter/year
  */
-export function WorkMapTabs({ activeTab }: WorkMapTabsProps): React.ReactElement {
+export function WorkMapTabs({
+  activeTab,
+}: WorkMapTabsProps): React.ReactElement {
   // Reference to the button element for positioning the dropdown
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -39,7 +41,8 @@ export function WorkMapTabs({ activeTab }: WorkMapTabsProps): React.ReactElement
     width: 0,
   });
   // State for the time period selection
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState<string>("current");
+  const [selectedTimePeriod, setSelectedTimePeriod] =
+    useState<string>("current");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   // Get current quarter and year
@@ -118,7 +121,7 @@ export function WorkMapTabs({ activeTab }: WorkMapTabsProps): React.ReactElement
     // Here you would reset the filtering
     console.log("Reset to current period");
   };
-  
+
   return (
     <div className="border-b border-surface-outline">
       <div className="px-4 sm:px-6">
@@ -136,7 +139,7 @@ export function WorkMapTabs({ activeTab }: WorkMapTabsProps): React.ReactElement
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
+              px-1 pt-2.5 pb-1 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
               aria-current={activeTab === "all" ? "page" : undefined}
             >
@@ -169,7 +172,7 @@ export function WorkMapTabs({ activeTab }: WorkMapTabsProps): React.ReactElement
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
+              px-1 pt-2.5 pb-1 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
               aria-current={activeTab === "goals" ? "page" : undefined}
             >
@@ -203,7 +206,7 @@ export function WorkMapTabs({ activeTab }: WorkMapTabsProps): React.ReactElement
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
+              px-1 pt-2.5 pb-1 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
               aria-current={activeTab === "projects" ? "page" : undefined}
             >
@@ -236,7 +239,7 @@ export function WorkMapTabs({ activeTab }: WorkMapTabsProps): React.ReactElement
                   ? "border-blue-500 text-content-base"
                   : "border-transparent text-content-dimmed hover:text-content-base hover:border-surface-accent"
               } 
-              px-1 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
+              px-1 pt-2.5 pb-1 text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-1.5 whitespace-nowrap
             `}
               aria-current={activeTab === "completed" ? "page" : undefined}
             >
@@ -261,7 +264,7 @@ export function WorkMapTabs({ activeTab }: WorkMapTabsProps): React.ReactElement
           </div>
 
           {/* Time period selector with dropdown */}
-          <div className="relative self-center mt-2 sm:mt-1">
+          <div className="relative self-center mt-1">
             <button
               ref={buttonRef}
               className={`px-2 sm:px-4 py-1 sm:py-1.5 border rounded-full flex items-center gap-1 sm:gap-2 text-xs sm:text-sm transition-colors ${
