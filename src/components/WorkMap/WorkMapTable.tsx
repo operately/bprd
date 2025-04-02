@@ -58,10 +58,10 @@ const extractCompletedItems = (data: WorkMapItem[]): WorkMapItem[] => {
         item.status === "missed"
       ) {
         // For completed page, use completedOn date if available, or create a mock one if not
-        const enhancedItem = { 
-          ...item, 
+        const enhancedItem = {
+          ...item,
           children: [], // Reset children to make it flat
-          completedOn: item.completedOn || { display: "" } 
+          completedOn: item.completedOn || { display: "" },
         };
 
         // If completedOn is not present or has no display, add a mock date based on status
@@ -135,10 +135,12 @@ const filterChildren = (item: WorkMapItem, filter?: string): WorkMapItem => {
  * WorkMapTable component that displays work items in a table format
  * Supports filtering by type (goals, projects) and status (completed)
  */
-export default function WorkMapTable({ filter }: WorkMapTableProps): React.ReactElement {
+export default function WorkMapTable({
+  filter,
+}: WorkMapTableProps): React.ReactElement {
   // Determine if we're on the completed page
   const isCompletedPage = filter === "completed";
-  
+
   // Create a state to store the modified data
   const [workMapData, setWorkMapData] = useState<WorkMapItem[]>(() => mockData);
 
@@ -152,8 +154,8 @@ export default function WorkMapTable({ filter }: WorkMapTableProps): React.React
   useEffect(() => {
     // Event handler for adding new items
     const handleAddItem = (event: CustomEvent): void => {
-      const { parentItem, newItem } = event.detail as { 
-        parentItem: WorkMapItem | null; 
+      const { parentItem, newItem } = event.detail as {
+        parentItem: WorkMapItem | null;
         newItem: WorkMapItem;
       };
 
@@ -161,7 +163,10 @@ export default function WorkMapTable({ filter }: WorkMapTableProps): React.React
       const newData = JSON.parse(JSON.stringify(workMapData));
 
       // Helper function to add the item to the correct place in the hierarchy
-      const addItemToHierarchy = (items: WorkMapItem[], parentId: string): boolean => {
+      const addItemToHierarchy = (
+        items: WorkMapItem[],
+        parentId: string
+      ): boolean => {
         for (let i = 0; i < items.length; i++) {
           if (items[i].id === parentId) {
             // Found the parent, add the new item to its children
@@ -241,13 +246,25 @@ export default function WorkMapTable({ filter }: WorkMapTableProps): React.React
     };
 
     // Add event listeners
-    document.addEventListener("workmap:add-item", handleAddItem as EventListener);
-    document.addEventListener("workmap:delete-item", handleDeleteItem as EventListener);
+    document.addEventListener(
+      "workmap:add-item",
+      handleAddItem as EventListener
+    );
+    document.addEventListener(
+      "workmap:delete-item",
+      handleDeleteItem as EventListener
+    );
 
     // Clean up on unmount
     return () => {
-      document.removeEventListener("workmap:add-item", handleAddItem as EventListener);
-      document.removeEventListener("workmap:delete-item", handleDeleteItem as EventListener);
+      document.removeEventListener(
+        "workmap:add-item",
+        handleAddItem as EventListener
+      );
+      document.removeEventListener(
+        "workmap:delete-item",
+        handleDeleteItem as EventListener
+      );
     };
   }, [workMapData]);
 
@@ -288,7 +305,7 @@ export default function WorkMapTable({ filter }: WorkMapTableProps): React.React
     <div className="w-full overflow-x-auto">
       <table className="w-full md:min-w-[1000px] table-auto">
         <thead>
-          <tr className="border-b-2 border-surface-outline dark:border-gray-600 bg-surface-dimmed dark:bg-gray-800/80 text-content-base dark:text-gray-200 text-sm sticky top-0">
+          <tr className="border-b-2 border-surface-outline dark:border-gray-600 bg-surface-dimmed dark:bg-gray-800/80 text-content-base dark:text-gray-200 text-xs sm:text-sm sticky top-0">
             {/* Name column - more space on mobile for completed page */}
             <th
               className={`text-left py-2 md:py-3.5 px-2 md:px-4 font-semibold ${
@@ -361,9 +378,13 @@ export default function WorkMapTable({ filter }: WorkMapTableProps): React.React
 
                 return completedItems.sort((a, b) => {
                   // Type assertion to add completedOn property
-                  const itemA = a as WorkMapItem & { completedOn?: CompletedOnInfo };
-                  const itemB = b as WorkMapItem & { completedOn?: CompletedOnInfo };
-                  
+                  const itemA = a as WorkMapItem & {
+                    completedOn?: CompletedOnInfo;
+                  };
+                  const itemB = b as WorkMapItem & {
+                    completedOn?: CompletedOnInfo;
+                  };
+
                   const dateA = parseDate(itemA.completedOn?.display);
                   const dateB = parseDate(itemB.completedOn?.display);
                   return dateB.getTime() - dateA.getTime(); // Most recent first
